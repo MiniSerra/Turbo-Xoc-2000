@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0b032d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Turbo Xoc">
 <title>Turbo Xoc 2000</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Joc de festa multijugador 3D d'estètica Y2K: empeny els amics fora de la pista.">
@@ -449,6 +453,63 @@ button { font: inherit; color: inherit; }
 .cam-hint { position: fixed; left: 50%; bottom: calc(150px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 22; pointer-events: none; animation: camhint 1.6s ease-in-out infinite; }
 .cam-hint .sticker { font-size: 13px; white-space: nowrap; }
 @keyframes camhint { 0%,100% { opacity: .95; } 50% { opacity: .6; } }
+
+/* ---------- Pantalles petites (mòbil en horitzontal / vertical) ---------- */
+.tbtn { position: relative; overflow: hidden; }
+.tbtn::after { content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .15s;
+  background: conic-gradient(transparent calc(var(--cd, 1) * 360deg), rgba(0,0,0,.62) 0); }
+.tbtn.cooling::after { opacity: 1; }
+.tbtn.cooling { filter: saturate(.55); }
+body.touchui .hud-abil .bar-wrap { display: none; }
+body.touchui .hud-abil { background: none; border: 0; padding: 0; gap: 6px; }
+body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: none; }
+@media (max-height: 520px), (max-width: 620px) {
+  .topctl { padding-top: 6px; gap: 6px; }
+  .topctl > div { gap: 5px; }
+  .topctl .btn.sm { min-height: 0; padding: 4px 8px; font-size: 11px; }
+  .topctl .btn.sm .ico { font-size: 14px; }
+  .brand-txt, #audio-lbl, #btn-leave span:last-child { display: none; }
+  .badge { padding: 3px 7px; font-size: 10px; }
+  #screen-hud { padding: calc(40px + env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)); }
+  .hud-top { gap: 6px; }
+  .hud-board { max-width: 138px; padding: 3px 6px; border-width: 2px; border-radius: 10px; font-size: 9.5px; background: rgba(0,0,0,.6); }
+  .hud-board .hd { display: none; }
+  .lb-row { gap: 4px; padding: 0 3px; line-height: 1.35; }
+  .lb-row .dt { width: 7px; height: 7px; }
+  .hud-clock { padding: 1px 10px 3px; border-width: 3px; border-radius: 12px; box-shadow: 0 3px 0 #000; }
+  .hud-clock .md { display: none; }
+  .hud-clock .tm { font-size: 20px; }
+  .hud-announce { font-size: 13px; padding: 3px 10px; margin-top: 5px; border-width: 2px; }
+  .hud-right { gap: 4px; }
+  .minimap { width: 64px; height: 64px; border-width: 2px; box-shadow: 0 2px 0 #000; }
+  .minimap.race { width: 30px; height: 132px; border-radius: 10px; }
+  .race-pos { font-size: 15px; padding: 1px 8px; border-width: 2px; border-radius: 10px; box-shadow: 0 2px 0 #000; }
+  .feed { max-width: 200px; gap: 3px; }
+  .feed-item { font-size: 9px; padding: 1px 6px; border-width: 1.5px; border-radius: 8px; background: rgba(0,0,0,.6); }
+  .feed-item:nth-child(n+3) { display: none; }
+  .hud-abil { padding: 3px 8px; gap: 8px; border-width: 2px; }
+  .bar { width: 80px; height: 9px; }
+  .lives { font-size: 13px; }
+  .pu-badge { font-size: 9px; padding: 2px 6px; }
+  .ntag .nb { font-size: 9px; padding: 0 5px; border-width: 1.5px; }
+  .ntag .bubble { font-size: 11px; padding: 1px 7px; border-width: 2px; }
+  .joy { width: 96px; height: 96px; margin: -48px 0 0 -48px; border-width: 3px; }
+  .joy .knob { width: 42px; height: 42px; margin: -21px 0 0 -21px; }
+  .tbtns { gap: 7px; right: max(10px, env(safe-area-inset-right, 0px)); bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .tbtn.turbo { width: 74px; height: 74px; font-size: 10px !important; }
+  .tbtn.turbo .ico { font-size: 24px; }
+  .tbtn.wave { width: 56px; height: 56px; font-size: 8px !important; }
+  .tbtn.wave .ico { font-size: 19px; }
+  .tbtn.emote { width: 40px; height: 40px; }
+  .tbtn.emote .ico { font-size: 18px; }
+  .spectate { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+  .spectate .sticker { font-size: 10px; }
+}
+@media (max-height: 520px) { .big-count span { font-size: 96px; } }
+@media (max-height: 520px), (max-width: 620px) {
+  #toast { top: calc(70px + env(safe-area-inset-top, 0px)); }
+  #toast div { font-size: 11px; padding: 4px 10px; border-width: 3px; border-radius: 11px; box-shadow: 0 3px 0 var(--magenta); }
+}
 </style>
 </head>
 <body>
@@ -5388,7 +5449,12 @@ const UI = {
     if (s === 'lobby') { this.lobbySig = ''; this.renderLobby(true); }
     if (s !== 'hud' && s !== 'lobby') this.clearTags();
   },
-  syncTouch() { $('touch').hidden = !(Input.touchOn && G.screen === 'hud'); },
+  syncTouch() {
+    const show = Input.touchOn && G.screen === 'hud', was = !$('touch').hidden;
+    $('touch').hidden = !show; document.body.classList.toggle('touchui', !!Input.touchOn);
+    if (show && !was && Input.restJoy) requestAnimationFrame(() => Input.restJoy());
+  },
+  compact() { this._cmq = this._cmq || matchMedia('(max-height: 520px), (max-width: 620px)'); return this._cmq.matches; },
 
   refreshMenu() { $('menu-name').textContent = G.profile.name; this.renderOpenRooms(); },
   renderOpenRooms() {
@@ -5604,6 +5670,13 @@ const UI = {
       $('hud-turbo-t').textContent = me.tcd <= 0 ? 'LLEST' : me.tcd.toFixed(1) + 's';
       $('hud-wave').style.transform = 'scaleX(' + clamp(1 - me.wcd / (me.pu === PU.overclock ? PHYS.waveCdOC : PHYS.waveCd), 0, 1) + ')';
       $('hud-wave-t').textContent = me.wcd <= 0 ? 'LLEST' : me.wcd.toFixed(1) + 's';
+      if (Input.touchOn) {
+        // recàrrega dibuixada directament sobre els botons tàctils
+        const ft = clamp(1 - me.tcd / tmax, 0, 1), fw = clamp(1 - me.wcd / (me.pu === PU.overclock ? PHYS.waveCdOC : PHYS.waveCd), 0, 1);
+        const bt = $('tb-turbo'), bw = $('tb-wave');
+        bt.style.setProperty('--cd', ft.toFixed(3)); bw.style.setProperty('--cd', fw.toFixed(3));
+        bt.classList.toggle('cooling', ft < 1); bw.classList.toggle('cooling', fw < 1);
+      }
       const pu = $('hud-pu');
       if (me.pu) { pu.hidden = false; pu.textContent = PU_NAME[me.pu] + ' ' + Math.ceil(me.puT) + 's'; } else pu.hidden = true;
       const lv = $('hud-lives');
@@ -5626,7 +5699,10 @@ const UI = {
         : [...players].sort((a, b) => (st.mode === 'last' ? (b.out ? 0 : 1) - (a.out ? 0 : 1) || b.lives - a.lives : 0) || b.score - a.score);
       if (race) { const pos = sorted.findIndex((p) => p.id === G.meId) + 1; const rp = $('race-pos'); const meP = sorted[pos - 1]; rp.textContent = meP && meP.fin ? '🏁 ' + ordinal(meP.fin) : (pos ? ordinal(pos) : '-') + ' / ' + sorted.length; }
       const lb = $('hud-lb'); lb.textContent = '';
-      sorted.slice(0, 8).forEach((p, i) => {
+      // pantalla petita: només el podi i tu
+      let rows = sorted.slice(0, 8).map((p, i) => [p, i]);
+      if (this.compact()) { const mi = sorted.findIndex((p) => p.id === G.meId); rows = sorted.slice(0, 3).map((p, i) => [p, i]); if (mi >= 3) rows.push([sorted[mi], mi]); }
+      rows.forEach(([p, i]) => {
         const ic = race ? (p.fin ? '🏁' : 'CP' + (p.cp || 0)) : (st.crownHolder === p.id ? '👑' : '') + (st.bombHolder === p.id ? '💣' : '') + (st.mode === 'last' ? (p.out ? '❌' : '❤️' + p.lives) : '');
         lb.appendChild(h('div', { class: 'lb-row' + (p.id === G.meId ? ' me' : '') + (p.out && st.mode === 'last' ? ' out' : '') },
           h('span', { class: 'dt', style: { background: '#' + p.profile.c1 } }), h('span', { class: 'nm', text: (i + 1) + '. ' + p.name }), h('span', { class: 'ic', text: ic }), h('span', { class: 'sc', text: race ? (p.fin ? ordinal(p.fin) : '') : String(p.score) })));
@@ -5811,6 +5887,15 @@ const CamCtl = {
     });
     window.addEventListener('mouseup', (e) => { if (e.button === 2) this.dragging = false; });
     cv.addEventListener('contextmenu', (e) => { if (this.enabled()) e.preventDefault(); });
+    // tàctil: arrossegar el dit per la meitat dreta gira la càmera de la cursa
+    let tid = null, tx = 0, ty = 0;
+    cv.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'touch' || !this.enabled() || tid !== null) return; tid = e.pointerId; tx = e.clientX; ty = e.clientY; });
+    cv.addEventListener('pointermove', (e) => {
+      if (e.pointerId !== tid) return;
+      const s = this.sens() * 1.6; this.rotate((e.clientX - tx) * s, (e.clientY - ty) * s); tx = e.clientX; ty = e.clientY;
+    });
+    const tend = (e) => { if (e.pointerId === tid) tid = null; };
+    cv.addEventListener('pointerup', tend); cv.addEventListener('pointercancel', tend);
     document.addEventListener('pointerlockchange', () => { const h = $('cam-hint'); if (h) h.classList.toggle('locked', this.locked()); });
   },
   // gira el moviment perquè "endavant" sigui on mira la càmera
@@ -5851,7 +5936,7 @@ const Input = {
     window.addEventListener('pointerdown', () => sound.init(), { passive: true });
     $('game-canvas').addEventListener('click', () => {
       if (G.screen !== 'hud' || EmoteWheel.open) return;
-      if (CamCtl.enabled() && !CamCtl.locked()) { CamCtl.lock(); return; }
+      if (CamCtl.enabled() && !CamCtl.locked() && !this.touchOn) { CamCtl.lock(); return; }
       if (Spectate.active()) Spectate.cycle(1);
     });
     CamCtl.init();
