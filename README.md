@@ -87,7 +87,7 @@ Descarrega `index.html` i obre'l amb Chrome, Edge o Firefox. Ja està.
 
 ## 🙌 Crèdits
 
-Creat per **Joel Serrano**.
+Creat per **serracraft**.
 Música: **«Arcade Bounce»**.
 Gràcies als jugadors d'itch.io per totes les idees i el feedback 💜
 
