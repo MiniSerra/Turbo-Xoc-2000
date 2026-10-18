@@ -613,6 +613,43 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
   .overlay .panel { width: min(560px, 100%); }
   .set-row { padding: 3px 0; font-size: 11px; }
 }
+
+/* ---------- Rècords de la cursa ---------- */
+.race-timer { margin: 6px auto 0; display: flex; flex-direction: column; align-items: center; gap: 2px; background: rgba(0,0,0,.78); border: 3px solid var(--lime); border-radius: 14px; padding: 4px 14px 5px; width: max-content; }
+.race-timer .now { font-family: var(--f-display); font-size: 26px; color: var(--lime); font-variant-numeric: tabular-nums; line-height: 1; }
+.race-timer.done .now { color: var(--yellow); }
+.race-timer .pb { font-family: var(--f-data); font-weight: 700; font-size: 11px; color: var(--cyan); letter-spacing: .06em; }
+.race-timer .tt-restart { pointer-events: auto; margin-top: 3px; font-size: 10px; }
+.race-split { margin: 6px auto 0; width: max-content; background: rgba(0,0,0,.85); border: 3px solid var(--yellow); border-radius: 12px; padding: 4px 12px; font-family: var(--f-display); font-size: 16px; animation: annIn .25s ease-out; font-variant-numeric: tabular-nums; }
+.race-split b { font-weight: 400; color: #fff; }
+.race-split .ahead { color: var(--lime); }
+.race-split .behind { color: #ff4d6d; }
+.rec-panel { width: min(720px, 100%) !important; }
+.rec-pb { text-align: center; background: rgba(0,0,0,.6); border: 3px solid var(--yellow); border-radius: 16px; padding: 10px; }
+.rec-pb .big { font-family: var(--f-display); font-size: 46px; color: var(--yellow); line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 4px 0 var(--magenta), 0 7px 0 #000; }
+.rec-pb .sub { font-family: var(--f-data); font-weight: 700; font-size: 12px; color: var(--cyan); margin-top: 8px; }
+.rec-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.rec-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.rec-list li { display: grid; grid-template-columns: 28px 1fr auto; gap: 6px; align-items: center; background: rgba(0,0,0,.55); border: 2px solid rgba(255,255,255,.14); border-radius: 9px; padding: 3px 8px; font-family: var(--f-data); font-weight: 700; font-size: 12px; }
+.rec-list li.first { border-color: var(--yellow); background: rgba(255,230,0,.12); }
+.rec-list .t { font-family: var(--f-display); font-weight: 400; font-size: 14px; font-variant-numeric: tabular-nums; }
+.rec-list .k, .rec-list .pos { color: var(--muted); }
+.rec-splits { display: flex; flex-direction: column; gap: 3px; }
+.rec-splits .srow { display: grid; grid-template-columns: 52px 1fr auto; gap: 6px; background: rgba(0,0,0,.55); border-radius: 9px; padding: 3px 8px; font-family: var(--f-data); font-weight: 700; font-size: 12px; }
+.rec-splits .n { color: var(--cyan); }
+.rec-splits .t { font-variant-numeric: tabular-nums; }
+.rec-splits .g { color: var(--muted); font-variant-numeric: tabular-nums; }
+.rec-splits .g.gold { color: var(--yellow); }
+@media (max-width: 620px) { .rec-cols { grid-template-columns: minmax(0, 1fr); } .rec-pb .big { font-size: 36px; } }
+@media (max-height: 520px), (max-width: 620px) {
+  .race-timer { padding: 2px 9px 3px; border-width: 2px; margin-top: 4px; }
+  .race-timer .now { font-size: 16px; }
+  .race-timer .pb { font-size: 8.5px; }
+  .race-split { font-size: 11px; padding: 2px 8px; border-width: 2px; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .rec-pb .big { font-size: 30px; } .rec-pb { padding: 6px; } .rec-list li, .rec-splits .srow { font-size: 10px; padding: 2px 6px; } .rec-list .t { font-size: 11px; }
+}
 </style>
 </head>
 <body>
@@ -657,6 +694,7 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
       <div class="checker"></div>
       <button class="btn lg block" id="btn-quick"><span class="ico">🚀</span>PARTIDA RÀPIDA</button>
       <button class="btn cyan lg block" id="btn-create"><span class="ico">⚡</span>CREAR SALA</button>
+      <button class="btn yel sm block" id="btn-records"><span class="ico">⏱️</span>RÈCORDS I CONTRARELLOTGE</button>
       <div class="stack" style="gap:6px">
         <label class="label" for="in-code">UNIR-SE AMB CODI</label>
         <div class="join-row">
@@ -771,6 +809,8 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
     </div>
     <div>
       <div class="hud-clock"><div class="md" id="hud-mode"></div><div class="tm" id="hud-time">01:30</div></div>
+      <div class="race-timer" id="race-timer" hidden><span class="now" id="rt-now">0:00.00</span><span class="pb" id="rt-pb"></span><button class="btn mag sm tt-restart" id="btn-tt-restart" hidden>↻ <span class="keys">R</span> REINICIA</button></div>
+      <div class="race-split" id="race-split" hidden></div>
       <div class="hud-announce" id="hud-ann" hidden></div>
     </div>
     <div class="hud-right">
@@ -848,6 +888,22 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
 </div>
 
 <!-- COM ES JUGA -->
+<div class="overlay" id="ov-records" hidden role="dialog" aria-modal="true" aria-labelledby="rec-title">
+  <div class="panel stack rec-panel">
+    <div class="row between"><h2 id="rec-title" class="ol-sm">⏱️ RÈCORDS · GRAN CURSA TURBO</h2><button class="btn sm" id="btn-rec-close">✔ TANCA</button></div>
+    <div class="rec-pb" id="rec-pb"></div>
+    <div class="rec-cols">
+      <div class="stack" style="gap:6px"><span class="label">TOP 10</span><ol class="rec-list" id="rec-list"></ol></div>
+      <div class="stack" style="gap:6px"><span class="label">PARCIALS DEL RÈCORD · ★ MILLOR TRAM</span><div class="rec-splits" id="rec-splits"></div></div>
+    </div>
+    <div class="row" style="justify-content:center">
+      <button class="btn lg" id="btn-tt">🏁 CONTRARELLOTGE</button>
+      <button class="btn cyan" id="btn-rec-copy">📋 COPIA PER AL DISCORD</button>
+      <button class="btn dark sm" id="btn-rec-reset">🗑️ ESBORRA</button>
+    </div>
+    <p class="hint">Contrarellotge: tu sol a la pista, sense bots. Prem <span class="keys">R</span> per tornar a començar a l'instant. ⏱️ contrarellotge · 🤖 amb bots · 🌐 en línia.</p>
+  </div>
+</div>
 <div class="overlay" id="ov-help" hidden role="dialog" aria-modal="true" aria-labelledby="help-title">
   <div class="panel stack help-panel">
     <div class="row between"><h2 id="help-title" class="ol-sm">COM ES JUGA</h2><span class="sticker cyan">TURBO XOC 2000</span></div>
@@ -4446,6 +4502,7 @@ function clearViews() { for (const v of G.views.values()) v.dispose(); G.views.c
 
 /* ---------------- entrades i sortides de sala ---------------- */
 function resetSession() {
+  G.timeTrial = false;
   if (G.transports.length && G.code) {
     const bye = { k: 'bye', c: G.code, v: PROTO, id: G.meId, host: G.role === 'host' };
     for (const t of G.transports) { t.send(bye); }
@@ -4835,15 +4892,15 @@ function handleEvent(e) {
     case 'pad': FX.burst(e.x, e.y + 0.3, e.z, { count: 10, color: 0x00f0ff, speed: 4, up: 9, frame: 3 }); Shock.spawn(e.x, e.y + 0.2, e.z, 0x00f0ff, 10); sound.jumpPad(); break;
     case 'bump': spawnComic(e.x, e.y + 3, e.z, 'BOING!', '#00f0ff'); FX.burst(e.x, e.y + 1.2, e.z, { count: 8, color: 0xffe600, speed: 6 }); sound.bumper(); if (me) addShake(0.2); break;
     case 'land': FX.burst(e.x, e.y + 0.1, e.z, { count: 6, color: 0xc9a7ff, speed: 4, up: 2, frame: 0, size: 0.6, grav: 4 }); if (me) sound.land(); break;
-    case 'cp': if (me) { UI.announce('✅ CHECKPOINT ' + e.v + '!', 1800); sound.pickup(true); } break;
+    case 'cp': if (me) { UI.announce('✅ CHECKPOINT ' + e.v + '!', 1800); sound.pickup(true); Records.onCp(e.v); } break;
     case 'finish': {
       const ord = e.v | 0;
       FX.burst(e.x, e.y + 2, e.z, { count: 40, colors: [0xff007f, 0x00f0ff, 0xffe600, 0xa3ff00], speed: 10, up: 12, frame: 4, size: 0.6, grav: 10 });
       UI.feed(['🏁 ', ['b', nameOf(e.a)], ' arriba ' + ordinal(ord) + '!']);
-      if (me) { UI.announce('🏁 HAS ARRIBAT ' + ordinal(ord).toUpperCase() + '!', 3500); sound.victory(); }
+      if (me) { UI.announce('🏁 HAS ARRIBAT ' + ordinal(ord).toUpperCase() + '!', 3500); sound.victory(); Records.onFinish(); }
       break;
     }
-    case 'raceclose': UI.announce('⏱️ JA HI HA GUANYADOR! 30 SEGONS PER ARRIBAR!', 4000); sound.alarm(); sound.setIntensity(2); break;
+    case 'raceclose': if (G.timeTrial) break; UI.announce('⏱️ JA HI HA GUANYADOR! 30 SEGONS PER ARRIBAR!', 4000); sound.alarm(); sound.setIntensity(2); break;
     case 'sale': sound.pickup(true); break;
     case 'icicle': if (G.pred && G.role === 'guest' && Math.hypot(G.pred.x - e.x, G.pred.z - e.z) < 3) addShake(0.4); else if (G.world) { const meP = G.world.players.get(G.meId); if (meP && Math.hypot(meP.x - e.x, meP.z - e.z) < 3) addShake(0.4); } break;
     case 'pick': {
@@ -5723,6 +5780,7 @@ const UI = {
     $('minimap').classList.toggle('race', race);
     $('minimap').width = race ? 64 : 160; $('minimap').height = race ? 240 : 160;
     $('race-pos').hidden = !race;
+    $('race-timer').hidden = !race; $('btn-tt-restart').hidden = !(race && G.timeTrial); if (!race) $('race-split').hidden = true;
   },
   announce(text, ms = 3600) {
     const el = $('hud-ann');
@@ -5785,6 +5843,7 @@ const UI = {
       const lv = $('hud-lives');
       lv.hidden = st.mode !== 'last';
       if (st.mode === 'last') lv.textContent = '❤️'.repeat(Math.max(0, me.lives)) + '🖤'.repeat(Math.max(0, 3 - me.lives));
+      if (st.mode === 'race') Records.frame(dt, st, me);
       const spec = me.out && st.phase !== 'end';
       $('spectate').hidden = !spec;
       if (spec) {
@@ -5957,6 +6016,169 @@ const EmoteWheel = {
 };
 
 /* ===================================================================
+ * 09b · RÈCORDS DE LA GRAN CURSA (speedrun): cronòmetre, parcials,
+ *       millor temps desat al navegador i mode contrarellotge
+ * =================================================================== */
+
+const SPLIT_NAMES = ['CP1', 'CP2', 'CP3', 'CP4', 'CP5', 'CP6', 'META'];
+
+function fmtRace(t) {
+  if (!(t >= 0)) return '-:--.--';
+  const m = Math.floor(t / 60), s = t - m * 60;
+  return m + ':' + (s < 10 ? '0' : '') + s.toFixed(2);
+}
+function fmtDelta(d) { return (d < 0 ? '−' : '+') + Math.abs(d).toFixed(2); }
+
+const Records = {
+  KEY: 'race.v1',
+  run: null,
+  splitTimer: 0,
+
+  load() {
+    const d = store.get(this.KEY, null);
+    if (!d || !Array.isArray(d.runs)) return { runs: [], bestSegs: [] };
+    d.runs = d.runs.filter((r) => r && typeof r.t === 'number' && isFinite(r.t) && r.t > 5 && Array.isArray(r.splits));
+    if (!Array.isArray(d.bestSegs)) d.bestSegs = [];
+    return d;
+  },
+  save(d) { store.set(this.KEY, d); },
+  pb() { const d = this.load(); return d.runs.length ? d.runs[0] : null; },
+
+  /* es crida cada fotograma des del HUD quan el mode és la cursa */
+  frame(dt, st, me) {
+    const box = $('race-timer');
+    if (st.phase === 'count') {
+      this.run = { splits: [], cp: 0, done: false, solo: G.role === 'solo', tt: !!G.timeTrial, n: G.world ? G.world.players.size : (G.mirror ? G.mirror.players.size : 1) };
+    }
+    const pb = this.pb();
+    const el = st.phase === 'play' || st.phase === 'end' ? Math.max(0, st.duration - st.timeLeft) : 0;
+    const r = this.run;
+    // cronòmetre en viu
+    const shown = r && r.done ? r.final : el;
+    const now = $('rt-now'), t = fmtRace(shown);
+    if (now.textContent !== t) now.textContent = t;
+    const pbt = pb ? 'PB ' + fmtRace(pb.t) : 'SENSE RÈCORD';
+    if ($('rt-pb').textContent !== pbt) $('rt-pb').textContent = pbt;
+    box.classList.toggle('done', !!(r && r.done));
+    if (this.splitTimer > 0) { this.splitTimer -= dt; if (this.splitTimer <= 0) $('race-split').hidden = true; }
+  },
+
+  elapsed() {
+    const st = currentState();
+    return st && (st.phase === 'play' || st.phase === 'end') ? Math.max(0, st.duration - st.timeLeft) : 0;
+  },
+  onCp(v) {
+    const r = this.run; if (!r || r.done || v > 6) return;
+    const el = this.elapsed();
+    for (let k = r.cp + 1; k <= v; k++) r.splits[k - 1] = el;
+    r.cp = Math.max(r.cp, v); this.showSplit(v - 1, el, this.pb());
+  },
+  onFinish() {
+    const r = this.run; if (!r || r.done) return;
+    r.done = true; r.final = this.elapsed();
+    const wp = G.world && G.world.players.get(G.meId);
+    if (wp && wp.finT > 0) r.final = wp.finT; // temps exacte de la simulació (sol o amfitrió)
+    for (let k = 0; k < 6; k++) if (r.splits[k] == null) r.splits[k] = null;
+    r.splits[6] = r.final;
+    this.finish(r, this.pb());
+  },
+
+  showSplit(i, el, pb) {
+    const el2 = $('race-split');
+    el2.textContent = '';
+    el2.appendChild(h('b', { text: SPLIT_NAMES[i] + ' · ' + fmtRace(el) }));
+    const ref = pb && pb.splits[i];
+    if (ref != null) {
+      const d = el - ref;
+      el2.appendChild(h('span', { class: d <= 0 ? 'ahead' : 'behind', text: ' ' + fmtDelta(d) }));
+    }
+    el2.hidden = false; this.splitTimer = 2.6;
+  },
+
+  finish(r, pb) {
+    const d = this.load();
+    const run = { t: r.final, splits: r.splits.slice(0, 7), d: Date.now(), n: G.profile.name, kind: r.tt ? 'tt' : r.solo ? 'solo' : 'online', p: r.n };
+    // millors segments (per a la "suma dels millors")
+    const segs = run.splits.map((s, i) => (s == null || (i > 0 && run.splits[i - 1] == null) ? null : s - (i ? run.splits[i - 1] : 0)));
+    segs.forEach((s, i) => { if (s != null && s > 0 && (d.bestSegs[i] == null || s < d.bestSegs[i])) d.bestSegs[i] = s; });
+    d.runs.push(run); d.runs.sort((a, b) => a.t - b.t); d.runs = d.runs.slice(0, 10);
+    this.save(d);
+    const isPB = !pb || run.t < pb.t;
+    if (isPB) {
+      const msg = '🏆 NOU RÈCORD! ' + fmtRace(run.t) + (pb ? ' (' + fmtDelta(run.t - pb.t) + ')' : '');
+      UI.announce(msg, 4200); toast(msg);
+      sound.pickup(true); setTimeout(() => sound.pickup(true), 160);
+    } else {
+      const pos = d.runs.indexOf(run) + 1;
+      const msg = '🏁 ' + fmtRace(run.t) + ' · ' + fmtDelta(run.t - pb.t) + ' vs el teu rècord' + (pos ? ' · ' + pos + 'a millor marca' : '');
+      UI.announce(msg, 3800); toast(msg);
+    }
+    if (G.timeTrial && G.world) { const w = G.world; w.duration = Math.min(w.duration, w.t + 3); }
+  },
+
+  /* ---------- contrarellotge ---------- */
+  startTimeTrial() {
+    resetSession();
+    G.role = 'solo'; G.code = ''; G.timeTrial = true;
+    const w = createWorld({ mode: 'race', mapId: 'cursa', duration: 180, diff: 1 });
+    G.world = w;
+    w.players.set(G.meId, newPlayer(G.meId, G.profile));
+    showArena(w.arena);
+    placePlayers(w);
+    startMatch(w);
+    UI.setRoomBadge(null);
+    $('ov-records').hidden = true;
+  },
+  canRestart() { return !!(G.timeTrial && G.world && G.role === 'solo' && (G.screen === 'hud' || G.screen === 'podium')); },
+  restart() { const w = G.world; placePlayers(w); startMatch(w); $('race-split').hidden = true; sound.boing(1.2); },
+
+  /* ---------- panell ---------- */
+  open() { this.render(); $('ov-records').hidden = false; $('btn-tt').focus(); },
+  close() { $('ov-records').hidden = true; this.confirmReset = false; $('btn-rec-reset').textContent = '🗑️ ESBORRA'; },
+  render() {
+    const d = this.load(), pb = d.runs[0];
+    const head = $('rec-pb'); head.textContent = '';
+    if (pb) {
+      head.appendChild(h('div', { class: 'big', text: fmtRace(pb.t) }));
+      const sob = d.bestSegs.length === 7 && d.bestSegs.every((x) => x != null) ? d.bestSegs.reduce((a, b) => a + b, 0) : null;
+      head.appendChild(h('div', { class: 'sub', text: 'MILLOR TEMPS · ' + pb.n + ' · ' + new Date(pb.d).toLocaleDateString('ca') + (sob ? ' · SUMA DELS MILLORS ' + fmtRace(sob) : '') }));
+    } else head.appendChild(h('div', { class: 'sub', text: 'Encara no tens cap temps. Acaba una Gran Cursa Turbo per estrenar el rècord!' }));
+    const ol = $('rec-list'); ol.textContent = '';
+    const kinds = { tt: '⏱️', solo: '🤖', online: '🌐' };
+    d.runs.forEach((r, i) => ol.appendChild(h('li', { class: i === 0 ? 'first' : '' },
+      h('span', { class: 'pos', text: (i + 1) + '.' }), h('span', { class: 't', text: fmtRace(r.t) }),
+      h('span', { class: 'k', text: (kinds[r.kind] || '') + ' ' + new Date(r.d).toLocaleDateString('ca', { day: 'numeric', month: 'short' }) }))));
+    if (!d.runs.length) ol.appendChild(h('li', { class: 'empty', text: '—' }));
+    const sp = $('rec-splits'); sp.textContent = '';
+    SPLIT_NAMES.forEach((nm, i) => {
+      const t = pb && pb.splits[i], seg = pb && t != null && (i === 0 || pb.splits[i - 1] != null) ? t - (i ? pb.splits[i - 1] : 0) : null, best = d.bestSegs[i];
+      sp.appendChild(h('div', { class: 'srow' }, h('span', { class: 'n', text: nm }), h('span', { class: 't', text: t != null ? fmtRace(t) : '-:--.--' }),
+        h('span', { class: 'g' + (seg != null && best != null && seg <= best + 0.005 ? ' gold' : ''), text: best != null ? '★ ' + best.toFixed(2) : '' })));
+    });
+    $('btn-rec-copy').disabled = !pb;
+  },
+  async copy() {
+    const pb = this.pb(); if (!pb) return;
+    const txt = '🏁 **Turbo Xoc 2000 · Gran Cursa Turbo**\nEl meu rècord: **' + fmtRace(pb.t) + '** ⏱️\n' +
+      pb.splits.map((s, i) => SPLIT_NAMES[i] + ' ' + fmtRace(s)).join(' · ') + '\nQui em supera? 👉 https://miniserra.github.io/Turbo-Xoc-2000/';
+    const ok = await copyText(txt); toast(ok ? '📋 Rècord copiat! Enganxa\'l al Discord' : 'No s\'ha pogut copiar');
+  },
+  reset() {
+    if (!this.confirmReset) { this.confirmReset = true; $('btn-rec-reset').textContent = '⚠️ SEGUR? TORNA A CLICAR'; return; }
+    this.save({ runs: [], bestSegs: [] }); this.confirmReset = false; $('btn-rec-reset').textContent = '🗑️ ESBORRA'; this.render(); toast('Rècords esborrats');
+  },
+  init() {
+    $('btn-records').addEventListener('click', () => { sound.init(); sound.click(); this.open(); });
+    $('btn-rec-close').addEventListener('click', () => this.close());
+    $('ov-records').addEventListener('click', (e) => { if (e.target === $('ov-records')) this.close(); });
+    $('btn-tt').addEventListener('click', () => { sound.init(); sound.pickup(); this.startTimeTrial(); });
+    $('btn-rec-copy').addEventListener('click', () => this.copy());
+    $('btn-rec-reset').addEventListener('click', () => this.reset());
+    $('btn-tt-restart').addEventListener('click', () => { if (this.canRestart()) this.restart(); });
+  }
+};
+
+/* ===================================================================
  * 10 · CONTROLS: teclat, comandament i pantalla tàctil (multitàctil)
  * =================================================================== */
 
@@ -6022,11 +6244,12 @@ const Input = {
     const typing = () => { const a = document.activeElement; return a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA'); };
     window.addEventListener('keydown', (e) => {
       sound.init();
-      if (e.key === 'Escape') { if (!$('ov-settings').hidden) UI.closeSettings(); else if (G.screen === 'hud' || G.screen === 'lobby') UI.openSettings(); return; }
+      if (e.key === 'Escape') { if (!$('ov-records').hidden) { Records.close(); return; } if (!$('ov-settings').hidden) UI.closeSettings(); else if (G.screen === 'hud' || G.screen === 'lobby') UI.openSettings(); return; }
       if (typing()) return;
       const k = e.key.toLowerCase();
       this.keys.add(k === ' ' ? 'space' : k);
       if (G.screen === 'lobby' && ['1', '2', '3', '4'].includes(e.key) && !e.repeat) { action('emote', +e.key - 1); return; }
+      if (k === 'r' && !e.repeat && Records.canRestart()) { e.preventDefault(); Records.restart(); return; }
       if (G.screen !== 'hud') return;
       if (Spectate.active() && ['arrowleft', 'arrowright', 'a', 'd'].includes(k) && !e.repeat) { Spectate.cycle(k === 'arrowleft' || k === 'a' ? -1 : 1); return; }
       if (e.code === 'Space' || k === 'e') { e.preventDefault(); if (!e.repeat) action('wave'); }
@@ -6149,6 +6372,7 @@ function boot() {
   R.scene.add(G.preview.root);
   UI.init();
   EmoteWheel.init();
+  Records.init();
   Input.init();
   Directory.start();
   sound.loadMusic(window.TXOC_MUSIC);
@@ -6156,7 +6380,7 @@ function boot() {
   ClaudeRoom.get().then((room) => { if (room) UI.renderOpenRooms(); });
   requestAnimationFrame(frame);
   Ticker.start();
-  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI };
+  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records };
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
