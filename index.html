@@ -650,6 +650,25 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
 @media (max-height: 520px) and (orientation: landscape) {
   .rec-pb .big { font-size: 30px; } .rec-pb { padding: 6px; } .rec-list li, .rec-splits .srow { font-size: 10px; padding: 2px 6px; } .rec-list .t { font-size: 11px; }
 }
+
+/* ---------- Compte ---------- */
+.account-btn { width: 100%; }
+.account-btn.on { background: linear-gradient(180deg, #7dffc2, #00b8a0); color: #000; }
+.login-panel { width: min(460px, 100%) !important; }
+.google-btn { background: #fff !important; color: #1f1f1f !important; gap: 12px; }
+.g-logo { font-family: Arial, sans-serif; font-weight: 900; font-size: 1.15em; background: conic-gradient(#ea4335 0 25%, #fbbc05 0 50%, #34a853 0 75%, #4285f4 0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.login-or { display: flex; align-items: center; gap: 10px; font-family: var(--f-data); font-weight: 700; font-size: 11px; color: var(--muted); }
+.login-or::before, .login-or::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.2); }
+.linkbtn { background: none; border: 0; color: var(--cyan); font-family: var(--f-data); font-weight: 700; font-size: 12px; text-decoration: underline; cursor: pointer; align-self: center; }
+.login-msg { margin: 0; font-family: var(--f-data); font-weight: 700; font-size: 13px; color: var(--lime); text-align: center; }
+.login-msg.err { color: #ff6b8a; }
+.hint.small { font-size: 10px; opacity: .8; margin: 0; }
+.acc-card { display: flex; gap: 12px; align-items: center; background: rgba(0,0,0,.5); border: 2px solid var(--lime); border-radius: 14px; padding: 10px; }
+.acc-av { font-size: 30px; }
+.acc-n { font-family: var(--f-display); font-size: 18px; }
+.rec-list.world li .k { color: var(--cyan); }
+.rec-list.world li.me { border-color: var(--lime); }
+@media (max-height: 520px) and (orientation: landscape) { .login-panel { gap: 6px; } .google-btn { font-size: 13px !important; } }
 </style>
 </head>
 <body>
@@ -687,6 +706,7 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
       <div class="menu-me"><span class="nm ol-sm" id="menu-name">TurboBòs</span></div>
       <button class="btn yel lg block" id="btn-taller"><span class="ico">🛠️</span>TALLER DEL BÒS</button>
       <button class="btn dark sm" id="btn-random-me"><span class="ico">🎲</span>BÒS ALEATORI</button>
+      <button class="btn cyan sm account-btn" id="btn-account" hidden>☁️ INICIA SESSIÓ</button>
       <p class="hint">Forma, pell, cara, barret, estela, veu i emotes. Tot queda desat en aquest navegador.</p>
     </section>
     <div class="menu-spacer" aria-hidden="true"></div>
@@ -896,12 +916,40 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
       <div class="stack" style="gap:6px"><span class="label">TOP 10</span><ol class="rec-list" id="rec-list"></ol></div>
       <div class="stack" style="gap:6px"><span class="label">PARCIALS DEL RÈCORD · ★ MILLOR TRAM</span><div class="rec-splits" id="rec-splits"></div></div>
     </div>
+    <div class="stack rec-world" id="rec-world-wrap" style="gap:6px"><span class="label">🌍 RÀNQUING MUNDIAL</span><ol class="rec-list world" id="rec-world"></ol></div>
     <div class="row" style="justify-content:center">
       <button class="btn lg" id="btn-tt">🏁 CONTRARELLOTGE</button>
       <button class="btn cyan" id="btn-rec-copy">📋 COPIA PER AL DISCORD</button>
       <button class="btn dark sm" id="btn-rec-reset">🗑️ ESBORRA</button>
     </div>
     <p class="hint">Contrarellotge: tu sol a la pista, sense bots. Prem <span class="keys">R</span> per tornar a començar a l'instant. ⏱️ contrarellotge · 🤖 amb bots · 🌐 en línia.</p>
+  </div>
+</div>
+<div class="overlay" id="ov-login" hidden role="dialog" aria-modal="true" aria-labelledby="login-title">
+  <div class="panel stack login-panel">
+    <div class="row between"><h2 id="login-title" class="ol-sm">☁️ EL TEU COMPTE</h2><button class="btn sm" id="btn-login-close">✔ TANCA</button></div>
+    <div class="stack" id="login-out">
+      <p class="hint">Inicia sessió per guardar el teu bòs i els rècords al núvol, tenir-los a tots els dispositius i sortir al rànquing mundial de la cursa. Sense compte pots continuar jugant igual.</p>
+      <button class="btn lg block google-btn" id="btn-login-google"><span class="g-logo">G</span>CONTINUA AMB GOOGLE</button>
+      <div class="login-or"><span>O AMB CORREU</span></div>
+      <input id="in-login-mail" class="field" type="email" placeholder="correu@exemple.com" autocomplete="email" aria-label="Correu">
+      <input id="in-login-pass" class="field" type="password" placeholder="Contrasenya (mínim 6)" autocomplete="current-password" aria-label="Contrasenya">
+      <div class="row">
+        <button class="btn mag grow" id="btn-login-in">ENTRA</button>
+        <button class="btn pur grow" id="btn-login-new">CREA COMPTE</button>
+      </div>
+      <button class="linkbtn" id="btn-login-reset">He oblidat la contrasenya</button>
+    </div>
+    <div class="stack" id="login-in" hidden>
+      <div class="acc-card"><div class="acc-av">☁️</div><div><div class="acc-n" id="acc-name"></div><div class="hint" id="acc-mail"></div></div></div>
+      <p class="hint">✅ El teu bòs i els rècords es guarden sols al compte. Inicia sessió en un altre dispositiu i ho tindràs tot.</p>
+      <div class="row">
+        <button class="btn mag grow" id="btn-acc-out">⏏ TANCA LA SESSIÓ</button>
+        <button class="btn dark sm" id="btn-acc-del">🗑️ ESBORRA EL COMPTE</button>
+      </div>
+    </div>
+    <p class="login-msg" id="login-msg" hidden></p>
+    <p class="hint small">Només guardem el teu correu (o compte de Google), el nom del bòs, l'aspecte i els rècords de la cursa. Pots esborrar el compte quan vulguis des d'aquí.</p>
   </div>
 </div>
 <div class="overlay" id="ov-help" hidden role="dialog" aria-modal="true" aria-labelledby="help-title">
@@ -6511,7 +6559,7 @@ const UI = {
   }
 };
 
-function saveProfile() { store.set('profile', encodeProfile(G.profile)); if (G.preview) G.preview.setProfile(G.profile); }
+function saveProfile() { store.set('profile', encodeProfile(G.profile)); if (G.preview) G.preview.setProfile(G.profile); if (typeof Cloud !== 'undefined') Cloud.queuePush(); }
 
 /* ===================================================================
  * Roda d'emotes: la rodeta del ratolí l'obre i canvia la selecció,
@@ -6598,7 +6646,7 @@ const Records = {
     if (!Array.isArray(d.bestSegs)) d.bestSegs = [];
     return d;
   },
-  save(d) { store.set(this.KEY, d); },
+  save(d) { store.set(this.KEY, d); if (typeof Cloud !== 'undefined') Cloud.queuePush(); },
   pb() { const d = this.load(); return d.runs.length ? d.runs[0] : null; },
 
   /* es crida cada fotograma des del HUD quan el mode és la cursa */
@@ -6662,6 +6710,7 @@ const Records = {
     this.save(d);
     const isPB = !pb || run.t < pb.t;
     if (isPB) {
+      Cloud.submitBest();
       const msg = '🏆 NOU RÈCORD! ' + fmtRace(run.t) + (pb ? ' (' + fmtDelta(run.t - pb.t) + ')' : '');
       UI.announce(msg, 4200); toast(msg);
       sound.pickup(true); setTimeout(() => sound.pickup(true), 160);
@@ -6713,6 +6762,19 @@ const Records = {
         h('span', { class: 'g' + (seg != null && best != null && seg <= best + 0.005 ? ' gold' : ''), text: best != null ? '★ ' + best.toFixed(2) : '' })));
     });
     $('btn-rec-copy').disabled = !pb;
+    this.renderWorld();
+  },
+  async renderWorld() {
+    const wrap = $('rec-world-wrap'), ol = $('rec-world');
+    if (Cloud.state !== 'ready') { wrap.hidden = !Cloud.supported(); ol.textContent = ''; ol.appendChild(h('li', { class: 'empty', text: Cloud.state === 'error' ? 'Sense connexió amb el servidor' : 'Carregant…' })); return; }
+    wrap.hidden = false; ol.textContent = ''; ol.appendChild(h('li', { class: 'empty', text: 'Carregant…' }));
+    let rows = null; try { rows = await Cloud.topRace(10); } catch (e) { console.warn(e); }
+    ol.textContent = '';
+    if (!rows) { ol.appendChild(h('li', { class: 'empty', text: 'No s\'ha pogut carregar el rànquing' })); return; }
+    if (!rows.length) ol.appendChild(h('li', { class: 'empty', text: 'Encara no hi ha ningú. Sigues el primer!' }));
+    rows.forEach((r, i) => ol.appendChild(h('li', { class: (i === 0 ? 'first' : '') + (Cloud.user && r.uid === Cloud.user.uid ? ' me' : '') },
+      h('span', { class: 'pos', text: (i + 1) + '.' }), h('span', { class: 't', text: fmtRace(r.t) }), h('span', { class: 'k', text: String(r.name || '?').slice(0, 12) }))));
+    if (!Cloud.user) ol.appendChild(h('li', { class: 'empty', text: '☁️ Inicia sessió per sortir-hi' }));
   },
   async copy() {
     const pb = this.pb(); if (!pb) return;
@@ -6734,6 +6796,225 @@ const Records = {
     $('btn-tt-restart').addEventListener('click', () => { if (this.canRestart()) this.restart(); });
   }
 };
+
+/* ===================================================================
+ * 09c · COMPTE I NÚVOL (Firebase): inici de sessió amb Google o correu,
+ *       perfil i rècords sincronitzats, i rànquing mundial de la cursa.
+ *       Sense compte el joc funciona igual que sempre (tot al navegador).
+ * =================================================================== */
+
+const FB_CONFIG = {
+  apiKey: 'AIzaSyBIbi4p5kcwe8ipc72DOE-A2Q--zjyBbcc',
+  authDomain: 'turboxoc2000.firebaseapp.com',
+  projectId: 'turboxoc2000',
+  storageBucket: 'turboxoc2000.firebasestorage.app',
+  messagingSenderId: '430604916932',
+  appId: '1:430604916932:web:75846d444aa754dc2a5191'
+};
+const FB_VER = '10.14.1';
+const FB_ERR = {
+  'auth/invalid-email': 'Aquest correu no és vàlid.',
+  'auth/missing-password': 'Escriu la contrasenya.',
+  'auth/weak-password': 'La contrasenya ha de tenir com a mínim 6 caràcters.',
+  'auth/email-already-in-use': 'Ja hi ha un compte amb aquest correu. Prova d\'entrar.',
+  'auth/invalid-credential': 'Correu o contrasenya incorrectes.',
+  'auth/wrong-password': 'Correu o contrasenya incorrectes.',
+  'auth/user-not-found': 'No hi ha cap compte amb aquest correu.',
+  'auth/too-many-requests': 'Massa intents. Espera una mica i torna-hi.',
+  'auth/popup-closed-by-user': 'Has tancat la finestra de Google abans d\'acabar.',
+  'auth/cancelled-popup-request': 'Has tancat la finestra de Google abans d\'acabar.',
+  'auth/popup-blocked': 'El navegador ha bloquejat la finestra de Google. Permet les finestres emergents i torna-hi.',
+  'auth/network-request-failed': 'Sense connexió amb el servidor. Revisa Internet.',
+  'auth/unauthorized-domain': 'Aquest domini no està autoritzat a Firebase (Authentication → Settings → Authorized domains).',
+  'auth/operation-not-allowed': 'Aquest mètode d\'inici de sessió no està activat a Firebase.',
+  'auth/requires-recent-login': 'Per seguretat, torna a iniciar sessió i repeteix-ho.',
+  'permission-denied': 'El servidor ha rebutjat l\'operació (revisa les regles de Firestore).'
+};
+const fbMsg = (e) => FB_ERR[e && e.code] || ('Error: ' + ((e && (e.code || e.message)) || 'desconegut'));
+
+const Cloud = {
+  state: 'off',          // off | loading | ready | error
+  user: null, fb: null, auth: null, db: null,
+  pushTimer: 0, applying: false, world: null,
+
+  /* El núvol només funciona servit des d'una web (https o localhost), no des d'un fitxer local */
+  supported() { return /^https?:$/.test(location.protocol) && !window.TXOC_NO_CLOUD; },
+
+  loadScript(src) {
+    return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.async = true; s.onload = res; s.onerror = () => rej(new Error('No s\'ha pogut carregar ' + src)); document.head.appendChild(s); });
+  },
+  async init() {
+    this.renderBadge();
+    if (!this.supported()) return;
+    this.state = 'loading';
+    try {
+      if (!window.firebase) {
+        const base = window.TXOC_FB_BASE || ('https://cdn.jsdelivr.net/npm/firebase@' + FB_VER + '/');
+        await this.loadScript(base + 'firebase-app-compat.js');
+        await Promise.all([this.loadScript(base + 'firebase-auth-compat.js'), this.loadScript(base + 'firebase-firestore-compat.js')]);
+      }
+      this.fb = window.firebase;
+      if (!this.fb.apps.length) this.fb.initializeApp(FB_CONFIG);
+      this.auth = this.fb.auth(); this.auth.languageCode = 'ca';
+      this.db = this.fb.firestore();
+      this.state = 'ready';
+      this.auth.onAuthStateChanged((u) => this.onUser(u));
+    } catch (e) { console.warn('Núvol no disponible', e); this.state = 'error'; }
+    this.renderBadge();
+  },
+
+  async onUser(u) {
+    this.user = u || null;
+    this.renderBadge(); this.renderPanel();
+    if (!u) return;
+    try { await this.pull(); } catch (e) { console.warn('pull', e); toast('☁️ ' + fbMsg(e)); }
+  },
+  displayName() { const u = this.user; if (!u) return ''; return u.displayName || (u.email ? u.email.split('@')[0] : 'Jugador'); },
+
+  /* ---------- sincronització ---------- */
+  userRef() { return this.db.collection('users').doc(this.user.uid); },
+  async pull() {
+    const snap = await this.userRef().get();
+    const local = { profile: store.get('profile', null), race: Records.load() };
+    if (snap.exists) {
+      const d = snap.data() || {};
+      this.applying = true;
+      const p = d.profile && decodeProfile(d.profile);
+      if (p) { G.profile = p; saveProfile(); if (UI.refreshMenu) UI.refreshMenu(); if (G.screen === 'taller') UI.renderTaller(); }
+      const merged = mergeRace(local.race, d.race);
+      Records.save(merged);
+      this.applying = false;
+      toast('☁️ Hola, ' + this.displayName() + '! Dades del compte carregades');
+      if (JSON.stringify(merged) !== JSON.stringify(d.race || null)) this.queuePush(true);
+    } else {
+      await this.push();
+      toast('☁️ Compte creat! El teu bòs i els rècords ja es guarden al núvol');
+    }
+    this.submitBest();
+  },
+  queuePush(now) {
+    if (!this.user || this.applying) return;
+    clearTimeout(this.pushTimer);
+    this.pushTimer = setTimeout(() => this.push().catch((e) => console.warn('push', e)), now ? 10 : 2500);
+  },
+  async push() {
+    if (!this.user) return;
+    const race = Records.load();
+    await this.userRef().set({ profile: encodeProfile(G.profile), race: { runs: race.runs.slice(0, 10), bestSegs: race.bestSegs.slice(0, 7) }, name: cleanName(G.profile.name), updated: this.fb.firestore.FieldValue.serverTimestamp() });
+  },
+
+  /* ---------- rànquing mundial ---------- */
+  async submitBest() {
+    if (!this.user) return;
+    const pb = Records.pb(); if (!pb) return;
+    const ref = this.db.collection('race').doc(this.user.uid);
+    try {
+      const cur = await ref.get();
+      if (cur.exists && cur.data().t <= pb.t) return;
+      await ref.set({ t: Math.round(pb.t * 100) / 100, name: cleanName(G.profile.name), profile: encodeProfile(G.profile, false), splits: pb.splits.map((s) => (s == null ? null : Math.round(s * 100) / 100)), d: Date.now() });
+    } catch (e) { console.warn('submitBest', e); }
+  },
+  async topRace(n = 10) {
+    if (this.state !== 'ready') return null;
+    const qs = await this.db.collection('race').orderBy('t').limit(n).get();
+    return qs.docs.map((d) => Object.assign({ uid: d.id }, d.data()));
+  },
+
+  /* ---------- accions del compte ---------- */
+  async google() {
+    const prov = new this.fb.auth.GoogleAuthProvider();
+    prov.setCustomParameters({ prompt: 'select_account' });
+    try { await this.auth.signInWithPopup(prov); this.closeLogin(); }
+    catch (e) {
+      if (e && e.code === 'auth/popup-blocked') { try { await this.auth.signInWithRedirect(prov); return; } catch (e2) { e = e2; } }
+      this.setMsg(fbMsg(e), true);
+    }
+  },
+  async email(create) {
+    const em = $('in-login-mail').value.trim(), pw = $('in-login-pass').value;
+    this.setMsg(create ? 'Creant el compte…' : 'Entrant…');
+    try {
+      if (create) await this.auth.createUserWithEmailAndPassword(em, pw);
+      else await this.auth.signInWithEmailAndPassword(em, pw);
+      this.closeLogin();
+    } catch (e) { this.setMsg(fbMsg(e), true); }
+  },
+  async reset() {
+    const em = $('in-login-mail').value.trim();
+    if (!em) { this.setMsg('Escriu el teu correu i torna a clicar.', true); return; }
+    try { await this.auth.sendPasswordResetEmail(em); this.setMsg('📧 T\'he enviat un correu per canviar la contrasenya.'); }
+    catch (e) { this.setMsg(fbMsg(e), true); }
+  },
+  async logout() { try { await this.push(); } catch (e) { /* res */ } await this.auth.signOut(); toast('☁️ Sessió tancada. Les dades queden guardades al compte'); this.renderPanel(); },
+  async deleteAccount() {
+    if (!this.confirmDel) { this.confirmDel = true; $('btn-acc-del').textContent = '⚠️ SEGUR? ES PERD TOT EL COMPTE'; return; }
+    this.confirmDel = false;
+    const uid = this.user.uid;
+    try {
+      await this.db.collection('race').doc(uid).delete().catch(() => {});
+      await this.db.collection('users').doc(uid).delete();
+      await this.user.delete();
+      toast('🗑️ Compte esborrat'); this.closeLogin();
+    } catch (e) { this.setMsg(fbMsg(e), true); }
+    $('btn-acc-del').textContent = '🗑️ ESBORRA EL COMPTE';
+  },
+
+  /* ---------- interfície ---------- */
+  renderBadge() {
+    const b = $('btn-account'); if (!b) return;
+    if (!this.supported()) { b.hidden = true; return; }
+    b.hidden = false;
+    b.textContent = this.user ? '☁️ ' + this.displayName().slice(0, 14) : this.state === 'error' ? '☁️ SENSE CONNEXIÓ' : '☁️ INICIA SESSIÓ';
+    b.classList.toggle('on', !!this.user);
+  },
+  renderPanel() {
+    const ov = $('ov-login'); if (!ov) return;
+    const inn = !!this.user;
+    $('login-out').hidden = inn; $('login-in').hidden = !inn;
+    if (inn) {
+      $('acc-name').textContent = this.displayName();
+      $('acc-mail').textContent = this.user.email || '';
+    }
+    this.setMsg('');
+  },
+  setMsg(t, err) { const m = $('login-msg'); if (!m) return; m.textContent = t; m.classList.toggle('err', !!err); m.hidden = !t; },
+  openLogin() {
+    if (this.state === 'error') { toast('No puc connectar amb el servidor de comptes. Revisa Internet i recarrega la pàgina.'); return; }
+    if (this.state !== 'ready') { toast('Un moment, carregant el servei de comptes…'); return; }
+    this.renderPanel(); $('ov-login').hidden = false;
+  },
+  closeLogin() { $('ov-login').hidden = true; this.confirmDel = false; },
+  bind() {
+    $('btn-account').addEventListener('click', () => { sound.init(); sound.click(); this.openLogin(); });
+    $('btn-login-close').addEventListener('click', () => this.closeLogin());
+    $('ov-login').addEventListener('click', (e) => { if (e.target === $('ov-login')) this.closeLogin(); });
+    $('btn-login-google').addEventListener('click', () => this.google());
+    $('btn-login-in').addEventListener('click', () => this.email(false));
+    $('btn-login-new').addEventListener('click', () => this.email(true));
+    $('btn-login-reset').addEventListener('click', () => this.reset());
+    $('in-login-pass').addEventListener('keydown', (e) => { if (e.key === 'Enter') this.email(false); });
+    $('btn-acc-out').addEventListener('click', () => this.logout());
+    $('btn-acc-del').addEventListener('click', () => this.deleteAccount());
+  }
+};
+
+/* Uneix els rècords del navegador amb els del núvol (es queden els 10 millors, sense repetits) */
+function mergeRace(a, b) {
+  const A = a && Array.isArray(a.runs) ? a : { runs: [], bestSegs: [] }, B = b && Array.isArray(b.runs) ? b : { runs: [], bestSegs: [] };
+  const seen = new Set(), runs = [];
+  for (const r of [...A.runs, ...B.runs]) {
+    if (!r || typeof r.t !== 'number') continue;
+    const k = r.t.toFixed(2) + ':' + (r.d || 0);
+    if (seen.has(k)) continue; seen.add(k); runs.push(r);
+  }
+  runs.sort((x, y) => x.t - y.t);
+  const bestSegs = [];
+  for (let i = 0; i < 7; i++) {
+    const v = [A.bestSegs && A.bestSegs[i], B.bestSegs && B.bestSegs[i]].filter((x) => typeof x === 'number' && x > 0);
+    bestSegs[i] = v.length ? Math.min(...v) : null;
+  }
+  return { runs: runs.slice(0, 10), bestSegs };
+}
 
 /* ===================================================================
  * 10 · CONTROLS: teclat, comandament i pantalla tàctil (multitàctil)
@@ -6801,7 +7082,7 @@ const Input = {
     const typing = () => { const a = document.activeElement; return a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA'); };
     window.addEventListener('keydown', (e) => {
       sound.init();
-      if (e.key === 'Escape') { if (!$('ov-records').hidden) { Records.close(); return; } if (!$('ov-settings').hidden) UI.closeSettings(); else if (G.screen === 'hud' || G.screen === 'lobby') UI.openSettings(); return; }
+      if (e.key === 'Escape') { if (!$('ov-records').hidden) { Records.close(); return; } if (!$('ov-login').hidden) { Cloud.closeLogin(); return; } if (!$('ov-settings').hidden) UI.closeSettings(); else if (G.screen === 'hud' || G.screen === 'lobby') UI.openSettings(); return; }
       if (typing()) return;
       const k = e.key.toLowerCase();
       this.keys.add(k === ' ' ? 'space' : k);
@@ -6930,6 +7211,7 @@ function boot() {
   UI.init();
   EmoteWheel.init();
   Records.init();
+  Cloud.bind(); Cloud.init();
   Input.init();
   Directory.start();
   sound.loadMusic(window.TXOC_MUSIC);
@@ -6937,7 +7219,7 @@ function boot() {
   ClaudeRoom.get().then((room) => { if (room) UI.renderOpenRooms(); });
   requestAnimationFrame(frame);
   Ticker.start();
-  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records };
+  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records, Cloud, mergeRace };
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
