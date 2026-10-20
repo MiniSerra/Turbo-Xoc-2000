@@ -58,6 +58,13 @@ També es pot jugar amb **comandament** (l'stick dret gira la càmera a la cursa
 - 🛡️ **Escut**: retornes els cops.
 - ⏱️ **Overclock**: turbo i ona gairebé sense temps d'espera.
 
+## ⭐ Nivells i XP
+
+Cada partida et dona experiència segons la participació, la posició, el rendiment i els rècords. La **primera partida del dia val ×2** i jugar amb amics suma un 25 % més.
+Hi ha **50 nivells** amb més de 100 cosmètics per desbloquejar (consulta el **Camí del Bòs** des del menú) i títols que van de *Novell* fins a **TURBO DÉU**. Al taller pots provar-te les peces bloquejades abans d'aconseguir-les.
+
+Amb un compte (Google o correu) el nivell, el bòs i els rècords es guarden al núvol, i surts al **rànquing mundial** de la Gran Cursa.
+
 ## 🎨 El Taller del Bòs
 
 Personalitza el teu bòs fins al detall: **cos** (fins i tot en forma de plàtan 🍌), acabat, estampat, **ulls** (Pica l'Ullet, Ulleres Cul de Got…), boca, **barret** (inclosa la Cabellera Elèctrica 💜), accessori de l'esquena, rastre, marc del nom, veu, emotes i ball de victòria.

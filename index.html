@@ -669,6 +669,82 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
 .rec-list.world li .k { color: var(--cyan); }
 .rec-list.world li.me { border-color: var(--lime); }
 @media (max-height: 520px) and (orientation: landscape) { .login-panel { gap: 6px; } .google-btn { font-size: 13px !important; } }
+
+/* ---------- Progressió ---------- */
+.lvl-card { display: flex; gap: 10px; align-items: center; width: 100%; background: rgba(0,0,0,.55); border: 3px solid var(--yellow); border-radius: 16px; padding: 7px 10px; cursor: pointer; color: #fff; text-align: left; box-shadow: 0 4px 0 #000; transition: transform .1s; }
+.lvl-card:hover { transform: translateY(-1px); border-color: var(--lime); }
+.lvl-card.star { background: linear-gradient(135deg, rgba(255,200,0,.35), rgba(0,0,0,.6)); }
+.lvl-num { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-size: 20px; color: #000;
+  background: radial-gradient(circle at 35% 30%, #fff8b0, #ffd000 45%, #ff8a00); border: 3px solid #000; box-shadow: 0 3px 0 #000, inset 0 -3px 0 rgba(0,0,0,.2); }
+.lvl-num.big { width: 64px; height: 64px; font-size: 28px; }
+.lvl-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.lvl-body b { font-family: var(--f-display); font-weight: 400; font-size: 13px; color: var(--yellow); }
+.lvl-row { display: flex; justify-content: space-between; gap: 6px; font-family: var(--f-data); font-weight: 700; color: var(--muted); }
+.lvl-row small { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lvl-next { color: var(--cyan); }
+.xpbar { display: block; height: 9px; background: #120a2a; border: 2px solid #000; border-radius: 99px; overflow: hidden; }
+.xpbar.big { height: 14px; }
+.xpbar i { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, var(--yellow), var(--lime)); box-shadow: 0 0 10px rgba(163,255,0,.6); }
+.path-panel { width: min(680px, 100%) !important; max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); }
+.path-head { display: flex; gap: 12px; align-items: center; background: rgba(0,0,0,.5); border: 2px solid var(--yellow); border-radius: 16px; padding: 10px; }
+.path-head .grow { display: flex; flex-direction: column; gap: 4px; }
+.path-tt { font-family: var(--f-display); font-weight: 400; font-size: 17px; color: var(--yellow); }
+.path-head small { font-family: var(--f-data); font-weight: 700; font-size: 11px; }
+.path-list { overflow-y: auto; display: flex; flex-direction: column; gap: 5px; padding-right: 4px; min-height: 0; flex: 1 1 auto; max-height: 52vh; position: relative; }
+.path-row { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px; align-items: center; background: rgba(0,0,0,.45); border: 2px solid rgba(255,255,255,.1); border-radius: 12px; padding: 5px 8px; opacity: .72; }
+.path-row.done { opacity: 1; border-color: rgba(163,255,0,.35); }
+.path-row.cur { opacity: 1; border-color: var(--yellow); background: rgba(255,230,0,.1); box-shadow: 0 0 16px rgba(255,230,0,.25); }
+.path-row.star .path-n b { color: var(--yellow); text-shadow: 0 0 10px rgba(255,200,0,.7); }
+.path-row.star .path-n b::after { content: '★'; font-size: 11px; margin-left: 2px; }
+.path-n { display: flex; flex-direction: column; align-items: center; font-family: var(--f-display); }
+.path-n b { font-weight: 400; font-size: 19px; }
+.path-n small { font-family: var(--f-data); font-weight: 700; font-size: 9px; color: var(--muted); }
+.path-row.done .path-n small { color: var(--lime); }
+.path-row.cur .path-n small { color: var(--yellow); }
+.path-items { display: flex; flex-wrap: wrap; gap: 5px; }
+.path-item { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.15); border-radius: 10px; padding: 3px 8px 3px 5px; }
+.path-item.own { border-color: rgba(163,255,0,.5); }
+.pi-ic { font-size: 20px; }
+.pi-t { display: flex; flex-direction: column; line-height: 1.1; }
+.pi-t b { font-family: var(--f-data); font-size: 12px; }
+.pi-t small { font-family: var(--f-data); font-weight: 700; font-size: 9px; color: var(--muted); }
+.path-title { align-self: center; font-family: var(--f-display); font-size: 11px; color: #000; background: var(--magenta); color: #fff; border: 2px solid #000; border-radius: 9px; padding: 3px 8px; }
+.chip.locked { opacity: .55; filter: grayscale(.6); position: relative; }
+.chip.locked .lk { position: absolute; top: 3px; right: 4px; font-size: 9px; font-family: var(--f-display); background: #000; color: var(--yellow); border-radius: 6px; padding: 1px 4px; }
+.chip.locked:hover { opacity: .85; }
+.chip.trying { outline: 3px dashed var(--yellow); opacity: 1; filter: none; }
+.xp-panel { background: rgba(0,0,0,.6); border: 2px solid var(--yellow); border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; gap: 5px; }
+.xp-head { display: flex; justify-content: space-between; align-items: center; }
+.xp-total { font-family: var(--f-display); font-weight: 400; font-size: 20px; color: var(--lime); font-variant-numeric: tabular-nums; }
+.xp-lines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px 10px; }
+.xp-line { display: flex; justify-content: space-between; gap: 6px; font-family: var(--f-data); font-weight: 700; font-size: 12px; animation: feedIn .25s ease-out; }
+.xp-line b { color: var(--lime); font-variant-numeric: tabular-nums; }
+.xp-line.gold b { color: var(--yellow); } .xp-line.bonus b { color: var(--cyan); } .xp-line.malus b { color: #ff6b8a; }
+.xp-bar-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.xp-lv { font-family: var(--f-display); font-weight: 400; font-size: 14px; color: var(--yellow); }
+.xp-lv.pop { animation: pulse .4s 2; }
+.xp-bar-row small { font-family: var(--f-data); font-weight: 700; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.overlay.lvup { background: radial-gradient(circle at 50% 40%, rgba(255,0,127,.35), rgba(5,1,20,.85)); z-index: 65; }
+.lvup-panel { width: min(560px, 100%) !important; text-align: center; align-items: center; border-color: var(--yellow) !important; animation: annIn .45s cubic-bezier(.34,1.56,.64,1); }
+.lvup-h { font-family: var(--f-shade) !important; font-size: clamp(40px, 9vw, 72px) !important; margin: 0; color: var(--yellow); text-shadow: 0 5px 0 var(--magenta), 0 10px 0 #000; line-height: 1; }
+.lvup-title { font-family: var(--f-display); font-size: 18px; color: var(--cyan); display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.lvup-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.lvup-item { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 104px; background: linear-gradient(180deg, rgba(255,230,0,.18), rgba(0,0,0,.6)); border: 3px solid var(--yellow); border-radius: 14px; padding: 8px 10px; animation: annIn .5s cubic-bezier(.34,1.56,.64,1) backwards; }
+.lvup-item:nth-child(2) { animation-delay: .12s; } .lvup-item:nth-child(3) { animation-delay: .24s; } .lvup-item:nth-child(4) { animation-delay: .36s; }
+.li-ic { font-size: 34px; }
+.lvup-item b { font-family: var(--f-display); font-weight: 400; font-size: 12px; }
+.lvup-item small { font-family: var(--f-data); font-weight: 700; font-size: 10px; color: var(--muted); }
+.ntag .nb .lv { display: inline-block; background: var(--yellow); color: #000; border-radius: 6px; padding: 0 4px; margin-right: 5px; font-size: 9px; }
+@media (max-height: 520px) and (orientation: landscape) {
+  .lvl-card { padding: 4px 7px; gap: 7px; border-width: 2px; }
+  .lvl-num { width: 32px; height: 32px; font-size: 14px; border-width: 2px; }
+  .lvl-body b { font-size: 10px; }
+  .xp-panel { padding: 5px 7px; gap: 3px; }
+  .xp-line { font-size: 9.5px; } .xp-total { font-size: 15px; }
+  .path-list { max-height: 44vh; } .path-head { padding: 6px; } .lvl-num.big { width: 44px; height: 44px; font-size: 20px; }
+  .lvup-h { font-size: 40px !important; } .lvup-item { min-width: 80px; padding: 4px 6px; } .li-ic { font-size: 24px; }
+}
+@media (max-width: 620px) { .xp-lines { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -704,6 +780,10 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
         <span class="sticker lime">DESAT</span>
       </div>
       <div class="menu-me"><span class="nm ol-sm" id="menu-name">TurboBòs</span></div>
+      <button class="lvl-card" id="btn-levels" type="button" title="Camí del Bòs">
+        <span class="lvl-num" id="lvl-num">1</span>
+        <span class="lvl-body"><b id="lvl-title">NOVELL</b><span class="xpbar"><i id="lvl-bar"></i></span><span class="lvl-row"><small id="lvl-xp">0 / 150 XP</small><small class="lvl-next" id="lvl-next"></small></span></span>
+      </button>
       <button class="btn yel lg block" id="btn-taller"><span class="ico">🛠️</span>TALLER DEL BÒS</button>
       <button class="btn dark sm" id="btn-random-me"><span class="ico">🎲</span>BÒS ALEATORI</button>
       <button class="btn cyan sm account-btn" id="btn-account" hidden>☁️ INICIA SESSIÓ</button>
@@ -877,6 +957,11 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
   <div class="panel pod-panel stack">
     <div class="res-list" id="pod-list"></div>
     <div class="awards" id="pod-awards"></div>
+    <div class="xp-panel" id="pod-xp" hidden>
+      <div class="xp-head"><span class="label">⭐ EXPERIÈNCIA</span><b class="xp-total" id="xp-total">+0 XP</b></div>
+      <div class="xp-lines" id="xp-lines"></div>
+      <div class="xp-bar-row"><b class="xp-lv" id="xp-lv">NIV 1</b><span class="xpbar big"><i id="xp-fill"></i></span><small id="xp-need"></small></div>
+    </div>
     <div class="row" style="justify-content:center" id="pod-host">
       <button class="btn lg" id="btn-rematch">🔁 UNA ALTRA!</button>
       <button class="btn yel" id="btn-nextmap">🗺️ ARENA SEGÜENT</button>
@@ -950,6 +1035,30 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
     </div>
     <p class="login-msg" id="login-msg" hidden></p>
     <p class="hint small">Només guardem el teu correu (o compte de Google), el nom del bòs, l'aspecte i els rècords de la cursa. Pots esborrar el compte quan vulguis des d'aquí.</p>
+  </div>
+</div>
+<div class="overlay" id="ov-levels" hidden role="dialog" aria-modal="true" aria-labelledby="path-h">
+  <div class="panel stack path-panel">
+    <div class="row between"><h2 id="path-h" class="ol-sm">🛣️ CAMÍ DEL BÒS</h2><button class="btn sm" id="btn-levels-close">✔ TANCA</button></div>
+    <div class="path-head">
+      <span class="lvl-num big" id="path-lv">1</span>
+      <div class="grow"><b class="path-tt" id="path-title">NOVELL</b><span class="xpbar big"><i id="path-bar"></i></span><small id="path-xp"></small></div>
+      <small class="c-muted" id="path-matches"></small>
+    </div>
+    <p class="hint">Guanya XP jugant: participació, posició, rendiment i rècords. La <b>primera partida del dia val ×2</b> i amb amics guanyes un 25% més. A cada nivell desbloqueges peces noves per al Taller.</p>
+    <div class="path-list" id="path-list"></div>
+  </div>
+</div>
+<div class="overlay lvup" id="ov-levelup" hidden role="dialog" aria-modal="true" aria-labelledby="lvup-h">
+  <div class="panel stack lvup-panel">
+    <span class="sticker yel lvup-tag">⭐ PUJADA DE NIVELL ⭐</span>
+    <h2 class="lvup-h" id="lvup-h">NIVELL <span id="lvup-num">2</span>!</h2>
+    <div class="lvup-title"><span id="lvup-title">NOVELL</span> <span class="sticker mag" id="lvup-tier" hidden>NOU TÍTOL</span></div>
+    <span class="label" id="lvup-hint">HAS DESBLOQUEJAT</span>
+    <div class="lvup-items" id="lvup-items"></div>
+    <p class="hint" id="lvup-none" hidden>Has arribat al màxim de recompenses. Ets una llegenda! 👑</p>
+    <p class="hint">Ja ho tens disponible al <b>Taller del Bòs</b>.</p>
+    <div class="row" style="justify-content:center"><button class="btn lg" id="btn-lvup-ok">GENIAL! 🔥</button><button class="btn cyan" id="btn-lvup-path">🛣️ CAMÍ DEL BÒS</button></div>
   </div>
 </div>
 <div class="overlay" id="ov-help" hidden role="dialog" aria-modal="true" aria-labelledby="help-title">
@@ -1365,6 +1474,76 @@ function botProfile(slot, used) {
   p.c1 = PALETTE[(slot * 5 + 3) % 18][0];
   return p;
 }
+
+/* ---------- PROGRESSIÓ: kit inicial, recompenses per nivell i títols ----------
+ * Clau d'objecte: "categoria:índex". Els colors sempre són lliures. */
+const STARTER_KIT = ['body:0', 'body:1', 'body:2', 'finish:0', 'finish:6', 'pattern:0', 'pattern:1', 'pattern:2',
+  'eyes:0', 'eyes:1', 'eyes:2', 'eyes:3', 'mouth:0', 'mouth:1', 'mouth:2', 'mouth:3', 'hat:0', 'hat:4', 'hat:7', 'hat:13',
+  'back:0', 'back:8', 'trail:0', 'trail:1', 'frame:0', 'voice:0', 'voice:1', 'dance:0',
+  'emote:0', 'emote:1', 'emote:2', 'emote:3', 'emote:7', 'emote:8'];
+const LEVEL_REWARDS = {
+  2: ['hat:1', 'eyes:4'],
+  3: ['body:3', 'trail:4'],
+  4: ['mouth:4', 'pattern:3', 'emote:4'],
+  5: ['back:1', 'finish:4', 'voice:2'],
+  6: ['hat:3', 'eyes:5'],
+  7: ['pattern:5', 'mouth:5', 'dance:1'],
+  8: ['hat:11', 'body:5', 'trail:6'],
+  9: ['hat:9', 'eyes:6', 'emote:5'],
+  10: ['body:4', 'finish:1', 'frame:1'],
+  11: ['back:6', 'pattern:4'],
+  12: ['hat:5', 'mouth:6'],
+  13: ['eyes:9', 'trail:3', 'emote:6'],
+  14: ['hat:14', 'pattern:7'],
+  15: ['hat:16', 'eyes:11', 'voice:3'],
+  16: ['back:7', 'mouth:7'],
+  17: ['body:7', 'pattern:6'],
+  18: ['hat:6', 'eyes:10', 'emote:9'],
+  19: ['trail:7', 'finish:3'],
+  20: ['back:3', 'hat:17', 'frame:3', 'dance:2'],
+  21: ['eyes:14', 'mouth:8'],
+  22: ['hat:21', 'pattern:8'],
+  23: ['body:8', 'trail:5'],
+  24: ['hat:22', 'back:10', 'emote:10'],
+  25: ['body:6', 'finish:5', 'voice:4'],
+  26: ['eyes:12', 'mouth:9'],
+  27: ['hat:10', 'pattern:9'],
+  28: ['back:4', 'trail:9'],
+  29: ['hat:15', 'eyes:7'],
+  30: ['body:9', 'eyes:15', 'frame:4', 'emote:11'],
+  31: ['hat:12', 'mouth:10'],
+  32: ['back:11', 'pattern:11'],
+  33: ['hat:19', 'trail:10'],
+  34: ['finish:7', 'eyes:8'],
+  35: ['back:5', 'hat:23'],
+  36: ['hat:20'],
+  37: ['body:10'],
+  38: ['back:12'],
+  39: ['hat:18'],
+  40: ['back:9', 'finish:2'],
+  41: ['pattern:10'],
+  42: ['finish:8'],
+  43: ['trail:2'],
+  44: ['eyes:13'],
+  45: ['back:2', 'hat:8'],
+  46: ['trail:8'],
+  47: ['frame:2'],
+  48: ['voice:5'],
+  49: ['dance:3'],
+  50: ['finish:9', 'hat:2', 'frame:5']
+};
+const STAR_LEVELS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+const LEVEL_TITLES = [[1, 'Novell'], [3, 'Aprenent de Xoc'], [5, 'Xocador'], [10, 'Pilot Turbo'], [15, 'Bòs de Barri'], [20, 'Rei de la Pista'], [25, 'Fera del Para-xocs'], [30, 'Mestre del Xoc'], [40, 'Llegenda Y2K'], [50, 'TURBO DÉU']];
+const xpToNext = (lv) => 150 + 40 * (lv - 1);
+const levelTitle = (lv) => { let t = LEVEL_TITLES[0][1]; for (const [l, n] of LEVEL_TITLES) if (lv >= l) t = n; return t; };
+const ITEM_CAT = { body: BODIES, finish: FINISHES, pattern: PATTERNS, eyes: EYES, mouth: MOUTHS, hat: HATS, back: BACKS, trail: TRAILS, frame: FRAMES, voice: VOICES, dance: DANCES, emote: EMOTES };
+const ITEM_CAT_NAME = { body: 'Forma', finish: 'Acabat', pattern: 'Dibuix', eyes: 'Ulls', mouth: 'Boca', hat: 'Barret', back: 'Esquena', trail: 'Estela', frame: 'Marc', voice: 'Veu', dance: 'Ball', emote: 'Emote' };
+function itemInfo(key) {
+  const [c, i] = key.split(':'); const it = ITEM_CAT[c] && ITEM_CAT[c][+i];
+  if (!it) return null;
+  return { key, cat: c, idx: +i, icon: it.icon, name: it.name || it.text, catName: ITEM_CAT_NAME[c] };
+}
+const UNLOCK_LEVEL = (() => { const m = new Map(); for (const k of STARTER_KIT) m.set(k, 1); for (const [lv, ks] of Object.entries(LEVEL_REWARDS)) for (const k of ks) m.set(k, +lv); return m; })();
 
 /* ===================================================================
  * 02 · ÀUDIO: sintetitzador Y2K procedural amb planificador anticipat
@@ -4911,7 +5090,7 @@ const q100 = (v) => Math.round(v * 100), q10 = (v) => Math.round(v * 10);
 function encodeRoster(w) {
   const L = [];
   let i = 0;
-  for (const p of w.players.values()) { p.slot = i++; L.push([p.id, p.name, encodeProfile(p.profile, false), p.isBot ? 1 : 0]); }
+  for (const p of w.players.values()) { p.slot = i++; L.push([p.id, p.name, encodeProfile(p.profile, false), p.isBot ? 1 : 0, p.lv | 0]); }
   return { v: w.rosterV, L };
 }
 
@@ -5125,7 +5304,7 @@ function startSolo() {
   G.role = 'solo'; G.code = '';
   const w = createWorld({ mode: store.get('last.mode', 'crown'), mapId: store.get('last.map', 'illa'), duration: store.get('last.dur', 90), diff: store.get('last.diff', 1), randomMap: store.get('last.random', false) });
   G.world = w;
-  w.players.set(G.meId, newPlayer(G.meId, G.profile));
+  w.players.set(G.meId, Object.assign(newPlayer(G.meId, G.profile), { lv: Progress.level() }));
   for (let i = 0; i < 4; i++) addBot(w, true);
   showArena(w.arena);
   placePlayers(w);
@@ -5152,7 +5331,7 @@ function createRoom() {
   G.role = 'host'; G.code = genCode();
   const w = createWorld({ mode: store.get('last.mode', 'crown'), mapId: store.get('last.map', 'illa'), duration: store.get('last.dur', 90), diff: store.get('last.diff', 1), randomMap: store.get('last.random', false), isPublic: store.get('last.public', true) });
   G.world = w;
-  w.players.set(G.meId, newPlayer(G.meId, G.profile));
+  w.players.set(G.meId, Object.assign(newPlayer(G.meId, G.profile), { lv: Progress.level() }));
   addBot(w, true); addBot(w, true);
   showArena(w.arena);
   placePlayers(w);
@@ -5224,6 +5403,8 @@ function hostOnPacket(pkt, key) {
     if (prof) { p.profile = prof; p.name = prof.name; w.rosterV++; }
   }
   p.pcode = pkt.pc;
+  const lv = clamp(pkt.lv | 0, 0, 999);
+  if (lv !== (p.lv | 0)) { p.lv = lv; w.rosterV++; }
   p.heard = now();
   const i = Array.isArray(pkt.i) ? pkt.i : null;
   if (!i) return;
@@ -5297,7 +5478,7 @@ function applyRoster(r) {
     m.slots[i] = id; ids.add(id);
     let mp = m.players.get(id);
     if (!mp) { mp = { id, buf: [], score: 0, lives: 3, flags: 0 }; m.players.set(id, mp); }
-    mp.profile = prof; mp.name = prof.name; mp.isBot = !!e[3];
+    mp.profile = prof; mp.name = prof.name; mp.isBot = !!e[3]; mp.lv = clamp(e[4] | 0, 0, 999);
   });
   for (const id of [...m.players.keys()]) if (!ids.has(id)) m.players.delete(id);
   if (ids.has(G.meId)) { G.everInRoster = true; G.notInRosterSince = 0; }
@@ -5401,7 +5582,7 @@ function guestTick(dt) {
   G.off.x *= k; G.off.y *= k; G.off.z *= k;
   G.sendTick++;
   if (G.sendTick % 2 === 0) {
-    const pkt = { k: 'g', c: G.code, v: PROTO, id: G.meId, n: G.profile.name, pc: encodeProfile(G.profile, false), i: [inp.seq, Math.round(h.mx * 100), Math.round(h.mz * 100), inp.turboN, inp.waveN, inp.emoteN, inp.emoteIdx] };
+    const pkt = { k: 'g', c: G.code, v: PROTO, id: G.meId, n: G.profile.name, pc: encodeProfile(G.profile, false), lv: Progress.level(), i: [inp.seq, Math.round(h.mx * 100), Math.round(h.mz * 100), inp.turboN, inp.waveN, inp.emoteN, inp.emoteIdx] };
     for (const t of G.transports) t.send(pkt);
   }
   // control de connexió
@@ -5555,7 +5736,7 @@ function renderPlayers(alpha) {
   const out = [];
   if (G.world) {
     for (const p of G.world.players.values()) {
-      out.push({ id: p.id, profile: p.profile, name: p.name, isBot: p.isBot,
+      out.push({ id: p.id, profile: p.profile, name: p.name, isBot: p.isBot, lv: p.lv | 0,
         x: lerp(p.px, p.x, alpha), y: lerp(p.py, p.y, alpha), z: lerp(p.pz, p.z, alpha), rotY: p.rotY, vx: p.vx, vy: p.vy, vz: p.vz,
         grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, giant: p.pu === PU.giant, shield: p.pu === PU.shield, pu: p.pu, puT: p.puT,
         dead: p.dead, out: p.out, inv: p.inv, emote: p.emote, emoteT: p.emoteT, score: p.score, lives: p.lives, hot: p.hot, tcd: p.tcd, tcdMax: p.tcdMax || 1.5, wcd: p.wcd, cp: p.cp, fin: p.fin, slot: p.slot });
@@ -5575,7 +5756,7 @@ function renderPlayers(alpha) {
         st = { x: lerp(s0.x, s1.x, k), y: lerp(s0.y, s1.y, k), z: lerp(s0.z, s1.z, k), rotY: s0.rotY + angDiff(s0.rotY, s1.rotY) * k, vx: s1.vx, vy: s1.vy, vz: s1.vz, grounded: mp.grounded, dashing: mp.dash, waveAnim: mp.waveAnim, tcd: mp.tcd, wcd: mp.wcd, emote: mp.emote, emoteT: mp.emoteT };
         if (Math.hypot(s1.x - s0.x, s1.z - s0.z) > 8) { st.x = s1.x; st.y = s1.y; st.z = s1.z; }
       }
-      out.push(Object.assign(st, { id: mp.id, profile: mp.profile, name: mp.name, isBot: mp.isBot, giant: mp.pu === PU.giant, shield: mp.pu === PU.shield, pu: mp.pu, puT: mp.puT,
+      out.push(Object.assign(st, { id: mp.id, profile: mp.profile, name: mp.name, isBot: mp.isBot, lv: mp.id === G.meId ? Progress.level() : mp.lv | 0, giant: mp.pu === PU.giant, shield: mp.pu === PU.shield, pu: mp.pu, puT: mp.puT,
         dead: mp.dead, out: mp.out, inv: mp.inv, score: mp.score, lives: mp.lives, hot: mp.hot, tcdMax: mp.tcdMax || 1.5, cp: mp.cp || 0, fin: mp.fin || 0, slot: G.mirror.slots.indexOf(mp.id) }));
     }
   }
@@ -5691,7 +5872,10 @@ function syncScreen(phase) {
   if (phase === G.phase && G.screen !== 'menu' && G.screen !== 'taller') return;
   const prev = G.phase; G.phase = phase;
   if (phase === 'lobby') { removePodium(); Props.clear(); setScreen('lobby'); sound.setIntensity(0); }
-  else if (phase === 'count' || phase === 'play') { removePodium(); if (G.screen !== 'hud') setScreen('hud'); if (prev !== phase && (phase === 'count' || prev !== 'count')) UI.prepareHud(currentState()); if (prev !== 'play' && prev !== 'count') sound.setIntensity(1); }
+  else if (phase === 'count' || phase === 'play') {
+    if (phase === 'count' && prev !== 'count') { G.matchToken = (G.matchToken || 0) + 1; G.playStart = 0; }
+    if (phase === 'play' && prev !== 'play') G.playStart = now();
+    removePodium(); if (G.screen !== 'hud') setScreen('hud'); if (prev !== phase && (phase === 'count' || prev !== 'count')) UI.prepareHud(currentState()); if (prev !== 'play' && prev !== 'count') sound.setIntensity(1); }
   else if (phase === 'end') { Props.clear(); buildPodium(); setScreen('podium'); sound.setIntensity(1); setTimeout(() => UI.showResults(currentState(), renderPlayers(1)), 50); }
 }
 
@@ -6083,7 +6267,7 @@ const UI = {
     $('in-code').addEventListener('input', (e) => { e.target.value = cleanCode(e.target.value); });
     $('in-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') { sound.init(); joinRoom(e.target.value); } });
     $('btn-taller').addEventListener('click', () => { sound.init(); sound.click(); this.openTaller(); });
-    $('btn-random-me').addEventListener('click', () => { sound.init(); G.profile = randomProfile(G.profile.name); saveProfile(); sound.pickup(); this.refreshMenu(); });
+    $('btn-random-me').addEventListener('click', () => { sound.init(); G.profile = Progress.randomOwned(G.profile.name); saveProfile(); sound.pickup(); this.refreshMenu(); });
     const hash = cleanCode((location.hash || '').slice(1));
     if (hash.length === 4) $('in-code').value = hash;
     const inClaude = !!(window.claude && typeof window.claude.use === 'function');
@@ -6100,12 +6284,13 @@ const UI = {
     $('in-name').addEventListener('input', (e) => { G.profile.name = cleanName(e.target.value, ''); if (!G.profile.name) return; saveProfile(); this.refreshShare(); });
     $('in-name').addEventListener('blur', (e) => { G.profile.name = cleanName(e.target.value, pick(NICKNAMES)); e.target.value = G.profile.name; saveProfile(); });
     $('btn-t-done').addEventListener('click', () => { sound.click(); setScreen('menu'); this.refreshMenu(); });
-    $('btn-t-random').addEventListener('click', () => { G.profile = randomProfile(G.profile.name); saveProfile(); sound.pickup(); this.renderTaller(); });
+    $('btn-t-random').addEventListener('click', () => { G.profile = Progress.randomOwned(G.profile.name); saveProfile(); sound.pickup(); this.renderTaller(); });
     $('btn-share-copy').addEventListener('click', async () => { const ok = await copyText($('in-share').value, $('in-share')); toast(ok ? '📋 Codi del bòs copiat' : 'Selecciona el codi i copia\'l'); });
     $('btn-share-load').addEventListener('click', () => {
       const p = decodeProfile($('in-share').value);
       if (!p) { toast('Aquest codi no és vàlid. Ha de començar per B2.'); sound.boing(0.7); return; }
-      G.profile = p; saveProfile(); sound.powerup(); this.renderTaller(); toast('Bòs carregat!');
+      const miss = Progress.sanitize(p);
+      G.profile = p; saveProfile(); sound.powerup(); this.renderTaller(); toast(miss.length ? 'Bòs carregat! Encara no tens: ' + miss.slice(0, 4).join(', ') + (miss.length > 4 ? '…' : '') : 'Bòs carregat!');
     });
     document.querySelectorAll('[data-test-emote]').forEach((b) => b.addEventListener('click', () => {
       const e = EMOTES[G.profile.emotes[+b.dataset.testEmote]];
@@ -6221,7 +6406,7 @@ const UI = {
   },
   compact() { this._cmq = this._cmq || matchMedia('(max-height: 520px), (max-width: 620px)'); return this._cmq.matches; },
 
-  refreshMenu() { $('menu-name').textContent = G.profile.name; this.renderOpenRooms(); },
+  refreshMenu() { $('menu-name').textContent = G.profile.name; this.renderOpenRooms(); if (typeof ProgressUI !== 'undefined' && $('lvl-num')) ProgressUI.renderBadge(); },
   renderOpenRooms() {
     const rooms = openRoomList();
     const canList = Directory.available() || !!ClaudeRoom.room;
@@ -6261,12 +6446,28 @@ const UI = {
     const wrap = h('div', { class: 'opt-group' }, h('span', { class: 'label', text: title }));
     const grid = h('div', { class: 'chips' });
     cat.forEach((it, i) => {
-      const b = h('button', { class: 'chip', type: 'button', 'aria-pressed': String(G.profile[key] === i), title: it.name }, h('span', { class: 'ci', text: it.icon }), it.name);
-      b.addEventListener('click', () => { G.profile[key] = i; saveProfile(); sound.boing(1.2 + Math.random() * 0.3, VOICES[G.profile.voice], 0.12); this.renderTaller(); });
+      const owned = Progress.ownsIdx(key, i);
+      const b = h('button', { class: 'chip' + (owned ? '' : ' locked'), type: 'button', 'aria-pressed': String(G.profile[key] === i), title: owned ? it.name : it.name + ' · nivell ' + Progress.needLevel(key, i) }, h('span', { class: 'ci', text: it.icon }), it.name);
+      if (!owned) b.appendChild(h('span', { class: 'lk', text: '🔒' + Progress.needLevel(key, i) }));
+      b.addEventListener('click', () => {
+        if (!owned) { this.tryOn(key, i, b); return; }
+        G.profile[key] = i; saveProfile(); sound.boing(1.2 + Math.random() * 0.3, VOICES[G.profile.voice], 0.12); this.renderTaller();
+      });
       grid.appendChild(b);
     });
     wrap.appendChild(grid);
     return wrap;
+  },
+  /* Provador: et poses un objecte bloquejat uns segons, sense desar-lo */
+  tryOn(key, i, btn) {
+    const need = Progress.needLevel(key, i), lv = Progress.level();
+    toast('🔒 Es desbloqueja al nivell ' + need + ' · et falten ' + (need - lv) + ' nivell' + (need - lv === 1 ? '' : 's') + '. Te\'l pots provar!');
+    sound.boing(0.9);
+    clearTimeout(this.tryT);
+    document.querySelectorAll('.chip.trying').forEach((c) => c.classList.remove('trying'));
+    if (btn) btn.classList.add('trying');
+    if (G.preview) { const tmp = Object.assign({}, G.profile, { emotes: G.profile.emotes.slice() }); if (key === 'emote') { G.previewEmote = EMOTES[i].anim; G.previewEmoteT = 2.2; } else { tmp[key] = i; G.preview.setProfile(tmp); } }
+    this.tryT = setTimeout(() => { if (G.preview) G.preview.setProfile(G.profile); if (btn) btn.classList.remove('trying'); }, 2600);
   },
   renderTaller() {
     const p = G.profile;
@@ -6304,8 +6505,10 @@ const UI = {
       for (let s = 0; s < 4; s++) {
         const grid = h('div', { class: 'chips' });
         EMOTES.forEach((e, i) => {
-          const b = h('button', { class: 'chip', type: 'button', 'aria-pressed': String(p.emotes[s] === i) }, h('span', { class: 'ci', text: e.icon }), e.text);
-          b.addEventListener('click', () => { p.emotes[s] = i; saveProfile(); G.previewEmote = e.anim; G.previewEmoteT = 2; sound.emoteVoice(VOICES[p.voice]); this.renderTaller(); });
+          const owned = Progress.ownsIdx('emote', i);
+          const b = h('button', { class: 'chip' + (owned ? '' : ' locked'), type: 'button', 'aria-pressed': String(p.emotes[s] === i) }, h('span', { class: 'ci', text: e.icon }), e.text);
+          if (!owned) b.appendChild(h('span', { class: 'lk', text: '🔒' + Progress.needLevel('emote', i) }));
+          b.addEventListener('click', () => { if (!owned) { this.tryOn('emote', i, b); return; } p.emotes[s] = i; saveProfile(); G.previewEmote = e.anim; G.previewEmoteT = 2; sound.emoteVoice(VOICES[p.voice]); this.renderTaller(); });
           grid.appendChild(b);
         });
         body.appendChild(h('div', { class: 'opt-group' }, h('span', { class: 'label', text: 'EMOTE ' + (s + 1) }), grid));
@@ -6321,7 +6524,7 @@ const UI = {
     const st = currentState();
     const host = G.role === 'host';
     const players = (G.world || G.mirror) ? renderPlayers(1) : [];
-    const sig = JSON.stringify([players.map((p) => [p.id, p.name, p.isBot, encodeProfile(p.profile, false)]), st && [st.mapId, st.mode, st.duration, st.diff, st.randomMap, st.isPublic], host]);
+    const sig = JSON.stringify([players.map((p) => [p.id, p.name, p.isBot, encodeProfile(p.profile, false), p.lv | 0]), st && [st.mapId, st.mode, st.duration, st.diff, st.randomMap, st.isPublic], host]);
     if (!force && sig === this.lobbySig) return;
     this.lobbySig = sig;
     $('lobby-count').textContent = players.length;
@@ -6330,7 +6533,7 @@ const UI = {
       const me = p.id === G.meId;
       const card = h('div', { class: 'pcard' + (me ? ' me' : '') },
         h('span', { class: 'av', style: { background: '#' + p.profile.c1 }, text: HATS[p.profile.hat].icon === '🚫' ? BODIES[p.profile.body].icon : HATS[p.profile.hat].icon }),
-        h('div', { style: { minWidth: '0' } }, h('div', { class: 'nm', text: p.name + (me ? ' (TU)' : '') }), h('div', { class: 'sub', text: p.isBot ? '🤖 Bot ' + DIFFS[st ? st.diff : 1].name.toLowerCase() : '🎮 Jugador' })));
+        h('div', { style: { minWidth: '0' } }, h('div', { class: 'nm', text: p.name + (me ? ' (TU)' : '') }), h('div', { class: 'sub', text: p.isBot ? '🤖 Bot ' + DIFFS[st ? st.diff : 1].name.toLowerCase() : '⭐ Niv ' + Math.max(1, p.lv | 0) + ' · ' + levelTitle(Math.max(1, p.lv | 0)) })));
       if (host && !me) {
         const x = h('button', { class: 'x', type: 'button', title: p.isBot ? 'Treu el bot' : 'Expulsa', text: '✕' });
         x.addEventListener('click', () => { if (p.isBot) removePlayer(G.world, p.id); else kickPlayer(p.id); sound.boing(0.8); });
@@ -6496,10 +6699,10 @@ const UI = {
         const el = h('div', { class: 'ntag' });
         const bubble = h('span', { class: 'bubble' }); bubble.hidden = true;
         const bomb = h('span', { class: 'bomb' }); bomb.hidden = true;
-        const nb = h('span', { class: 'nb' }), nm = h('span'), sc = h('span', { class: 's' });
-        nb.append(nm, sc); el.append(bubble, bomb, nb);
+        const nb = h('span', { class: 'nb' }), lv = h('span', { class: 'lv' }), nm = h('span'), sc = h('span', { class: 's' });
+        nb.append(lv, nm, sc); lv.hidden = true; el.append(bubble, bomb, nb);
         $('fx-layer').appendChild(el);
-        t = { el, bubble, bomb, nm, sc, last: {} };
+        t = { el, bubble, bomb, nm, sc, lv, last: {} };
         this.tags.set(p.id, t);
       }
       const hidden = p.dead || (p.out && !podium);
@@ -6512,6 +6715,8 @@ const UI = {
       if (t.last.cls !== cls) { t.el.className = cls; t.last.cls = cls; }
       const nm = (st && st.crownHolder === p.id && st.mode === 'crown' ? '👑 ' : '') + p.name;
       if (t.last.nm !== nm) { t.nm.textContent = nm; t.last.nm = nm; }
+      const lvT = p.isBot || !p.lv ? '' : String(p.lv);
+      if (t.last.lv !== lvT) { t.lv.textContent = lvT; t.lv.hidden = !lvT; t.last.lv = lvT; }
       const sc = G.screen === 'lobby' ? (p.isBot ? '🤖' : '') : st && st.mode === 'race' ? (p.fin ? '🏁' + p.fin : '') : st && st.mode === 'last' && st.phase !== 'lobby' ? '❤️' + p.lives : st && st.phase !== 'lobby' ? String(p.score) : '';
       if (t.last.sc !== sc) { t.sc.textContent = sc; t.last.sc = sc; }
       const em = p.emoteT > 0 && p.emote >= 0 ? EMOTES[p.emote].icon + ' ' + EMOTES[p.emote].text : '';
@@ -6552,6 +6757,7 @@ const UI = {
     });
     const aw = $('pod-awards'); aw.textContent = '';
     for (const a of st.results.awards || []) if (a.name) aw.appendChild(h('div', { class: 'award' }, h('b', { text: a.title }), h('span', { text: a.name }), h('span', { class: 'c-muted', text: a.val })));
+    ProgressUI.showAward(Progress.onMatchEnd(st, players));
     const host = G.role === 'host' || G.role === 'solo';
     $('pod-host').hidden = !host; $('pod-wait').hidden = host;
     $('btn-tolobby').hidden = G.role === 'solo';
@@ -6709,6 +6915,7 @@ const Records = {
     d.runs.push(run); d.runs.sort((a, b) => a.t - b.t); d.runs = d.runs.slice(0, 10);
     this.save(d);
     const isPB = !pb || run.t < pb.t;
+    r.pb = isPB;
     if (isPB) {
       Cloud.submitBest();
       const msg = '🏆 NOU RÈCORD! ' + fmtRace(run.t) + (pb ? ' (' + fmtDelta(run.t - pb.t) + ')' : '');
@@ -6728,7 +6935,7 @@ const Records = {
     G.role = 'solo'; G.code = ''; G.timeTrial = true;
     const w = createWorld({ mode: 'race', mapId: 'cursa', duration: 180, diff: 1 });
     G.world = w;
-    w.players.set(G.meId, newPlayer(G.meId, G.profile));
+    w.players.set(G.meId, Object.assign(newPlayer(G.meId, G.profile), { lv: Progress.level() }));
     showArena(w.arena);
     placePlayers(w);
     startMatch(w);
@@ -6883,9 +7090,11 @@ const Cloud = {
       if (p) { G.profile = p; saveProfile(); if (UI.refreshMenu) UI.refreshMenu(); if (G.screen === 'taller') UI.renderTaller(); }
       const merged = mergeRace(local.race, d.race);
       Records.save(merged);
+      const progChanged = Progress.merge(d.prog);
+      UI.refreshMenu();
       this.applying = false;
       toast('☁️ Hola, ' + this.displayName() + '! Dades del compte carregades');
-      if (JSON.stringify(merged) !== JSON.stringify(d.race || null)) this.queuePush(true);
+      if (JSON.stringify(merged) !== JSON.stringify(d.race || null) || progChanged || !d.prog || Progress.load().xp !== d.prog.xp) this.queuePush(true);
     } else {
       await this.push();
       toast('☁️ Compte creat! El teu bòs i els rècords ja es guarden al núvol');
@@ -6900,7 +7109,14 @@ const Cloud = {
   async push() {
     if (!this.user) return;
     const race = Records.load();
-    await this.userRef().set({ profile: encodeProfile(G.profile), race: { runs: race.runs.slice(0, 10), bestSegs: race.bestSegs.slice(0, 7) }, name: cleanName(G.profile.name), updated: this.fb.firestore.FieldValue.serverTimestamp() });
+    const doc = { profile: encodeProfile(G.profile), race: { runs: race.runs.slice(0, 10), bestSegs: race.bestSegs.slice(0, 7) }, name: cleanName(G.profile.name), updated: this.fb.firestore.FieldValue.serverTimestamp() };
+    if (!this.noProg) doc.prog = Progress.forCloud();
+    try { await this.userRef().set(doc); }
+    catch (e) {
+      // regles antigues sense el camp "prog": continua guardant la resta
+      if (e && e.code === 'permission-denied' && doc.prog) { this.noProg = true; delete doc.prog; console.warn('Firestore: actualitza les regles per guardar el nivell'); await this.userRef().set(doc); }
+      else throw e;
+    }
   },
 
   /* ---------- rànquing mundial ---------- */
@@ -7017,6 +7233,274 @@ function mergeRace(a, b) {
 }
 
 /* ===================================================================
+ * 09d · PROGRESSIÓ: XP per partida, nivells, títols i desbloquejos
+ * =================================================================== */
+
+const Progress = {
+  KEY: 'prog.v1',
+  d: null,              // { xp, own: [claus extra], day, matches }
+  lastAward: null,      // resultat de l'última partida (per al podi)
+
+  /* A l'arrencada: si ja jugaves abans d'existir els nivells, tot el que portes posat es queda teu */
+  init(oldProfile) {
+    if (store.get(this.KEY, null)) return this.load();
+    const d = { xp: 0, own: [], day: '', matches: 0, born: Date.now() };
+    if (oldProfile) {
+      for (const k of PROFILE_KEYS) { if (!ITEM_CAT[k]) continue; const key = k + ':' + oldProfile[k]; if ((UNLOCK_LEVEL.get(key) || 1) > 1) d.own.push(key); }
+      for (const e of oldProfile.emotes || []) { const key = 'emote:' + e; if ((UNLOCK_LEVEL.get(key) || 1) > 1) d.own.push(key); }
+    }
+    store.set(this.KEY, d); this.d = null;
+    return this.load();
+  },
+  load() {
+    if (this.d) return this.d;
+    let d = store.get(this.KEY, null);
+    if (!d || typeof d.xp !== 'number') d = { xp: 0, own: [], day: '', matches: 0, born: Date.now() };
+    d.xp = Math.max(0, Math.floor(d.xp || 0)); d.own = Array.isArray(d.own) ? [...new Set(d.own.filter((k) => typeof k === 'string' && itemInfo(k)))] : [];
+    this.d = d; store.set(this.KEY, d);
+    return d;
+  },
+  save() { store.set(this.KEY, this.d); if (typeof Cloud !== 'undefined') Cloud.queuePush(); },
+
+  /* ---------- nivell a partir de l'XP total ---------- */
+  levelOf(xp) { let lv = 1, need = xpToNext(1); while (xp >= need && lv < 999) { xp -= need; lv++; need = xpToNext(lv); } return { lv, into: xp, need }; },
+  level() { return this.levelOf(this.load().xp).lv; },
+  info() { return this.levelOf(this.load().xp); },
+
+  /* ---------- objectes ---------- */
+  owns(key) {
+    const need = UNLOCK_LEVEL.get(key);
+    if (need == null || need <= 1) return true;
+    const d = this.load();
+    return this.level() >= need || d.own.includes(key);
+  },
+  ownsIdx(cat, i) { return this.owns(cat + ':' + i); },
+  needLevel(cat, i) { return UNLOCK_LEVEL.get(cat + ':' + i) || 1; },
+  /* Treu del perfil el que encara no tens (codis carregats). Retorna els noms canviats. */
+  sanitize(p) {
+    const changed = [];
+    const def = defaultProfile();
+    for (const k of PROFILE_KEYS) {
+      if (!ITEM_CAT[k] || this.ownsIdx(k, p[k])) continue;
+      const info = itemInfo(k + ':' + p[k]); if (info) changed.push(info.name);
+      p[k] = this.ownsIdx(k, def[k]) ? def[k] : 0;
+    }
+    p.emotes = (p.emotes || []).map((e, j) => { if (this.ownsIdx('emote', e)) return e; const info = itemInfo('emote:' + e); if (info) changed.push(info.icon); return [0, 1, 7, 8][j] ; });
+    return changed;
+  },
+  /* Perfil aleatori amb només el que tens desbloquejat (es manté el nom) */
+  randomOwned(name) {
+    const p = randomProfile(name);
+    for (const k of PROFILE_KEYS) {
+      if (!ITEM_CAT[k]) continue;
+      const opts = ITEM_CAT[k].map((_, i) => i).filter((i) => this.ownsIdx(k, i));
+      p[k] = pick(opts.length ? opts : [0]);
+    }
+    if (p.pattern && Math.random() < 0.5) p.pattern = 0;
+    const em = EMOTES.map((_, i) => i).filter((i) => this.ownsIdx('emote', i)).sort(() => Math.random() - 0.5);
+    p.emotes = em.length >= 4 ? em.slice(0, 4) : [0, 1, 7, 8];
+    return p;
+  },
+
+  /* ---------- XP d'una partida ---------- */
+  compute(st, players) {
+    const me = players.find((p) => p.id === G.meId);
+    if (!me || !st || !st.results) return null;
+    const lines = []; const add = (t, v, k) => { if (v) lines.push({ t, v: Math.round(v), k: k || '' }); };
+    const order = st.results.order || [];
+    const pos = order.indexOf(G.meId) + 1;
+    const nPlayers = order.length || players.length;
+    const humans = players.filter((p) => !p.isBot).length;
+    const played = G.playStart ? (now() - G.playStart) / 1000 : 0;
+    const race = st.mode === 'race';
+    const tt = !!G.timeTrial;
+    const rec = race && typeof Records !== 'undefined' ? Records.run : null;
+    if (tt) {
+      if (!me.fin) return { lines: [{ t: 'Contrarellotge sense arribar a la meta', v: 0 }], total: 0, base: 0 };
+      add('🏁 Contrarellotge completada', 40);
+      add('✅ Checkpoints ×' + Math.min(6, me.cp | 0), Math.min(6, me.cp | 0) * 5);
+      if (rec && rec.pb) add('🏆 Nou rècord personal!', 80, 'gold');
+    } else {
+      if (played < 20) return { lines: [{ t: 'Partida massa curta (mínim 20 s)', v: 0 }], total: 0, base: 0 };
+      add('🎮 Participació', 40);
+      if (nPlayers >= 2 && pos > 0) add(pos === 1 ? '🥇 1r lloc' : pos === 2 ? '🥈 2n lloc' : pos === 3 ? '🥉 3r lloc' : '#' + pos + ' lloc', pos === 1 ? 120 : pos === 2 ? 80 : pos === 3 ? 60 : 30, pos === 1 ? 'gold' : '');
+      const sc = Math.max(0, me.score | 0);
+      if (race) {
+        add('✅ Checkpoints ×' + Math.min(6, me.cp | 0), Math.min(6, me.cp | 0) * 12);
+        if (me.fin) add('🏁 Has arribat a la meta', 60);
+        if (rec && rec.pb) add('🏆 Nou rècord personal!', 80, 'gold');
+      } else if (st.mode === 'crown') add('👑 Rendiment (' + sc + ' pts)', Math.min(120, sc * 2));
+      else if (st.mode === 'cds') add('💿 Rendiment (' + sc + ' CDs)', Math.min(120, sc * 3));
+      else if (st.mode === 'bomb') add('💣 Rendiment (' + sc + ' pts)', Math.min(100, sc * 8));
+      else if (st.mode === 'last') add('❤️ KOs (' + sc + ')', Math.min(120, sc * 20));
+    }
+    let base = lines.reduce((a, l) => a + l.v, 0), total = base;
+    if (!tt && humans >= 2) { const b = Math.round(base * 0.25); add('👥 Jugant amb amics +25%', b, 'bonus'); total += b; }
+    if (!tt && humans < 2) {
+      const df = st.diff != null ? st.diff : 1;
+      if (df === 2) { const b = Math.round(base * 0.2); add('🤖 Bots en DUR +20%', b, 'bonus'); total += b; }
+      if (df === 0) { const b = -Math.round(base * 0.25); add('🤖 Bots en FÀCIL −25%', b, 'malus'); total += b; }
+    }
+    const dt0 = new Date(), today = dt0.getFullYear() + '-' + String(dt0.getMonth() + 1).padStart(2, '0') + '-' + String(dt0.getDate()).padStart(2, '0');
+    if (total > 0 && this.load().day !== today) { add('☀️ Primera partida del dia ×2', total, 'bonus'); total *= 2; }
+    total = Math.min(900, Math.max(0, total));
+    return { lines, total, base, today };
+  },
+
+  /* Es crida un cop per partida des del podi */
+  onMatchEnd(st, players) {
+    if (G.awardedToken === G.matchToken) return this.lastAward;
+    G.awardedToken = G.matchToken;
+    const r = this.compute(st, players);
+    if (!r) return null;
+    const d = this.load();
+    const before = this.levelOf(d.xp);
+    d.xp += r.total; d.matches = (d.matches || 0) + 1;
+    if (r.total > 0 && r.today) d.day = r.today;
+    const after = this.levelOf(d.xp);
+    const unlocked = [];
+    for (let l = before.lv + 1; l <= after.lv; l++) for (const k of LEVEL_REWARDS[l] || []) if (!d.own.includes(k)) { const info = itemInfo(k); if (info) unlocked.push(info); }
+    this.save();
+    this.lastAward = { r, before, after, unlocked, xpBefore: d.xp - r.total };
+    this.syncMyLevel();
+    UI.refreshMenu();
+    return this.lastAward;
+  },
+  /* El nivell que veuen els altres jugadors */
+  syncMyLevel() {
+    const w = G.world; if (!w) return;
+    const me = w.players.get(G.meId);
+    const lv = this.level();
+    if (me && me.lv !== lv) { me.lv = lv; w.rosterV++; }
+  },
+  /* Uneix progressió local i del núvol (es queda la més avançada) */
+  merge(cloud) {
+    if (!cloud || typeof cloud.xp !== 'number') return false;
+    const d = this.load(), before = JSON.stringify(d);
+    d.xp = Math.max(d.xp, Math.floor(cloud.xp));
+    d.own = [...new Set([...d.own, ...(Array.isArray(cloud.own) ? cloud.own : [])])].filter((k) => itemInfo(k));
+    if (typeof cloud.day === 'string' && cloud.day > (d.day || '')) d.day = cloud.day;
+    d.matches = Math.max(d.matches || 0, cloud.matches | 0);
+    store.set(this.KEY, d);
+    this.syncMyLevel();
+    return JSON.stringify(d) !== before;
+  },
+  forCloud() { const d = this.load(); return { xp: d.xp, own: d.own.slice(0, 200), day: d.day || '', matches: d.matches | 0 }; }
+};
+
+/* ===================================================================
+ * 09e · INTERFÍCIE DE PROGRESSIÓ: insígnia del menú, Camí del Bòs,
+ *       desglossament d'XP al podi i celebració de pujada de nivell
+ * =================================================================== */
+
+const fmtN = (n) => Math.round(n).toLocaleString('ca-ES');
+
+const ProgressUI = {
+  init() {
+    $('btn-levels').addEventListener('click', () => { sound.init(); sound.click(); this.openPath(); });
+    $('btn-levels-close').addEventListener('click', () => this.closePath());
+    $('ov-levels').addEventListener('click', (e) => { if (e.target === $('ov-levels')) this.closePath(); });
+    $('btn-lvup-ok').addEventListener('click', () => { $('ov-levelup').hidden = true; });
+    $('btn-lvup-path').addEventListener('click', () => { $('ov-levelup').hidden = true; this.openPath(); });
+    this.renderBadge();
+  },
+
+  /* ---------- insígnia del menú ---------- */
+  renderBadge() {
+    const i = Progress.info();
+    $('lvl-num').textContent = i.lv;
+    $('lvl-title').textContent = levelTitle(i.lv).toUpperCase();
+    $('lvl-xp').textContent = fmtN(i.into) + ' / ' + fmtN(i.need) + ' XP';
+    $('lvl-bar').style.transform = 'scaleX(' + clamp(i.into / i.need, 0, 1).toFixed(3) + ')';
+    const next = this.nextReward(i.lv);
+    $('lvl-next').textContent = next ? 'NIV ' + next.lv + ': ' + next.items.map((x) => x.icon).join(' ') : '★ HO TENS TOT';
+    $('btn-levels').classList.toggle('star', i.lv >= 50);
+  },
+  nextReward(lv) {
+    for (let l = lv + 1; l <= 50; l++) { const ks = (LEVEL_REWARDS[l] || []).filter((k) => !Progress.load().own.includes(k)); if (ks.length) return { lv: l, items: ks.map(itemInfo).filter(Boolean) }; }
+    return null;
+  },
+
+  /* ---------- Camí del Bòs ---------- */
+  openPath() {
+    const i = Progress.info(), d = Progress.load();
+    $('path-lv').textContent = i.lv; $('path-title').textContent = levelTitle(i.lv).toUpperCase();
+    $('path-xp').textContent = fmtN(i.into) + ' / ' + fmtN(i.need) + ' XP · ' + fmtN(d.xp) + ' XP en total';
+    $('path-bar').style.transform = 'scaleX(' + clamp(i.into / i.need, 0, 1).toFixed(3) + ')';
+    $('path-matches').textContent = (d.matches | 0) + ' partides jugades';
+    const list = $('path-list'); list.textContent = '';
+    const tierAt = new Map(LEVEL_TITLES.map(([l, n]) => [l, n]));
+    let curEl = null;
+    for (let l = 1; l <= 50; l++) {
+      const ks = l === 1 ? STARTER_KIT.filter((k) => UNLOCK_LEVEL.get(k) === 1 && !/:0$/.test(k)).slice(0, 8) : (LEVEL_REWARDS[l] || []);
+      const done = i.lv >= l, cur = i.lv + 1 === l;
+      const row = h('div', { class: 'path-row' + (done ? ' done' : '') + (cur ? ' cur' : '') + (STAR_LEVELS.includes(l) ? ' star' : '') });
+      row.appendChild(h('div', { class: 'path-n' }, h('b', { text: String(l) }), h('small', { text: done ? '✔' : cur ? 'SEGÜENT' : '🔒' })));
+      const items = h('div', { class: 'path-items' });
+      if (tierAt.has(l)) items.appendChild(h('span', { class: 'path-title', text: '🏷️ ' + tierAt.get(l) }));
+      for (const k of ks) { const it = itemInfo(k); if (!it) continue; const owned = Progress.owns(k);
+        items.appendChild(h('span', { class: 'path-item' + (owned ? ' own' : '') }, h('span', { class: 'pi-ic', text: it.icon }), h('span', { class: 'pi-t' }, h('b', { text: it.name }), h('small', { text: it.catName })))); }
+      if (l === 1) items.appendChild(h('span', { class: 'path-item own' }, h('span', { class: 'pi-ic', text: '🎨' }), h('span', { class: 'pi-t' }, h('b', { text: 'Tots els colors' }), h('small', { text: 'Sempre lliures' }))));
+      row.appendChild(items);
+      list.appendChild(row);
+      if (cur) curEl = row;
+    }
+    $('ov-levels').hidden = false;
+    requestAnimationFrame(() => { const el = curEl || list.lastChild; if (el) list.scrollTop = Math.max(0, el.offsetTop - el.offsetHeight * 2); });
+  },
+  closePath() { $('ov-levels').hidden = true; },
+
+  /* ---------- podi: desglossament animat ---------- */
+  showAward(a) {
+    const box = $('pod-xp');
+    clearTimeout(this.t1); clearInterval(this.t2);
+    if (!a) { box.hidden = true; return; }
+    box.hidden = false;
+    const lines = $('xp-lines'); lines.textContent = '';
+    const total = $('xp-total'); total.textContent = '+0 XP';
+    const startXP = a.xpBefore, endXP = a.xpBefore + a.r.total;
+    const setBar = (xp) => { const i = Progress.levelOf(xp); $('xp-lv').textContent = 'NIV ' + i.lv; $('xp-fill').style.transform = 'scaleX(' + clamp(i.into / i.need, 0, 1).toFixed(3) + ')'; $('xp-need').textContent = fmtN(i.into) + ' / ' + fmtN(i.need); return i.lv; };
+    setBar(startXP);
+    const L = a.r.lines; let k = 0, shown = 0;
+    const step = () => {
+      if (k < L.length) {
+        const l = L[k++];
+        const el = h('div', { class: 'xp-line ' + (l.k || '') }, h('span', { text: l.t }), h('b', { text: (l.v > 0 ? '+' : '') + fmtN(l.v) }));
+        lines.appendChild(el); sound.click();
+        shown += l.v; total.textContent = '+' + fmtN(Math.max(0, Math.min(shown, a.r.total))) + ' XP';
+        this.t1 = setTimeout(step, 230);
+      } else {
+        total.textContent = '+' + fmtN(a.r.total) + ' XP';
+        // la barra s'omple (amb les voltes si puges de nivell)
+        let lastLv = a.before.lv; const t0 = performance.now(), dur = 900 + 500 * (a.after.lv - a.before.lv);
+        this.t2 = setInterval(() => {
+          const u = clamp((performance.now() - t0) / dur, 0, 1), x = startXP + (endXP - startXP) * (1 - Math.pow(1 - u, 2));
+          const lv = setBar(x);
+          if (lv > lastLv) { lastLv = lv; sound.pickup(true); $('xp-lv').classList.remove('pop'); void $('xp-lv').offsetWidth; $('xp-lv').classList.add('pop'); }
+          if (u >= 1) { clearInterval(this.t2); if (a.after.lv > a.before.lv) setTimeout(() => this.levelUp(a), 350); }
+        }, 30);
+      }
+    };
+    this.t1 = setTimeout(step, 700);
+  },
+
+  /* ---------- celebració ---------- */
+  levelUp(a) {
+    $('lvup-num').textContent = a.after.lv;
+    $('lvup-title').textContent = levelTitle(a.after.lv).toUpperCase();
+    const newTitle = LEVEL_TITLES.some(([l]) => l > a.before.lv && l <= a.after.lv);
+    $('lvup-tier').hidden = !newTitle;
+    const grid = $('lvup-items'); grid.textContent = '';
+    for (const it of a.unlocked) grid.appendChild(h('div', { class: 'lvup-item' }, h('span', { class: 'li-ic', text: it.icon }), h('b', { text: it.name }), h('small', { text: it.catName })));
+    $('lvup-none').hidden = a.unlocked.length > 0;
+    $('lvup-hint').hidden = !a.unlocked.length;
+    $('ov-levelup').hidden = false;
+    sound.victory();
+    for (let i = 0; i < 3; i++) setTimeout(() => FX.burst(rand(-3, 3), 4, rand(-1, 2), { count: 34, colors: [0xffe600, 0xff007f, 0x00f0ff, 0xa3ff00], speed: 9, up: 11, frame: 2, size: 0.55, grav: 9 }), i * 280);
+  }
+};
+
+/* ===================================================================
  * 10 · CONTROLS: teclat, comandament i pantalla tàctil (multitàctil)
  * =================================================================== */
 
@@ -7082,7 +7566,7 @@ const Input = {
     const typing = () => { const a = document.activeElement; return a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA'); };
     window.addEventListener('keydown', (e) => {
       sound.init();
-      if (e.key === 'Escape') { if (!$('ov-records').hidden) { Records.close(); return; } if (!$('ov-login').hidden) { Cloud.closeLogin(); return; } if (!$('ov-settings').hidden) UI.closeSettings(); else if (G.screen === 'hud' || G.screen === 'lobby') UI.openSettings(); return; }
+      if (e.key === 'Escape') { if (!$('ov-records').hidden) { Records.close(); return; } if (!$('ov-login').hidden) { Cloud.closeLogin(); return; } if (!$('ov-levelup').hidden) { $('ov-levelup').hidden = true; return; } if (!$('ov-levels').hidden) { ProgressUI.closePath(); return; } if (!$('ov-settings').hidden) UI.closeSettings(); else if (G.screen === 'hud' || G.screen === 'lobby') UI.openSettings(); return; }
       if (typing()) return;
       const k = e.key.toLowerCase();
       this.keys.add(k === ' ' ? 'space' : k);
@@ -7200,7 +7684,9 @@ function fatal(title, text) {
 
 function boot() {
   if (typeof THREE === 'undefined') { fatal('SENSE GRÀFICS 3D', 'No s\'ha pogut carregar el motor 3D. Revisa la connexió a Internet i torna a obrir la pàgina.'); return; }
-  G.profile = decodeProfile(store.get('profile', null)) || randomProfile();
+  const oldProfile = decodeProfile(store.get('profile', null));
+  Progress.init(oldProfile);
+  G.profile = oldProfile || Progress.randomOwned();
   store.set('profile', encodeProfile(G.profile));
   try { initRender(); }
   catch (e) { console.error(e); fatal('WEBGL NO DISPONIBLE', 'Aquest navegador o dispositiu no pot dibuixar gràfics 3D (WebGL). Prova-ho amb Chrome, Edge, Firefox o Safari actualitzats.'); return; }
@@ -7211,6 +7697,7 @@ function boot() {
   UI.init();
   EmoteWheel.init();
   Records.init();
+  ProgressUI.init();
   Cloud.bind(); Cloud.init();
   Input.init();
   Directory.start();
@@ -7219,7 +7706,7 @@ function boot() {
   ClaudeRoom.get().then((room) => { if (room) UI.renderOpenRooms(); });
   requestAnimationFrame(frame);
   Ticker.start();
-  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records, Cloud, mergeRace };
+  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records, Cloud, mergeRace, Progress, ProgressUI };
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
