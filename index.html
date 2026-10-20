@@ -227,7 +227,7 @@ button { font: inherit; color: inherit; }
 .lobby-bottom .ctl-legend { background: rgba(0,0,0,.7); }
 .lobby-left .plist { grid-template-columns: minmax(0, 1fr); }
 .card.epic { border-color: var(--yellow); background: linear-gradient(135deg, rgba(255,0,127,.35), rgba(0,0,0,.6)); }
-.card.epic .t::after { content: ' NOU!'; color: var(--yellow); font-size: 10px; }
+.card.epic .t::after { content: ' ' attr(data-tag); color: var(--yellow); font-size: 10px; }
 .room-code-big { background: rgba(0,0,0,.9); border: 4px solid var(--yellow); border-radius: 18px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .room-code-big .code { font-family: var(--f-display); font-size: clamp(30px, 5vw, 44px); color: var(--yellow); letter-spacing: .14em; line-height: 1; }
 .plist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
@@ -745,6 +745,23 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
   .lvup-h { font-size: 40px !important; } .lvup-item { min-width: 80px; padding: 4px 6px; } .li-ic { font-size: 24px; }
 }
 @media (max-width: 620px) { .xp-lines { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Xou i medalles ---------- */
+.xou-track { display: flex; justify-content: center; gap: 6px; }
+.xou-track .xt { display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,.55); border: 2px solid rgba(255,255,255,.15); border-radius: 12px; padding: 4px 10px; opacity: .6; }
+.xou-track .xt b { font-size: 18px; font-weight: 400; }
+.xou-track .xt small { font-family: var(--f-display); font-size: 10px; }
+.xou-track .xt.done { opacity: 1; border-color: var(--lime); }
+.xou-track .xt.cur { opacity: 1; border-color: var(--yellow); box-shadow: 0 0 12px rgba(255,230,0,.35); }
+.res.pass .pts { color: var(--lime); }
+.res.elim { opacity: .6; } .res.elim .pts { color: #ff6b8a; }
+.res.first.pass .pts { color: #0a7a2a; } .res.first.elim { opacity: 1; } .res.first.elim .pts { color: #c4002f; }
+.rec-medals { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.rec-medals .rm { display: flex; flex-direction: column; align-items: center; background: rgba(0,0,0,.5); border: 2px solid rgba(255,255,255,.15); border-radius: 10px; padding: 3px 10px; opacity: .55; }
+.rec-medals .rm.got { opacity: 1; border-color: var(--yellow); }
+.rec-medals .rm b { font-family: var(--f-display); font-weight: 400; font-size: 13px; }
+.rec-medals .rm small { font-family: var(--f-data); font-weight: 700; font-size: 9px; color: var(--lime); }
+@media (max-height: 520px) and (orientation: landscape) { .xou-track .xt { padding: 2px 7px; } .xou-track .xt b { font-size: 14px; } .rec-medals .rm { padding: 2px 6px; } }
 </style>
 </head>
 <body>
@@ -955,6 +972,7 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
     <p id="pod-sub" class="ol-sm"></p>
   </div>
   <div class="panel pod-panel stack">
+    <div class="xou-track" id="pod-xou" hidden></div>
     <div class="res-list" id="pod-list"></div>
     <div class="awards" id="pod-awards"></div>
     <div class="xp-panel" id="pod-xp" hidden>
@@ -1400,10 +1418,12 @@ const MODES = {
     desc: 'Passa la bomba xocant. Si et peta a tu, -2. Els supervivents sumen +1 a cada explosió.' },
   last: { id: 'last', name: 'Últim Bòs Dret', short: 'VIDES', icon: '❤️', tag: 'SUPERVIVÈNCIA',
     desc: 'Tres vides cadascú. Qui cau de la pista perd una vida. L\'últim bòs dret s\'emporta la ronda.' },
-  race: { id: 'race', name: 'Gran Cursa Turbo', short: 'CURSA', icon: '🏁', tag: 'NOU · ÈPIC',
+  xou: { id: 'xou', name: 'Xou Turbo', short: 'XOU', icon: '🎪', tag: 'NOU · TORNEIG',
+    desc: 'Torneig de 3 rondes amb eliminació: Gran Cursa, una arena sorpresa i la Gran Final. Només en queda un!' },
+  race: { id: 'race', name: 'Gran Cursa Turbo', short: 'CURSA', icon: '🏁', tag: 'ÈPIC',
     desc: 'Circuit d\'obstacles fins a la meta: escombres, rajoles que cauen, pèndols i salts. Empeny i arriba primer!' }
 };
-const MODE_ORDER = ['race', 'crown', 'cds', 'bomb', 'last'];
+const MODE_ORDER = ['xou', 'race', 'crown', 'cds', 'bomb', 'last'];
 const DURATIONS = [60, 90, 120, 180];
 const DIFFS = [
   { id: 0, name: 'FÀCIL', react: 0.55, aim: 0.55, turbo: 0.025, accel: 0.8 },
@@ -4409,6 +4429,7 @@ function setMap(w, mapId) {
 }
 
 function setMode(w, mode) {
+  w.show = null;
   const wasRace = w.mode === 'race';
   w.mode = MODES[mode] ? mode : 'crown';
   if (w.mode === 'race' && !wasRace) { w.prevMap = w.mapId; w.prevDur = w.duration; w.duration = Math.max(w.duration, 180); w.mapId = 'cursa'; }
@@ -4417,6 +4438,8 @@ function setMode(w, mode) {
 }
 
 function startMatch(w) {
+  // el Xou arrenca el seu torneig (o en torna a començar un si l'anterior ja s'ha acabat)
+  if (w.mode === 'xou' || (w.show && w.show.stage === 'done')) { w.mode = 'xou'; w.show = null; showStart(w); return; }
   if (w.mode === 'race') { w.mapId = 'cursa'; if (w.duration < 150) w.duration = 180; }
   else if (w.randomMap) { const opts = ARENA_MAPS.filter((m) => m.id !== w.mapId); w.mapId = pick(opts).id; }
   if (w.arena.id !== w.mapId || w.arena.t > 0 || w.arena.finaleAt >= 0) { w.arena = new Arena(w.mapId); bus.emit('arena', w.arena); }
@@ -4435,6 +4458,8 @@ function startMatch(w) {
 }
 
 function backToLobby(w) {
+  if (w.show) { w.show = null; w.mode = 'xou'; if (w.mapId === 'cursa') w.mapId = 'illa'; }
+  for (const p of w.players.values()) { p.elim = false; p.dead = false; }
   w.phase = 'lobby'; w.items = []; w.results = null; w.t = 0;
   if (w.matchDuration) w.duration = w.matchDuration;
   w.arena = new Arena(w.mapId); bus.emit('arena', w.arena);
@@ -4447,6 +4472,7 @@ function addJoiner(w, p) {
   Object.assign(p, { x: sp.x, z: sp.z, y: (sp.y || 0) + 6, vy: 0, inv: PHYS.inv, lives: 3 });
   p.px = p.x; p.pz = p.z; p.py = p.y;
   if ((w.phase === 'play' || w.phase === 'count') && w.mode === 'last') { p.out = true; p.lives = 0; }
+  if (w.show && w.phase !== 'lobby') showBench(p, true);
   w.players.set(p.id, p);
   w.rosterV++;
 }
@@ -4546,6 +4572,7 @@ function simStep(w, dt) {
   }
   if (w.phase === 'end') {
     for (const p of w.players.values()) { p.px = p.x; p.pz = p.z; p.py = p.y; if (p.emoteT > 0) p.emoteT -= dt; }
+    if (w.show) showTick(w, dt);
     return;
   }
   w.t += dt;
@@ -4629,7 +4656,7 @@ function simStep(w, dt) {
   if (play) {
     let end = w.timeLeft <= 0;
     if (w.mode === 'last' && w.players.size > 1 && alivePlayers(w).length <= 1) end = true;
-    if (w.mode === 'race' && list.length && list.every((p) => p.fin)) end = true;
+    if (w.mode === 'race' && list.length && list.every((p) => p.fin || p.elim)) end = true;
     if (end) endMatch(w);
   }
 }
@@ -4756,7 +4783,8 @@ function updateItems(w, list, dt) {
 
 function endMatch(w) {
   w.phase = 'end';
-  const arr = [...w.players.values()];
+  const all = [...w.players.values()];
+  const arr = all.filter((p) => !p.elim), benched = all.filter((p) => p.elim);
   if (w.mode === 'last') arr.sort((a, b) => (b.out ? b.elimAt : 1e9) - (a.out ? a.elimAt : 1e9) || b.lives - a.lives || b.score - a.score);
   else if (w.mode === 'race') arr.sort((a, b) => (a.fin || 99) - (b.fin || 99) || a.z - b.z);
   else arr.sort((a, b) => b.score - a.score || b.stats.ko - a.stats.ko);
@@ -4772,7 +4800,7 @@ function endMatch(w) {
   if (w.mode === 'crown') { const c = top((p) => p.stats.crownT); add('👑 Rei del Tron', c, c && Math.round(c.stats.crownT) + ' s amb corona'); }
   const clean = arr.filter((p) => p.stats.falls === 0);
   if (clean.length && clean.length < arr.length) add('🐕 Bòs Ferm', clean[0], 'Cap caiguda');
-  w.results = { order: arr.map((p) => p.id), awards };
+  w.results = { order: arr.concat(benched).map((p) => p.id), awards };
   w.items = []; w.crown.holder = null; w.bomb.holder = null;
   w.endT = w.t; w.t = 0;
   if (w.matchDuration) w.duration = w.matchDuration;
@@ -4785,7 +4813,9 @@ function endMatch(w) {
     Object.assign(p, { x: s.x, z: s.z, y: s.y, vx: 0, vy: 0, vz: 0, rotY: 0, dead: false, dash: 0, waveAnim: 0, pu: 0, inv: 0 });
     p.px = p.x; p.pz = p.z; p.py = p.y;
   });
+  for (const p of benched) showBench(p, true);
   pushEvent(w, 'end');
+  if (w.show) showAfterRound(w);
 }
 
 /* ---------------- bots ---------------- */
@@ -4953,6 +4983,82 @@ function botThink(w, b, dt) {
 }
 
 /* ===================================================================
+ * 06b · MODE XOU: torneig de 3 rondes amb eliminació
+ *   1) Gran Cursa  2) arena a l'atzar (corona, CDs o bomba)  3) Final: Últim Bòs Dret
+ *   L'amfitrió ho decideix tot; els convidats ho reben a l'estat (s.X).
+ * =================================================================== */
+
+const SHOW_MID = ['crown', 'cds', 'bomb'];
+const SHOW_DUR = { race: 180, crown: 75, cds: 75, bomb: 80, last: 120 };
+const SHOW_BREAK = 8;           // segons entre rondes
+const SHOW_ROUND_NAMES = ['RONDA 1', 'RONDA 2', 'GRAN FINAL'];
+
+function showQualify(n, final) { if (final) return 1; return clamp(Math.max(2, Math.ceil(n * 0.6)), 1, n); }
+
+function showStart(w) {
+  const arenas = ARENA_MAPS.map((m) => m.id);
+  w.show = {
+    round: 0, stage: 'play', nextIn: 0,
+    modes: ['race', pick(SHOW_MID), 'last'],
+    maps: ['cursa', pick(arenas), pick(arenas)],
+    alive: [...w.players.keys()], roundAlive: [], elim: [], champion: null
+  };
+  showRound(w);
+}
+
+function showRound(w) {
+  const s = w.show, m = s.modes[s.round];
+  s.alive = s.alive.filter((id) => w.players.has(id));
+  s.roundAlive = s.alive.slice(); s.elim = []; s.stage = 'play';
+  w.mode = m; w.mapId = s.maps[s.round]; w.randomMap = false; w.duration = SHOW_DUR[m];
+  startMatch(w);
+  for (const p of w.players.values()) showBench(p, !s.alive.includes(p.id));
+  w.rosterV++;
+}
+
+/* Un eliminat mira la resta de rondes des de la grada */
+function showBench(p, on) {
+  p.elim = !!on;
+  if (on) Object.assign(p, { out: true, dead: true, respT: 1e9, x: 0, y: -60, z: 0, vx: 0, vy: 0, vz: 0, hot: false, pu: 0 });
+}
+
+/* Es crida just després d'endMatch */
+function showAfterRound(w) {
+  const s = w.show; if (!s) return;
+  const final = s.round >= s.modes.length - 1;
+  const order = w.results.order.filter((id) => s.roundAlive.includes(id) && w.players.has(id));
+  const q = showQualify(order.length, final);
+  const pass = order.slice(0, q);
+  s.elim = order.slice(q);
+  s.alive = pass;
+  if (final) { s.stage = 'done'; s.champion = pass[0] || null; pushEvent(w, 'showchamp', { a: s.champion }); }
+  else { s.stage = 'inter'; s.nextIn = SHOW_BREAK; pushEvent(w, 'showround', { v: s.round }); }
+}
+
+/* Fase 'end' del simulador: compte enrere fins a la propera ronda */
+function showTick(w, dt) {
+  const s = w.show;
+  if (!s || s.stage !== 'inter') return;
+  s.nextIn -= dt;
+  if (s.nextIn <= 0) { s.round++; showRound(w); }
+}
+
+/* Estat que es pot enviar per xarxa */
+function encodeShow(w) {
+  const s = w.show; if (!s) return null;
+  const slot = (id) => (w.players.has(id) ? w.players.get(id).slot : -1);
+  const sl = (ids) => ids.map(slot).filter((x) => x >= 0);
+  return [s.round, s.stage[0], Math.round(s.nextIn * 10), s.modes.join(','), sl(s.alive), slot(s.champion), sl(s.roundAlive), sl(s.elim)];
+}
+function decodeShow(x, slots) {
+  if (!Array.isArray(x)) return null;
+  const ids = (a) => (Array.isArray(a) ? a.map((i) => slots[i]).filter(Boolean) : []);
+  const modes = String(x[3] || '').split(',').filter((m) => MODES[m]);
+  return { round: clamp(x[0] | 0, 0, 2), stage: { p: 'play', i: 'inter', d: 'done' }[x[1]] || 'play', nextIn: (x[2] | 0) / 10, modes: modes.length === 3 ? modes : ['race', 'crown', 'last'],
+    alive: ids(x[4]), champion: x[5] >= 0 ? slots[x[5]] || null : null, roundAlive: ids(x[6]), elim: ids(x[7]) };
+}
+
+/* ===================================================================
  * 07 · XARXA. L'amfitrió simula i envia "fotos" de l'estat (~30 Hz).
  * Els convidats envien només el que premen. Tots els paquets són estat
  * absolut, així que perdre'n algun no trenca res.
@@ -5097,7 +5203,7 @@ function encodeRoster(w) {
 function encodeState(w, hostId) {
   const P = [];
   for (const p of w.players.values()) {
-    const fl = (p.grounded ? 1 : 0) | (p.dead ? 2 : 0) | (p.out ? 4 : 0) | (p.hot ? 8 : 0);
+    const fl = (p.grounded ? 1 : 0) | (p.dead ? 2 : 0) | (p.out ? 4 : 0) | (p.hot ? 8 : 0) | (p.elim ? 16 : 0);
     P.push([p.slot, q100(p.x), q100(p.y), q100(p.z), q100(p.rotY), q10(p.vx), q10(p.vy), q10(p.vz), fl, p.score, p.pu, q10(p.puT), q100(p.tcd), q100(p.wcd), q100(p.dash), q100(p.waveAnim), p.lives, p.ack | 0, p.emote, q10(p.emoteT), q10(p.inv), q100(p.tcdMax || 1.5), p.cp | 0, p.fin | 0]);
   }
   const s = {
@@ -5108,6 +5214,7 @@ function encodeState(w, hostId) {
     bm: [w.bomb.holder && w.players.has(w.bomb.holder) ? w.players.get(w.bomb.holder).slot : -1, q10(w.bomb.timer)],
     E: w.events.filter((e) => w.tick - e.tk < 75).slice(-10).map((e) => [e.id, e.k, e.a || 0, e.b || 0, q10(e.x || 0), q10(e.y || 0), q10(e.z || 0), e.v != null ? e.v : 0, e.n || 0])
   };
+  if (w.show) s.X = encodeShow(w);
   if (w.arena.race) { const TT = []; for (const r of w.arena.regions) if (r.touch && r.trig != null) TT.push([r.idx, q10(r.trig)]); s.TT = TT; }
   if (w.phase === 'end' && w.results) {
     s.R = { o: w.results.order.map((id) => (w.players.has(id) ? w.players.get(id).slot : -1)).filter((x) => x >= 0), a: w.results.awards.map((a) => [a.title, w.players.has(a.id) ? w.players.get(a.id).slot : -1, a.val]) };
@@ -5514,12 +5621,13 @@ function applyState(s) {
     const smp = { tm: tnow, x: e[1] / 100, y: e[2] / 100, z: e[3] / 100, rotY: e[4] / 100, vx: e[5] / 10, vy: e[6] / 10, vz: e[7] / 10 };
     mp.buf.push(smp); if (mp.buf.length > 14) mp.buf.shift();
     Object.assign(mp, { flags: e[8], score: e[9], pu: e[10], puT: e[11] / 10, tcd: e[12] / 100, wcd: e[13] / 100, dash: e[14] / 100, waveAnim: e[15] / 100, lives: e[16], ack: e[17], emote: e[18], emoteT: e[19] / 10, inv: e[20] / 10, tcdMax: e[21] / 100, cp: e[22] | 0, fin: e[23] | 0 });
-    mp.grounded = !!(e[8] & 1); mp.dead = !!(e[8] & 2); mp.out = !!(e[8] & 4); mp.hot = !!(e[8] & 8);
+    mp.grounded = !!(e[8] & 1); mp.dead = !!(e[8] & 2); mp.out = !!(e[8] & 4); mp.hot = !!(e[8] & 8); mp.elim = !!(e[8] & 16);
     if (id === G.meId) reconcile(mp, smp);
   }
   m.items = (s.I || []).slice(0, 40);
   m.crown = s.cw || [-1, 0, 0]; m.bomb = s.bm || [-1, 0];
   if (s.R) m.results = s.R; else if (ph !== 'end') m.results = null;
+  m.show = s.X ? decodeShow(s.X, m.slots) : null;
   if (s.S) m.stats = s.S;
   // esdeveniments nous
   for (const e of s.E || []) {
@@ -5738,7 +5846,7 @@ function renderPlayers(alpha) {
     for (const p of G.world.players.values()) {
       out.push({ id: p.id, profile: p.profile, name: p.name, isBot: p.isBot, lv: p.lv | 0,
         x: lerp(p.px, p.x, alpha), y: lerp(p.py, p.y, alpha), z: lerp(p.pz, p.z, alpha), rotY: p.rotY, vx: p.vx, vy: p.vy, vz: p.vz,
-        grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, giant: p.pu === PU.giant, shield: p.pu === PU.shield, pu: p.pu, puT: p.puT,
+        grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, elim: !!p.elim, giant: p.pu === PU.giant, shield: p.pu === PU.shield, pu: p.pu, puT: p.puT,
         dead: p.dead, out: p.out, inv: p.inv, emote: p.emote, emoteT: p.emoteT, score: p.score, lives: p.lives, hot: p.hot, tcd: p.tcd, tcdMax: p.tcdMax || 1.5, wcd: p.wcd, cp: p.cp, fin: p.fin, slot: p.slot });
     }
   } else if (G.mirror) {
@@ -5757,7 +5865,7 @@ function renderPlayers(alpha) {
         if (Math.hypot(s1.x - s0.x, s1.z - s0.z) > 8) { st.x = s1.x; st.y = s1.y; st.z = s1.z; }
       }
       out.push(Object.assign(st, { id: mp.id, profile: mp.profile, name: mp.name, isBot: mp.isBot, lv: mp.id === G.meId ? Progress.level() : mp.lv | 0, giant: mp.pu === PU.giant, shield: mp.pu === PU.shield, pu: mp.pu, puT: mp.puT,
-        dead: mp.dead, out: mp.out, inv: mp.inv, score: mp.score, lives: mp.lives, hot: mp.hot, tcdMax: mp.tcdMax || 1.5, cp: mp.cp || 0, fin: mp.fin || 0, slot: G.mirror.slots.indexOf(mp.id) }));
+        dead: mp.dead, out: mp.out, elim: !!mp.elim, inv: mp.inv, score: mp.score, lives: mp.lives, hot: mp.hot, tcdMax: mp.tcdMax || 1.5, cp: mp.cp || 0, fin: mp.fin || 0, slot: G.mirror.slots.indexOf(mp.id) }));
     }
   }
   return out;
@@ -5767,7 +5875,7 @@ function currentState() {
   if (G.world) {
     const w = G.world;
     return { randomMap: w.randomMap, isPublic: w.isPublic, phase: w.phase, mode: w.mode, mapId: w.mapId, duration: w.duration, diff: w.diff, timeLeft: w.timeLeft, countT: w.countT,
-      crownHolder: w.crown.holder, crown: { x: w.crown.x, z: w.crown.z }, bombHolder: w.bomb.holder, bombT: w.bomb.timer, items: w.items, results: w.results, host: true, finaleLeft: w.finaleLeft };
+      crownHolder: w.crown.holder, crown: { x: w.crown.x, z: w.crown.z }, bombHolder: w.bomb.holder, bombT: w.bomb.timer, items: w.items, results: w.results, host: true, finaleLeft: w.finaleLeft, show: w.show ? Object.assign({}, w.show) : null };
   }
   const m = G.mirror;
   if (!m || !m.phase) return null;
@@ -5777,7 +5885,8 @@ function currentState() {
   const est = m.phase === 'play' ? (now() - m.recv) / 1000 : 0;
   return { randomMap: m.randomMap, isPublic: m.isPublic, phase: m.phase, mode: m.mode, mapId: m.mapId, duration: m.duration, diff: m.diff, timeLeft: Math.max(0, m.tl - est), countT: m.ct - (m.phase === 'count' ? (now() - m.recv) / 1000 : 0),
     crownHolder: slot(m.crown[0]), crown: { x: m.crown[1] / 10, z: m.crown[2] / 10 }, bombHolder: slot(m.bomb[0]), bombT: m.bomb[1] / 10 - est,
-    items: m.items.map((i) => ({ id: i[0], type: i[1], x: i[2] / 10, y: i[3] / 10, z: i[4] / 10 })), results: res, host: false };
+    items: m.items.map((i) => ({ id: i[0], type: i[1], x: i[2] / 10, y: i[3] / 10, z: i[4] / 10 })), results: res, host: false,
+    show: m.show ? Object.assign({}, m.show, { nextIn: Math.max(0, m.show.nextIn - (now() - m.recv) / 1000) }) : null };
 }
 
 /* ---------------- objectes de mode: corona, bomba, ítems ---------------- */
@@ -6549,8 +6658,10 @@ const UI = {
     for (const b of $('seg-vis').children) b.disabled = !host;
     this.syncSegment($('seg-vis'), pub ? 1 : 0);
     $('vis-hint').textContent = pub ? 'Surt a la llista de SALES OBERTES del menú. Qualsevol pot entrar.' : 'No surt a la llista. Només hi entra qui té el codi.';
-    const race = !!(st && st.mode === 'race');
+    const race = !!(st && (st.mode === 'race' || st.mode === 'xou'));
     $('lobby-maps').hidden = race; $('maps-label').hidden = race; $('race-note').hidden = !race;
+    $('race-note').textContent = st && st.mode === 'xou' ? '🎪 El Xou tria les arenes sol: 🏁 Cursa → 🎲 arena sorpresa → ❤️ Gran Final. Passa el 60% a cada ronda!' : '🏁 La Gran Cursa Turbo es juga sempre al seu circuit propi.';
+    $('seg-dur').parentElement.hidden = !!(st && st.mode === 'xou');
     // arenes
     const maps = $('lobby-maps'); maps.textContent = '';
     for (const m of ARENA_MAPS) {
@@ -6568,7 +6679,7 @@ const UI = {
       const m = MODES[id];
       const b = h('button', { class: 'card', type: 'button', 'aria-pressed': String(st && st.mode === id) }, h('span', { class: 't', text: m.icon + ' ' + m.name.toUpperCase() }), h('span', { class: 'd', text: m.desc }));
       if (!host) b.disabled = true;
-      if (m.tag === 'NOU · ÈPIC') b.classList.add('epic');
+      if (/ÈPIC|NOU/.test(m.tag)) { b.classList.add('epic'); b.firstChild.dataset.tag = /NOU/.test(m.tag) ? 'NOU!' : 'ÈPIC!'; }
       b.addEventListener('click', () => { if (!host) return; setMode(G.world, id); store.set('last.mode', id); sound.pickup(); this.renderLobby(true); });
       modes.appendChild(b);
     }
@@ -6579,11 +6690,12 @@ const UI = {
   prepareHud(st) {
     if (!st) return;
     const m = MODES[st.mode];
-    $('hud-mode').textContent = m.icon + ' ' + m.name.toUpperCase() + ' · ' + MAP_BY_ID[st.mode === 'race' ? 'cursa' : st.mapId].name.toUpperCase();
+    $('hud-mode').textContent = (st.show ? '🎪 XOU · ' + SHOW_ROUND_NAMES[st.show.round] + ' · ' : '') + m.icon + ' ' + m.name.toUpperCase() + (st.show ? '' : ' · ' + MAP_BY_ID[st.mode === 'race' ? 'cursa' : st.mapId].name.toUpperCase());
     $('hud-mode-short').textContent = m.short;
     $('hud-feed').textContent = '';
     const hint = { crown: '👑 AGAFA LA CORONA I EMPENY ELS RIVALS FORA!', cds: '💿 CAÇA CDs I FES-LOS SALTAR DELS RIVALS AMB TURBO!', bomb: '💣 PASSA LA BOMBA XOCANT ABANS QUE ESCLATI!', last: '❤️ TRES VIDES. QUEDA\'T DRET FINS AL FINAL!', race: '🏁 CORRE FINS A LA META! ESPAI PER SALTAR, SHIFT PER ESBOTZAR!' }[st.mode];
-    this.announce(hint, 4200);
+    if (st.show) { const n = st.show.roundAlive.length, final = st.show.round >= 2; this.announce('🎪 ' + SHOW_ROUND_NAMES[st.show.round] + ' · ' + (final ? 'L\'ÚLTIM DRET ÉS EL CAMPIÓ!' : 'PASSEN ' + showQualify(n, false) + ' DE ' + n + '!') + ' ' + hint, 5200); }
+    else this.announce(hint, 4200);
     const race = st.mode === 'race';
     $('minimap').classList.toggle('race', race);
     $('minimap').width = race ? 64 : 160; $('minimap').height = race ? 240 : 160;
@@ -6656,7 +6768,7 @@ const UI = {
       $('spectate').hidden = !spec;
       if (spec) {
         const tgt = players.find((q) => q.id === G.spectate);
-        const txt = (st.mode === 'race' && me.fin ? '🏁 HAS ARRIBAT ' + ordinal(me.fin).toUpperCase() + '! · ' : '👀 ESPECTADOR · ') + (tgt ? 'MIRANT ' + tgt.name.toUpperCase() : 'ESPERA LA PROPERA RONDA') + ' · ← → CANVIA';
+        const txt = (me.elim ? '❌ ELIMINAT DEL XOU · ' : st.mode === 'race' && me.fin ? '🏁 HAS ARRIBAT ' + ordinal(me.fin).toUpperCase() + '! · ' : '👀 ESPECTADOR · ') + (tgt ? 'MIRANT ' + tgt.name.toUpperCase() : 'ESPERA LA PROPERA RONDA') + ' · ← → CANVIA';
         const el = $('spectate').firstElementChild; if (el.textContent !== txt) el.textContent = txt;
       }
     }
@@ -6740,18 +6852,49 @@ const UI = {
   },
 
   /* ---------- PODI ---------- */
+  /* Pantalla entre rondes del Xou: qui passa i qui queda fora */
+  showInter(st, byId) {
+    const s = st.show, me = G.meId, rn = SHOW_ROUND_NAMES[s.round];
+    const passed = s.alive.includes(me), wasIn = s.roundAlive.includes(me);
+    $('pod-title').textContent = !wasIn ? '🎪 ' + rn + ' ACABADA' : passed ? '✅ CLASSIFICAT! · ' + rn + ' SUPERADA' : '❌ ELIMINAT A LA ' + rn + '!';
+    const next = MODES[s.modes[s.round + 1]];
+    $('pod-sub').textContent = '🎪 XOU TURBO · PASSEN ' + s.alive.length + ' DE ' + s.roundAlive.length + ' · PROPERA: ' + (next ? next.icon + ' ' + next.name.toUpperCase() : '');
+    const list = $('pod-list'); list.textContent = '';
+    const order = st.results.order.filter((id) => s.roundAlive.includes(id) && byId.has(id));
+    order.forEach((id, i) => { const p = byId.get(id), ok = s.alive.includes(id);
+      list.appendChild(h('div', { class: 'res' + (ok ? ' pass' : ' elim') + (id === me ? ' first' : '') }, h('span', { class: 'nm', text: (ok ? '✅ ' : '❌ ') + p.name + (id === me ? ' (TU)' : '') }), h('span', { class: 'pts', text: ok ? 'CLASSIFICAT' : 'ELIMINAT' }))); });
+    $('pod-awards').textContent = '';
+    this.renderShowTrack(st);
+    $('pod-host').hidden = true; $('pod-wait').hidden = false;
+    const tick = () => { const c = currentState(); const n = c && c.show ? Math.ceil(c.show.nextIn) : 0; $('pod-wait').textContent = '🎪 ' + (SHOW_ROUND_NAMES[s.round + 1] || '') + ' EN ' + Math.max(0, n) + 's...'; };
+    tick(); this.showT = setInterval(tick, 250);
+    if (wasIn) { if (passed) { sound.victory(); FX.burst(0, 5, 1, { count: 30, colors: [0xa3ff00, 0x00f0ff, 0xffe600], speed: 8, up: 10, frame: 4, size: 0.5, grav: 10 }); } else sound.boing(0.6); }
+  },
+  /* Les tres rondes del Xou, marcades segons com va */
+  renderShowTrack(st) {
+    const s = st.show, el = $('pod-xou'); el.textContent = '';
+    s.modes.forEach((m, i) => { const done = i < s.round || (i === s.round && s.stage !== 'play');
+      el.appendChild(h('span', { class: 'xt' + (done ? ' done' : '') + (i === s.round ? ' cur' : '') }, h('b', { text: MODES[m].icon }), h('small', { text: SHOW_ROUND_NAMES[i] }))); });
+  },
   showResults(st, players) {
     if (!st || !st.results) { setTimeout(() => this.showResults(currentState(), renderPlayers(1)), 200); return; }
     const byId = new Map(players.map((p) => [p.id, p]));
-    const order = st.results.order.filter((id) => byId.has(id));
-    const win = byId.get(order[0]);
-    $('pod-title').textContent = win ? '🏆 GUANYA ' + win.name.toUpperCase() + '!' : '🏆 FINAL!';
+    let order = st.results.order.filter((id) => byId.has(id));
+    // al Xou, primer els finalistes; els eliminats de rondes anteriors al final
+    if (st.show) order = order.filter((id) => st.show.roundAlive.includes(id)).concat(order.filter((id) => !st.show.roundAlive.includes(id)));
+    const win = byId.get(st.show ? st.show.champion : order[0]);
+    clearInterval(this.showT);
+    $('pod-xou').hidden = !st.show;
+    if (st.show && st.show.stage === 'inter') { this.showInter(st, byId); ProgressUI.showAward(Progress.onMatchEnd(st, players), true); return; }
+    $('pod-title').textContent = st.show ? (byId.get(st.show.champion) ? '🎪 CAMPIÓ DEL XOU: ' + byId.get(st.show.champion).name.toUpperCase() + '!' : '🎪 FINAL DEL XOU!') : win ? '🏆 GUANYA ' + win.name.toUpperCase() + '!' : '🏆 FINAL!';
+    if (st.show) this.renderShowTrack(st);
     $('pod-sub').textContent = MODES[st.mode].icon + ' ' + MODES[st.mode].name.toUpperCase() + ' · ' + MAP_BY_ID[st.mode === 'race' ? 'cursa' : st.mapId].name.toUpperCase();
-    $('btn-nextmap').hidden = st.mode === 'race';
+    $('btn-nextmap').hidden = st.mode === 'race' || !!st.show;
     const list = $('pod-list'); list.textContent = '';
     const medals = ['🥇', '🥈', '🥉'];
     order.forEach((id, i) => {
       const p = byId.get(id);
+      if (st.show && !st.show.roundAlive.includes(id)) { list.appendChild(h('div', { class: 'res elim' }, h('span', { class: 'nm', text: '❌ ' + p.name + (p.id === G.meId ? ' (TU)' : '') }), h('span', { class: 'pts', text: 'ELIMINAT' }))); return; }
       const val = st.mode === 'last' ? (i === 0 ? 'SUPERVIVENT' : p.score + ' KO') : st.mode === 'race' ? (p.fin ? '🏁 ' + p.score + ' PTS' : 'SENSE ARRIBAR') : p.score + ' PTS';
       list.appendChild(h('div', { class: 'res' + (i === 0 ? ' first' : '') }, h('span', { class: 'nm', text: (medals[i] || '#' + (i + 1)) + ' ' + p.name + (p.id === G.meId ? ' (TU)' : '') }), h('span', { class: 'pts', text: val })));
     });
@@ -6759,7 +6902,8 @@ const UI = {
     for (const a of st.results.awards || []) if (a.name) aw.appendChild(h('div', { class: 'award' }, h('b', { text: a.title }), h('span', { text: a.name }), h('span', { class: 'c-muted', text: a.val })));
     ProgressUI.showAward(Progress.onMatchEnd(st, players));
     const host = G.role === 'host' || G.role === 'solo';
-    $('pod-host').hidden = !host; $('pod-wait').hidden = host;
+    $('pod-host').hidden = !host; $('pod-wait').hidden = host; $('pod-wait').textContent = 'L\'AMFITRIÓ TRIA LA PROPERA RONDA...';
+    $('btn-rematch').textContent = st.show ? '🎪 UN ALTRE XOU!' : '🔁 UNA ALTRA!';
     $('btn-tolobby').hidden = G.role === 'solo';
     if (win && win.id === G.meId) { sound.victory(); for (let i = 0; i < 4; i++) setTimeout(() => FX.burst(rand(-4, 4), 5, rand(-1, 3), { count: 30, colors: [0xff007f, 0x00f0ff, 0xffe600, 0xa3ff00], speed: 8, up: 10, frame: 4, size: 0.5, grav: 10 }), i * 400); }
   }
@@ -6832,6 +6976,14 @@ const EmoteWheel = {
  * =================================================================== */
 
 const SPLIT_NAMES = ['CP1', 'CP2', 'CP3', 'CP4', 'CP5', 'CP6', 'META'];
+/* Medalles per temps de la Gran Cursa */
+const RACE_MEDALS = [
+  { id: 'diamant', icon: '💎', name: 'Diamant', t: 55, xp: 160 },
+  { id: 'or', icon: '🥇', name: "d'Or", t: 70, xp: 110 },
+  { id: 'plata', icon: '🥈', name: 'de Plata', t: 90, xp: 70 },
+  { id: 'bronze', icon: '🥉', name: 'de Bronze', t: 120, xp: 35 }
+];
+const raceMedal = (t) => RACE_MEDALS.find((m) => t <= m.t) || null;
 
 function fmtRace(t) {
   if (!(t >= 0)) return '-:--.--';
@@ -6915,15 +7067,16 @@ const Records = {
     d.runs.push(run); d.runs.sort((a, b) => a.t - b.t); d.runs = d.runs.slice(0, 10);
     this.save(d);
     const isPB = !pb || run.t < pb.t;
-    r.pb = isPB;
+    r.pb = isPB; r.prevPB = pb ? pb.t : 0;
+    const md = raceMedal(run.t);
     if (isPB) {
       Cloud.submitBest();
-      const msg = '🏆 NOU RÈCORD! ' + fmtRace(run.t) + (pb ? ' (' + fmtDelta(run.t - pb.t) + ')' : '');
+      const msg = '🏆 NOU RÈCORD! ' + fmtRace(run.t) + (pb ? ' (' + fmtDelta(run.t - pb.t) + ')' : '') + (md ? ' · ' + md.icon + ' ' + md.name.toUpperCase() : '');
       UI.announce(msg, 4200); toast(msg);
       sound.pickup(true); setTimeout(() => sound.pickup(true), 160);
     } else {
       const pos = d.runs.indexOf(run) + 1;
-      const msg = '🏁 ' + fmtRace(run.t) + ' · ' + fmtDelta(run.t - pb.t) + ' vs el teu rècord' + (pos ? ' · ' + pos + 'a millor marca' : '');
+      const msg = (md ? md.icon + ' ' : '🏁 ') + fmtRace(run.t) + ' · ' + fmtDelta(run.t - pb.t) + ' vs el teu rècord' + (pos ? ' · ' + pos + 'a millor marca' : '');
       UI.announce(msg, 3800); toast(msg);
     }
     if (G.timeTrial && G.world) { const w = G.world; w.duration = Math.min(w.duration, w.t + 3); }
@@ -6952,10 +7105,14 @@ const Records = {
     const d = this.load(), pb = d.runs[0];
     const head = $('rec-pb'); head.textContent = '';
     if (pb) {
-      head.appendChild(h('div', { class: 'big', text: fmtRace(pb.t) }));
+      const md = raceMedal(pb.t);
+      head.appendChild(h('div', { class: 'big', text: (md ? md.icon + ' ' : '') + fmtRace(pb.t) }));
       const sob = d.bestSegs.length === 7 && d.bestSegs.every((x) => x != null) ? d.bestSegs.reduce((a, b) => a + b, 0) : null;
       head.appendChild(h('div', { class: 'sub', text: 'MILLOR TEMPS · ' + pb.n + ' · ' + new Date(pb.d).toLocaleDateString('ca') + (sob ? ' · SUMA DELS MILLORS ' + fmtRace(sob) : '') }));
     } else head.appendChild(h('div', { class: 'sub', text: 'Encara no tens cap temps. Acaba una Gran Cursa Turbo per estrenar el rècord!' }));
+    const meds = h('div', { class: 'rec-medals' });
+    for (const m of RACE_MEDALS.slice().reverse()) meds.appendChild(h('span', { class: 'rm' + (pb && pb.t <= m.t ? ' got' : '') }, h('b', { text: m.icon + ' ' + fmtRace(m.t).replace(/\.00$/, '') }), h('small', { text: '+' + m.xp + ' XP' })));
+    head.appendChild(meds);
     const ol = $('rec-list'); ol.textContent = '';
     const kinds = { tt: '⏱️', solo: '🤖', online: '🌐' };
     d.runs.forEach((r, i) => ol.appendChild(h('li', { class: i === 0 ? 'first' : '' },
@@ -7306,8 +7463,10 @@ const Progress = {
   compute(st, players) {
     const me = players.find((p) => p.id === G.meId);
     if (!me || !st || !st.results) return null;
-    const lines = []; const add = (t, v, k) => { if (v) lines.push({ t, v: Math.round(v), k: k || '' }); };
-    const order = st.results.order || [];
+    const lines = []; const add = (t, v, k) => { if (v || k === 'info') lines.push({ t, v: Math.round(v), k: k || '' }); };
+    const show = st.show;
+    if (show && !show.roundAlive.includes(G.meId)) return null;           // ja eliminat: mires des de la grada
+    const order = (st.results.order || []).filter((id) => !show || show.roundAlive.includes(id));
     const pos = order.indexOf(G.meId) + 1;
     const nPlayers = order.length || players.length;
     const humans = players.filter((p) => !p.isBot).length;
@@ -7315,20 +7474,37 @@ const Progress = {
     const race = st.mode === 'race';
     const tt = !!G.timeTrial;
     const rec = race && typeof Records !== 'undefined' ? Records.run : null;
+    const d = this.load();
+    const dt0 = new Date(), today = dt0.getFullYear() + '-' + String(dt0.getMonth() + 1).padStart(2, '0') + '-' + String(dt0.getDate()).padStart(2, '0');
+    // temps de la cursa: medalla + millora del rècord
+    const timeLines = () => {
+      if (!rec || !rec.done || !(rec.final > 0)) return;
+      const md = raceMedal(rec.final);
+      if (md) add(md.icon + ' Medalla ' + md.name + ' (' + fmtRace(rec.final) + ')', md.xp, md.id === 'diamant' || md.id === 'or' ? 'gold' : '');
+      if (rec.pb && rec.prevPB > 0) { const gain = rec.prevPB - rec.final; add('🏆 Rècord personal (−' + gain.toFixed(2) + ' s)', 60 + Math.min(120, Math.round(gain * 15)), 'gold'); }
+      else if (rec.pb) add('🏆 Primer rècord personal!', 60, 'gold');
+    };
     if (tt) {
       if (!me.fin) return { lines: [{ t: 'Contrarellotge sense arribar a la meta', v: 0 }], total: 0, base: 0 };
-      add('🏁 Contrarellotge completada', 40);
-      add('✅ Checkpoints ×' + Math.min(6, me.cp | 0), Math.min(6, me.cp | 0) * 5);
-      if (rec && rec.pb) add('🏆 Nou rècord personal!', 80, 'gold');
+      add('🏁 Contrarellotge completada', 20);
+      timeLines();
     } else {
       if (played < 20) return { lines: [{ t: 'Partida massa curta (mínim 20 s)', v: 0 }], total: 0, base: 0 };
-      add('🎮 Participació', 40);
-      if (nPlayers >= 2 && pos > 0) add(pos === 1 ? '🥇 1r lloc' : pos === 2 ? '🥈 2n lloc' : pos === 3 ? '🥉 3r lloc' : '#' + pos + ' lloc', pos === 1 ? 120 : pos === 2 ? 80 : pos === 3 ? 60 : 30, pos === 1 ? 'gold' : '');
+      add('🎮 Participació', show ? 25 : 40);
+      if (show) {
+        const rn = SHOW_ROUND_NAMES[show.round] || 'RONDA';
+        if (show.stage === 'done') {
+          if (pos === 1) add('🏆 CAMPIÓ DEL XOU!', 300, 'gold');
+          else if (pos === 2) add('🥈 Subcampió del Xou', 130);
+          else add('🎪 Finalista del Xou', 70);
+        } else if (show.alive.includes(G.meId)) add('✅ ' + rn.charAt(0) + rn.slice(1).toLowerCase() + ' superada', 70, 'gold');
+        else add('❌ Eliminat a la ' + rn.toLowerCase(), 0, 'info');
+      } else if (nPlayers >= 2 && pos > 0) add(pos === 1 ? '🥇 1r lloc' : pos === 2 ? '🥈 2n lloc' : pos === 3 ? '🥉 3r lloc' : '#' + pos + ' lloc', pos === 1 ? 120 : pos === 2 ? 80 : pos === 3 ? 60 : 30, pos === 1 ? 'gold' : '');
       const sc = Math.max(0, me.score | 0);
       if (race) {
         add('✅ Checkpoints ×' + Math.min(6, me.cp | 0), Math.min(6, me.cp | 0) * 12);
-        if (me.fin) add('🏁 Has arribat a la meta', 60);
-        if (rec && rec.pb) add('🏆 Nou rècord personal!', 80, 'gold');
+        if (me.fin) add('🏁 Has arribat a la meta', 50);
+        timeLines();
       } else if (st.mode === 'crown') add('👑 Rendiment (' + sc + ' pts)', Math.min(120, sc * 2));
       else if (st.mode === 'cds') add('💿 Rendiment (' + sc + ' CDs)', Math.min(120, sc * 3));
       else if (st.mode === 'bomb') add('💣 Rendiment (' + sc + ' pts)', Math.min(100, sc * 8));
@@ -7341,10 +7517,11 @@ const Progress = {
       if (df === 2) { const b = Math.round(base * 0.2); add('🤖 Bots en DUR +20%', b, 'bonus'); total += b; }
       if (df === 0) { const b = -Math.round(base * 0.25); add('🤖 Bots en FÀCIL −25%', b, 'malus'); total += b; }
     }
-    const dt0 = new Date(), today = dt0.getFullYear() + '-' + String(dt0.getMonth() + 1).padStart(2, '0') + '-' + String(dt0.getDate()).padStart(2, '0');
-    if (total > 0 && this.load().day !== today) { add('☀️ Primera partida del dia ×2', total, 'bonus'); total *= 2; }
+    // la contrarellotge cansa: a partir de la 9a del dia val menys (evita farmejar)
+    if (tt) { const n = d.ttDay === today ? d.ttN | 0 : 0; if (n >= 8 && total > 0) { const b = -Math.round(total * 0.6); add('😮‍💨 Contrarellotge cansada (' + (n + 1) + 'a avui) −60%', b, 'malus'); total += b; } }
+    if (total > 0 && d.day !== today) { add('☀️ Primera partida del dia ×2', total, 'bonus'); total *= 2; }
     total = Math.min(900, Math.max(0, total));
-    return { lines, total, base, today };
+    return { lines, total, base, today, tt };
   },
 
   /* Es crida un cop per partida des del podi */
@@ -7357,6 +7534,7 @@ const Progress = {
     const before = this.levelOf(d.xp);
     d.xp += r.total; d.matches = (d.matches || 0) + 1;
     if (r.total > 0 && r.today) d.day = r.today;
+    if (r.tt && r.today) { d.ttN = d.ttDay === r.today ? (d.ttN | 0) + 1 : 1; d.ttDay = r.today; }
     const after = this.levelOf(d.xp);
     const unlocked = [];
     for (let l = before.lv + 1; l <= after.lv; l++) for (const k of LEVEL_REWARDS[l] || []) if (!d.own.includes(k)) { const info = itemInfo(k); if (info) unlocked.push(info); }
@@ -7451,10 +7629,16 @@ const ProgressUI = {
   closePath() { $('ov-levels').hidden = true; },
 
   /* ---------- podi: desglossament animat ---------- */
-  showAward(a) {
+  /* defer: entre rondes del Xou la celebració s'espera al final del torneig */
+  showAward(a, defer) {
     const box = $('pod-xp');
     clearTimeout(this.t1); clearInterval(this.t2);
-    if (!a) { box.hidden = true; return; }
+    let up = null;
+    if (a && a.after.lv > a.before.lv) up = { before: a.before, after: a.after, unlocked: a.unlocked };
+    if (this.pendUp && !defer) { up = up ? { before: this.pendUp.before, after: up.after, unlocked: this.pendUp.unlocked.concat(up.unlocked) } : this.pendUp; this.pendUp = null; }
+    else if (up && defer) { this.pendUp = this.pendUp ? { before: this.pendUp.before, after: up.after, unlocked: this.pendUp.unlocked.concat(up.unlocked) } : up; up = null; }
+    const celebrate = () => { if (up) setTimeout(() => this.levelUp(up), 350); };
+    if (!a) { box.hidden = true; if (up) setTimeout(celebrate, 1200); return; }
     box.hidden = false;
     const lines = $('xp-lines'); lines.textContent = '';
     const total = $('xp-total'); total.textContent = '+0 XP';
@@ -7477,7 +7661,7 @@ const ProgressUI = {
           const u = clamp((performance.now() - t0) / dur, 0, 1), x = startXP + (endXP - startXP) * (1 - Math.pow(1 - u, 2));
           const lv = setBar(x);
           if (lv > lastLv) { lastLv = lv; sound.pickup(true); $('xp-lv').classList.remove('pop'); void $('xp-lv').offsetWidth; $('xp-lv').classList.add('pop'); }
-          if (u >= 1) { clearInterval(this.t2); if (a.after.lv > a.before.lv) setTimeout(() => this.levelUp(a), 350); }
+          if (u >= 1) { clearInterval(this.t2); celebrate(); }
         }, 30);
       }
     };

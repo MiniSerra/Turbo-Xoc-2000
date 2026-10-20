@@ -36,6 +36,7 @@ També es pot jugar amb **comandament** (l'stick dret gira la càmera a la cursa
 
 | | Mode | Com es guanya |
 |---|---|---|
+| 🎪 | **Xou Turbo** | Un torneig de 3 rondes amb eliminació: primer la Gran Cursa, després una arena sorpresa (corona, CDs o bomba) i, per acabar, la gran final a l'Últim Bòs Dret. Els eliminats miren la resta des de la grada. Només n'hi pot haver un **campió del Xou**. |
 | 🏁 | **Gran Cursa Turbo** | Un circuit d'obstacles estil Fall Guys amb punts de control: escombres giratòries, rajoles que cauen, pèndols, boles rodolant, plataformes mòbils i un pont de ventiladors. Qui arriba primer, guanya. Hi ha podi i, quan acabes, passes a mode espectador. |
 | 👑 | **Rei de la Pista** | Agafa la corona i aguanta-la. Pots robar-la als altres amb el turbo. |
 | 💿 | **Febre de CDs** | Plouen CDs (i alguns de daurats). Si xoques amb algú, se li escampen els seus. |
@@ -61,6 +62,7 @@ També es pot jugar amb **comandament** (l'stick dret gira la càmera a la cursa
 ## ⭐ Nivells i XP
 
 Cada partida et dona experiència segons la participació, la posició, el rendiment i els rècords. La **primera partida del dia val ×2** i jugar amb amics suma un 25 % més.
+A la Gran Cursa (i a la contrarellotge) el **temps també dona XP**: medalles 💎 Diamant (≤ 55 s), 🥇 Or (≤ 70 s), 🥈 Plata (≤ 90 s) i 🥉 Bronze (≤ 120 s), i un extra cada cop que bats el teu rècord personal (com més segons retalles, més XP).
 Hi ha **50 nivells** amb més de 100 cosmètics per desbloquejar (consulta el **Camí del Bòs** des del menú) i títols que van de *Novell* fins a **TURBO DÉU**. Al taller pots provar-te les peces bloquejades abans d'aconseguir-les.
 
 Amb un compte (Google o correu) el nivell, el bòs i els rècords es guarden al núvol, i surts al **rànquing mundial** de la Gran Cursa.
