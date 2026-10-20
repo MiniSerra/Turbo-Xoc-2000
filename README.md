@@ -27,10 +27,10 @@ Juga amb amics, amb desconeguts a les sales obertes o contra bots.
 | **SHIFT** | ⚡ **Turbo**: embestida ràpida per enviar algú a volar |
 | **ESPAI** | 💥 **Ona**: minisalt i ona expansiva que aparta tothom |
 | **Rodeta del ratolí** / **1-4** | 😎 Roda d'emotes |
-| **Ratolí** (a la cursa) | 🎥 Clica per girar la càmera lliurament · **ESC** per alliberar-la |
+| **Ratolí** | 🎥 Clica per girar la càmera lliurament (a tots els modes) · **ESC** per alliberar-la |
 | **ESC** | Configuració |
 
-També es pot jugar amb **comandament** (l'stick dret gira la càmera a la cursa).
+També es pot jugar amb **comandament** (l'stick dret gira la càmera).
 
 ## 🏆 Modes de joc
 
@@ -62,7 +62,7 @@ També es pot jugar amb **comandament** (l'stick dret gira la càmera a la cursa
 ## ⭐ Nivells i XP
 
 Cada partida et dona experiència segons la participació, la posició, el rendiment i els rècords. La **primera partida del dia val ×2** i jugar amb amics suma un 25 % més.
-A la Gran Cursa (i a la contrarellotge) el **temps també dona XP**: medalles 💎 Diamant (≤ 55 s), 🥇 Or (≤ 70 s), 🥈 Plata (≤ 90 s) i 🥉 Bronze (≤ 120 s), i un extra cada cop que bats el teu rècord personal (com més segons retalles, més XP).
+A la Gran Cursa (i a la contrarellotge) el **temps també dona XP**: medalles 💎 Diamant (≤ 22 s), 🥇 Or (≤ 26 s), 🥈 Plata (≤ 33 s) i 🥉 Bronze (≤ 45 s), i un extra cada cop que bats el teu rècord personal (com més segons retalles, més XP).
 Hi ha **50 nivells** amb més de 100 cosmètics per desbloquejar (consulta el **Camí del Bòs** des del menú) i títols que van de *Novell* fins a **TURBO DÉU**. Al taller pots provar-te les peces bloquejades abans d'aconseguir-les.
 
 Amb un compte (Google o correu) el nivell, el bòs i els rècords es guarden al núvol, i surts al **rànquing mundial** de la Gran Cursa.
