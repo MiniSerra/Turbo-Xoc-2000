@@ -6,7 +6,7 @@ service cloud.firestore {
     match /users/{uid} {
       allow read, delete: if request.auth != null && request.auth.uid == uid;
       allow create, update: if request.auth != null && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['profile', 'race', 'name', 'updated'])
+        && request.resource.data.keys().hasOnly(['profile', 'race', 'name', 'updated', 'prog'])
         && request.resource.data.profile is string && request.resource.data.profile.size() < 200
         && request.resource.data.name is string && request.resource.data.name.size() <= 12;
     }
