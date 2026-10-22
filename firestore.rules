@@ -21,5 +21,16 @@ service cloud.firestore {
         && request.resource.data.name is string && request.resource.data.name.size() <= 12
         && request.resource.data.profile is string && request.resource.data.profile.size() < 200;
     }
+
+    // Rànquing de la resta de circuits (p. ex. /rank/cuina/runs/{uid})
+    match /rank/{course}/runs/{uid} {
+      allow read: if true;
+      allow delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['t', 'name', 'profile', 'splits', 'd'])
+        && request.resource.data.t is number && request.resource.data.t >= 10 && request.resource.data.t < 600
+        && request.resource.data.name is string && request.resource.data.name.size() <= 12
+        && request.resource.data.profile is string && request.resource.data.profile.size() < 200;
+    }
   }
 }
