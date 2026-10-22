@@ -762,6 +762,19 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
 .rec-medals .rm b { font-family: var(--f-display); font-weight: 400; font-size: 13px; }
 .rec-medals .rm small { font-family: var(--f-data); font-weight: 700; font-size: 9px; color: var(--lime); }
 @media (max-height: 520px) and (orientation: landscape) { .xou-track .xt { padding: 2px 7px; } .xou-track .xt b { font-size: 14px; } .rec-medals .rm { padding: 2px 6px; } }
+/* pestanyes de circuit al panell de rècords */
+.rec-tabs { display: flex; gap: 8px; margin: 4px 0 10px; flex-wrap: wrap; }
+.rec-tab { flex: 1 1 0; min-width: 140px; display: flex; align-items: center; gap: 8px; justify-content: center; padding: 8px 10px; border-radius: 12px; border: 2px solid rgba(255,255,255,.18); background: rgba(10,4,32,.55); color: #fff; font: 600 13px 'Chakra Petch', sans-serif; cursor: pointer; transition: transform .12s, border-color .12s; }
+.rec-tab span { font-size: 18px; }
+.rec-tab b { font-family: 'Bungee', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: .5px; }
+.rec-tab:hover { transform: translateY(-1px); border-color: #00f0ff; }
+.rec-tab.on { border-color: #ffe600; background: linear-gradient(135deg, rgba(255,0,127,.35), rgba(10,4,32,.7)); box-shadow: 0 0 0 2px #000, 0 4px 0 #000; }
+/* turbo amb càrrega */
+.bar.charging > i { background: linear-gradient(90deg, #ffe600, #ff7a00, #ffffff); transition: none; }
+.bar.full { animation: chargeFull .16s linear infinite alternate; border-color: #fff; }
+.bar.full > i { background: linear-gradient(90deg, #fff, #ffe600, #fff); }
+@keyframes chargeFull { from { box-shadow: 0 0 0 0 rgba(255,230,0,.0); } to { box-shadow: 0 0 12px 3px rgba(255,230,0,.85); } }
+.tbtn.turbo.charging { background: radial-gradient(circle at 50% 50%, #fff calc(var(--cd, 0) * 30%), #ffe600 calc(var(--cd, 0) * 60%), #ff7a00) !important; transform: scale(calc(1 - var(--cd, 0) * 0.08)); box-shadow: 0 0 calc(var(--cd, 0) * 26px) #ffe600 !important; }
 </style>
 </head>
 <body>
@@ -938,8 +951,8 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
   </div>
   <div class="hud-bottom">
     <div class="hud-abil">
-      <div class="bar-wrap"><div class="bar-lbl"><span class="c-lime">⚡ TURBO <span class="keys">SHIFT</span></span><span id="hud-turbo-t">LLEST</span></div><div class="bar"><i id="hud-turbo"></i></div></div>
-      <div class="bar-wrap"><div class="bar-lbl"><span class="c-mag">💥 ONA <span class="keys">ESPAI</span></span><span id="hud-wave-t">LLEST</span></div><div class="bar mag"><i id="hud-wave"></i></div></div>
+      <div class="bar-wrap"><div class="bar-lbl"><span class="c-lime">⚡ TURBO <span class="keys">MANTÉN SHIFT</span></span><span id="hud-turbo-t">MANTÉN</span></div><div class="bar"><i id="hud-turbo"></i></div></div>
+      <div class="bar-wrap"><div class="bar-lbl"><span class="c-mag">💥 ONA <span class="keys">ESPAI ×2</span></span><span id="hud-wave-t">LLEST</span></div><div class="bar mag"><i id="hud-wave"></i></div></div>
       <div class="lives" id="hud-lives" hidden></div>
       <div class="pu-badge" id="hud-pu" hidden></div>
     </div>
@@ -952,7 +965,7 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
   <div class="tzone" id="tzone"><div class="joy" id="joy"><div class="knob" id="joy-knob"></div></div></div>
   <div class="tbtns">
     <button class="btn yel tbtn emote" id="tb-emote" aria-label="Emotes"><span class="ico">😜</span></button>
-    <button class="btn mag tbtn wave" id="tb-wave"><span class="ico">💥</span><span>ONA</span></button>
+    <button class="btn mag tbtn wave" id="tb-wave"><span class="ico">🦘</span><span>SALT</span></button>
     <button class="btn tbtn turbo" id="tb-turbo"><span class="ico">🔥</span><span>TURBO</span></button>
   </div>
 </div>
@@ -1085,8 +1098,8 @@ body.touchui .hud-abil:not(:has(> :not(.bar-wrap):not([hidden]))) { display: non
     <p class="help-lead">Empeny els altres bòssos fora de la pista i guanya cada ronda segons el mode.</p>
     <div class="help-grid">
       <div class="help-card"><span class="hk"><span class="keys">W A S D</span></span><b>MOURE'T</b><span>També fletxes, joystick tàctil o comandament.</span></div>
-      <div class="help-card"><span class="hk"><span class="keys">SHIFT</span></span><b class="c-lime">TURBO</b><span>Embestida ràpida. Xoca amb algú per enviar-lo a volar.</span></div>
-      <div class="help-card"><span class="hk"><span class="keys">ESPAI</span></span><b class="c-mag">ONA</b><span>Minisalt i ona expansiva que aparta tothom del voltant.</span></div>
+      <div class="help-card"><span class="hk"><span class="keys">SHIFT</span></span><b class="c-lime">TURBO</b><span>Mantén per carregar i deixa anar: com més estona, més lluny surts disparat. Sense espera! Xoca amb algú per enviar-lo a volar.</span></div>
+      <div class="help-card"><span class="hk"><span class="keys">ESPAI</span></span><b class="c-mag">SALT · DOBLE SALT</b><span>Un cop: salt. Dos cops (a l'aire): tombarella amb ona expansiva que aparta tothom del voltant.</span></div>
       <div class="help-card"><span class="hk"><span class="keys">🖱️ RODETA</span> <span class="keys">1-4</span></span><b class="c-yel">EMOTES</b><span>Obre la roda, tria amb la rodeta o el ratolí i fes clic.</span></div>
     </div>
     <div class="help-pu">
@@ -1421,7 +1434,7 @@ const MODES = {
   xou: { id: 'xou', name: 'Xou Turbo', short: 'XOU', icon: '🎪', tag: 'NOU · TORNEIG',
     desc: 'Torneig de 3 rondes amb eliminació: Gran Cursa, una arena sorpresa i la Gran Final. Només en queda un!' },
   race: { id: 'race', name: 'Gran Cursa Turbo', short: 'CURSA', icon: '🏁', tag: 'ÈPIC',
-    desc: 'Circuit d\'obstacles fins a la meta: escombres, rajoles que cauen, pèndols i salts. Empeny i arriba primer!' }
+    desc: 'Cursa d\'obstacles fins a la meta. Dos circuits: el Gran Circuit Turbo i la nova Cuina de l\'Àvia. Empeny i arriba primer!' }
 };
 const MODE_ORDER = ['xou', 'race', 'crown', 'cds', 'bomb', 'last'];
 const DURATIONS = [60, 90, 120, 180];
@@ -1769,7 +1782,8 @@ class SoundEngine {
 
   /* ---- efectes de joc ---- */
   ok() { return this.ready; }
-  dash() { if (!this.ok()) return; const t = this.ctx.currentTime; this.sweep(t, 160, 760, 0.22, 'sawtooth', 0.12); this.noise(t, 0.2, 0.08, this.sfx, 'bandpass', 2500, 0.6); }
+  dash(k = 0.5, vol = 1) { if (!this.ok()) return; const t = this.ctx.currentTime; this.sweep(t, 140 + k * 60, 600 + k * 900, 0.16 + k * 0.16, 'sawtooth', (0.08 + k * 0.08) * vol); this.noise(t, 0.14 + k * 0.2, (0.05 + k * 0.08) * vol, this.sfx, 'bandpass', 1800 + k * 2400, 0.6); if (k > 0.85) this.sweep(t + 0.02, 900, 2400, 0.25, 'square', 0.05 * vol); }
+  chargeTick(k) { if (!this.ok()) return; const t = this.ctx.currentTime; this.sweep(t, 220 + k * 700, 260 + k * 760, 0.05, 'triangle', 0.035 + k * 0.03); }
   boing(pitch = 1, voice = VOICES[0], vol = 0.2) {
     if (!this.ok()) return; const t = this.ctx.currentTime, p = pitch * voice.pitch;
     const c = this.ctx, o = c.createOscillator(), g = c.createGain();
@@ -1786,6 +1800,7 @@ class SoundEngine {
     this.sweep(t, 300, 90, 0.18, 'square', 0.05 * strength);
   }
   bumper() { if (!this.ok()) return; const t = this.ctx.currentTime; this.tone(t, 880, 0.08, 'square', 0.06, this.sfx); this.tone(t + 0.05, 1320, 0.12, 'square', 0.05, this.sfx); }
+  jump() { if (!this.ok()) return; const t = this.ctx.currentTime; this.sweep(t, 260, 620, 0.12, 'square', 0.06); }
   jumpPad() { if (!this.ok()) return; const t = this.ctx.currentTime; this.sweep(t, 300, 1400, 0.3, 'triangle', 0.13); }
   land() { if (!this.ok()) return; this.noise(this.ctx.currentTime, 0.06, 0.05, this.sfx, 'lowpass', 600); }
   pickup(big = false) {
@@ -3078,6 +3093,7 @@ function bakeTree(obj, keep) {
 /* ===================================================================
  * Vista d'un personatge
  * =================================================================== */
+const _white = new THREE.Color(0xffffff);
 class CharView {
   constructor(profile, opts = {}) {
     this.root = new THREE.Group();
@@ -3085,7 +3101,26 @@ class CharView {
     this.t = Math.random() * 10;
     this.squash = 0; this.squashV = 0; this.lean = 0; this.leanSide = 0; this.blink = 0; this.nextBlink = rand(1.5, 4);
     this.lastGrounded = true; this.emoteT = 0; this.emoteAnim = null; this.trailAcc = 0; this.scale = 1; this.hitFlash = 0;
+    this.chargeV = 0; this.dashS = 0; this.lastDashing = 0; this.sparkAcc = 0;
     this.setProfile(profile);
+    // efectes del turbo: anell de càrrega a terra i estela de velocitat
+    const fxg = new THREE.Group(); this.root.add(fxg); this.fxg = fxg;
+    this.ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+    this.ringInk = new THREE.MeshBasicMaterial({ color: 0x10081f, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(sgeo('chargeRing', () => { const g = new THREE.RingGeometry(0.95, 1.25, 48, 1); g.rotateX(-Math.PI / 2); return g; }), this.ringMat);
+    ring.position.y = 0.06; ring.visible = false; fxg.add(ring); this.ring = ring;
+    const ring2 = new THREE.Mesh(sgeo('chargeRing2', () => { const g = new THREE.RingGeometry(1.25, 1.36, 48, 1); g.rotateX(-Math.PI / 2); return g; }), this.ringInk);
+    ring2.position.y = -0.01; ring.add(ring2); this.ring2 = ring2;
+    const ring3 = new THREE.Mesh(sgeo('chargeRing3', () => { const g = new THREE.RingGeometry(1.5, 1.62, 3, 1); g.rotateX(-Math.PI / 2); return g; }), this.ringMat);
+    ring3.position.y = 0.01; ring.add(ring3);
+    this.streakMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+    // línies de velocitat al voltant de la silueta (no tapen el bòs des de darrere)
+    const streak = new THREE.Group(); streak.visible = false; fxg.add(streak); this.streak = streak;
+    const lineGeo = sgeo('dashLine', () => { const g = new THREE.BoxGeometry(0.07, 0.07, 1); g.translate(0, 0, -0.5); return g; });
+    for (let i = 0; i < 9; i++) {
+      const a = (i / 9) * TAU + 0.35, rr = 1.05 + (i % 3) * 0.18;
+      const ln = new THREE.Mesh(lineGeo, this.streakMat); ln.position.set(Math.cos(a) * rr, Math.sin(a) * rr * 0.85, -0.2 - (i % 4) * 0.25); ln.userData.k = 0.6 + ((i * 7) % 5) * 0.12; streak.add(ln);
+    }
   }
 
   setProfile(p) {
@@ -3100,7 +3135,7 @@ class CharView {
     const spin = new THREE.Group(); spin.position.y = def.cy; bounce.add(spin); this.spin = spin; // voltes i emotes
 
     const geo = sgeo('body-' + bodyId, def.geo);
-    this.bodyMat = bodyMaterial(p);
+    this.bodyMat = bodyMaterial(p); this.neo = FINISHES[p.finish].id === 'neo'; this._glow = false;
     const body = new THREE.Mesh(geo, this.bodyMat); body.castShadow = true; spin.add(body); this.body = body;
     const ol = new THREE.Mesh(geo, M_OUTLINE()); ol.scale.setScalar(1.045); spin.add(ol);
     buildBodyDeco(p, def, spin);
@@ -3157,17 +3192,24 @@ class CharView {
     this.lastGrounded = st.grounded;
     this.squashV += (-this.squash * 160 - this.squashV * 12) * dt;
     this.squash += this.squashV * dt;
-    const dashStretch = st.dashing > 0 ? 0.18 : 0;
+    // càrrega del turbo (suavitzada) i estirament de l'embranzida
+    this.chargeV = lerp(this.chargeV, st.charge || 0, 1 - Math.exp(-dt * 20));
+    const c = this.chargeV, dK = st.dashK != null ? st.dashK : 0.5;
+    const dk = st.dashing > 0 ? (0.2 + 0.42 * dK) * Math.min(1, st.dashing / 0.1) : 0;
+    this.dashS = lerp(this.dashS, dk, 1 - Math.exp(-dt * (dk > this.dashS ? 45 : 9)));
+    const ds = this.dashS;
     const sq = clamp(this.squash, -0.4, 0.4);
-    this.bounce.scale.set(1 - sq * 0.5 - dashStretch * 0.3, 1 + sq - dashStretch * 0.25, 1 - sq * 0.5 + dashStretch);
+    const cw = 1 + c * 0.17, chh = 1 - c * 0.24;
+    this.bounce.scale.set((1 - sq * 0.5 - ds * 0.32) * cw, (1 + sq - ds * 0.26) * chh, (1 - sq * 0.5 + ds) * cw);
 
     // inclinació segons velocitat
     const sp = Math.hypot(st.vx || 0, st.vz || 0);
     const fwd = ((st.vx || 0) * Math.sin(st.rotY) + (st.vz || 0) * Math.cos(st.rotY));
     const side = ((st.vx || 0) * Math.cos(st.rotY) - (st.vz || 0) * Math.sin(st.rotY));
-    this.lean = lerp(this.lean, clamp(fwd * 0.018, -0.35, 0.35), 1 - Math.exp(-dt * 10));
+    this.lean = lerp(this.lean, clamp(fwd * 0.018, -0.35, 0.35) - c * 0.42 + ds * 0.5, 1 - Math.exp(-dt * 12));
     this.leanSide = lerp(this.leanSide, clamp(-side * 0.018, -0.3, 0.3), 1 - Math.exp(-dt * 10));
-    this.tilt.rotation.set(this.lean, 0, this.leanSide);
+    const jit = c >= 0.98 ? Math.sin(this.t * 75) * 0.05 : c * Math.sin(this.t * 40) * 0.02;
+    this.tilt.rotation.set(this.lean, 0, this.leanSide + jit);
     // trot
     const trot = st.grounded ? Math.abs(Math.sin(this.t * 13)) * Math.min(0.22, sp * 0.014) : 0;
     this.bounce.position.y = trot;
@@ -3226,6 +3268,45 @@ class CharView {
       if (Math.random() < 0.25) FX.spawn(st.x + rand(-0.8, 0.8), st.y + rand(0.5, 2.2) * this.scale, st.z + rand(-0.8, 0.8), 0, 2.5, 0, pick([0xff007f, 0x00f0ff]), 0.45, 0.5, 5, -2);
     } else this.trimMat.color.setHex(this.accent);
 
+    // ---- efectes del turbo ----
+    const sc = this.scale;
+    if (c > 0.01) {
+      this.ring.visible = true;
+      const pulse = c >= 0.98 ? 1 + Math.sin(this.t * 30) * 0.06 : 1;
+      this.ring.scale.setScalar((0.75 + c * 1.05) * pulse);
+      this.ring.rotation.y += dt * (2 + c * 10);
+      this.ringMat.color.setHex(this.c1).lerp(_white, c >= 0.98 ? (Math.sin(this.t * 30) > 0 ? 1 : 0.2) : c * 0.6);
+      this.ringMat.opacity = 0.55 + c * 0.45; this.ringInk.opacity = 0.35 + c * 0.4;
+      this.ring2.rotation.y = -this.ring.rotation.y * 2;
+      // guspires que s'arremolinen cap al bòs
+      this.sparkAcc += (12 + c * 46) * dt;
+      while (this.sparkAcc >= 1) {
+        this.sparkAcc -= 1;
+        const a = Math.random() * TAU, rr = (1.7 + Math.random() * 0.9) * sc;
+        FX.spawn(st.x + Math.cos(a) * rr, st.y + (0.2 + Math.random() * 1.6) * sc, st.z + Math.sin(a) * rr, -Math.cos(a) * rr * 2.6, rand(0.6, 2.2), -Math.sin(a) * rr * 2.6, c >= 0.98 ? pick([0xffffff, 0xffe600]) : pick([this.c1, this.accent, 0xffe600]), 0.38 + c * 0.3, 0.34, 5, 0, 1);
+      }
+    } else if (this.ring.visible) { this.ringMat.opacity *= Math.exp(-dt * 18); this.ringInk.opacity *= Math.exp(-dt * 18); if (this.ringMat.opacity < 0.02) this.ring.visible = false; }
+    // el cos s'il·lumina mentre carrega
+    const bm = this.bodyMat;
+    if (bm && bm.emissive && !this.neo) {
+      if (c > 0.01 || this._glow) { bm.emissive.setHex(this.c1); bm.emissiveIntensity = c * (c >= 0.98 ? 0.55 + Math.sin(this.t * 30) * 0.25 : 0.45); this._glow = c > 0.01; }
+    }
+    // inici de l'embranzida: ona a terra i esclat
+    if (st.dashing > this.lastDashing + 0.05) {
+      const k = dK;
+      Shock.spawn(st.x, st.y + 0.08, st.z, this.c1, 5 + k * 11, 1.2);
+      FX.burst(st.x - Math.sin(st.rotY) * 0.6, st.y + 0.7 * sc, st.z - Math.cos(st.rotY) * 0.6, { count: 8 + Math.round(k * 22), colors: [this.c1, this.accent, 0xffffff], speed: 5 + k * 7, up: 2.5, frame: 7, size: 0.4 + k * 0.25 });
+    }
+    this.lastDashing = st.dashing || 0;
+    if (ds > 0.02) {
+      this.streak.visible = true;
+      this.streak.position.y = this.def.cy * 0.95;
+      for (const ln of this.streak.children) ln.scale.z = (1.2 + ds * 8) * ln.userData.k * (0.85 + Math.sin(this.t * 40 + ln.userData.k * 9) * 0.15);
+      this.streakMat.color.setHex(this.c1).lerp(_white, 0.5);
+      this.streakMat.opacity = clamp(ds * 1.6, 0, 0.85);
+      if (Math.random() < ds * 1.6) { const a = Math.random() * TAU; FX.spawn(st.x + Math.cos(a) * 0.8 * sc, st.y + (0.4 + Math.random() * 1.4) * sc, st.z + Math.sin(a) * 0.8 * sc, -Math.sin(st.rotY) * 14, 0, -Math.cos(st.rotY) * 14, 0xffffff, 0.18, 0.18, 7, 0, 0); }
+    } else this.streak.visible = false;
+
     // estela
     if (this.trail && this.trail.id !== 'cap' && !this.opts.noTrail) {
       const rate = st.dashing > 0 ? 70 : sp > 6 ? sp * 1.4 : 0;
@@ -3267,10 +3348,17 @@ const MAPS = [
     sky: { top: 0x000000, mid: 0x00204a, hor: 0x2255ff, sun: 0xa3ff00, fog: 0x000814 }, swatch: 'linear-gradient(90deg,#000,#2255ff,#a3ff00)' },
   { id: 'cursa', name: 'Gran Circuit Turbo', icon: '🏁', view: 20, exposure: 1.0, race: true,
     desc: 'Circuit d\'obstacles: escombres, rajoles que cauen, pèndols, empentes i salts al buit.',
-    sky: { top: 0x0a0026, mid: 0x3a0a6b, hor: 0x00f0ff, sun: 0xffe600, fog: 0x12043a }, swatch: 'repeating-linear-gradient(90deg,#000 0 10px,#fff 10px 20px)' }
+    sky: { top: 0x0a0026, mid: 0x3a0a6b, hor: 0x00f0ff, sun: 0xffe600, fog: 0x12043a }, swatch: 'repeating-linear-gradient(90deg,#000 0 10px,#fff 10px 20px)',
+    medals: [23, 27, 34, 46] },
+  { id: 'cuina', name: 'La Cuina de l\'Àvia', icon: '🍳', view: 20, exposure: 1.05, race: true, noY2K: true,
+    desc: 'Ets petitó dins una cuina gegant: botifarres rodolant, gelatina que rebota, paelles que volten i calçots que surten de la graella!',
+    sky: { top: 0x1a0a2e, mid: 0x7a2a4a, hor: 0xffb347, sun: 0xfff1b0, fog: 0x3a1a2e, hemi: 0xffd9b0 }, swatch: 'repeating-linear-gradient(45deg,#e8e2d0 0 10px,#c8102e 10px 20px)',
+    medals: [21, 25, 32, 43] }
 ];
 const MAP_BY_ID = Object.fromEntries(MAPS.map((m) => [m.id, m]));
 const ARENA_MAPS = MAPS.filter((m) => !m.race);
+const RACE_MAPS = MAPS.filter((m) => m.race);
+const isRaceMap = (id) => !!(MAP_BY_ID[id] && MAP_BY_ID[id].race);
 
 const STEP_UP = 0.75;
 
@@ -3745,6 +3833,143 @@ const ARENA_SETUP = {
     a.itemSpots = [{ x: -7, z: -18 }, { x: 0, z: -98 }, { x: 0, z: -134 }, { x: 0, z: -198 }, { x: 0, z: -270 }, { x: 0, z: -318 }, { x: 0, z: -355 }, { x: 0, z: -446 }, { x: 0, z: -486 }, { x: 0, z: -522 }];
     a.crown = { x: 0, z: -585, y: 3 };
     a.spotFn = (rng) => { const cp = a.race.cps[0]; return { x: (rng() * 2 - 1) * cp.x, z: lerp(cp.z0, cp.z1, rng()), y: cp.h }; };
+  },
+  /* ---------------- LA CUINA DE L'ÀVIA (mode cursa) ---------------- */
+  cuina(a) {
+    a.radius = 30; a.view = 20;
+    const FIN = -500;
+    // ---------- 0 · sortida: el marbre del taulell
+    a.addRect({ x0: -12, x1: 12, z0: -20, z1: 8, tex: 'taulell', solid: true });
+    // ---------- 1 · botifarres que rodolen cap a tu (salta-les!)
+    a.addRect({ x0: -9, x1: 9, z0: -70, z1: -20, tex: 'fusta', solid: true });
+    [0, 1, 2].forEach((i) => {
+      const b = a.addSeg({ ax: -8.4, bx: 8.4, az: -70, bz: -70, r: 0.85, base: -1, top: 0.95, bumper: 11, look: 'botifarra', ph: i * 16.7 / 3, len: 16.8 });
+      b.update = (t) => { const cyc = 16.7, u = ((t * 6.2 + b.ph * 6.2) % (cyc * 6.2)) / (cyc * 6.2); const z = -71 + u * 52; b.az = b.bz = z; b.roll = z / 0.85; b.fade = u < 0.04 ? u / 0.04 : u > 0.96 ? (1 - u) / 0.04 : 1; };
+    });
+    a.addRect({ x0: -6, x1: 6, z0: -84, z1: -70, tex: 'rajola', solid: true });
+    // ---------- 2 · bol de crema catalana (rellisca!) amb varetes gegants
+    a.addDisk({ cz: -99, r: 15, tex: 'crema', ice: true, solid: true });
+    const whisk = (k) => {
+      const s = a.addSeg({ r: 0.7, base: -1, top: 1.4, bumper: 13, look: 'whisk', k, len: 27, cz: -99, hl: 13.5 });
+      s.update = (t, ar) => { const w = ar.finaleAt >= 0 && t > ar.finaleAt ? 1.25 : 0.95; const ang = t * w + k * Math.PI / 2; const c = Math.cos(ang), sn = Math.sin(ang); s.ax = -c * 13.5; s.az = -99 - sn * 13.5; s.bx = c * 13.5; s.bz = -99 + sn * 13.5; s.ang = ang; };
+    };
+    whisk(0); whisk(1);
+    a.addCircle({ x: 0, z: -99, r: 1.4, base: -1, top: 3.2, bumper: 14, look: 'whiskhub' });
+    a.addRect({ x0: -5, x1: 5, z0: -128, z1: -113.5, tex: 'rajola', solid: true });
+    // ---------- 3 · gelatina saltarina (rebota sola!)
+    const jcols = ['ff3b6b', '35e06a', 'ffb000', 'b44bff', '2fd4ff'];
+    const rows = [[[-7, -2.5], [-2, 2], [2.5, 7]], [[-6, -1.2], [1.2, 6]], [[-4, 4, 'm']], [[-7.5, -2.5], [2.5, 7.5]], [[-7, -3.8], [-2.5, 2.5], [3.8, 7]]];
+    rows.forEach((cubes, j) => {
+      const z1 = -128 - j * 7.6, z0 = z1 - 6.4;
+      cubes.forEach(([x0, x1, mv], i) => {
+        const r = a.addRect({ x0, x1, z0, z1, h: 0.4 + (j % 2) * 0.5, thick: 2.6, tex: 'gelatina', jelly: jcols[(j + i * 2) % jcols.length], bouncy: 13, ph: j * 1.3 + i });
+        r.h0 = r.h;
+        if (mv) {
+          r.mover = true; r.bx0 = x0; r.bx1 = x1;
+          r.update = (t) => { const off = Math.sin(t * 1.1 + r.ph) * 3; if (r._lt != null && t > r._lt) r.vx = (off - (r.off || 0)) / (t - r._lt); r._lt = t; r.off = off; r.x0 = r.bx0 + off; r.x1 = r.bx1 + off; r.st = 0; };
+        } else r.update = (t) => { r.h = r.h0 + Math.sin(t * 1.7 + r.ph) * 0.45; r.st = 0; };
+      });
+    });
+    // ---------- 4 · la torradora: et llença per sobre del buit
+    a.addRect({ x0: -8, x1: 8, z0: -186, z1: -166.5, tex: 'taulell', solid: true });
+    for (const x of [-5, 0, 5]) a.pads.push({ x, z: -182, r: 1.6, power: 17.5, h: 0, look: 'torradora' });
+    a.addRect({ x0: -10, x1: 10, z0: -215, z1: -194, tex: 'rajola', solid: true });
+    // ---------- 5 · paelles que volten
+    [[-3, -221], [3, -231.6], [-3, -242.2], [3, -252.8]].forEach(([cx, cz], i) => {
+      const r = a.addDisk({ cx, cz, r: 5.7, tex: 'paella', pan: true, noDrop: true, ph: i * 1.05 });
+      r.update = (t) => {
+        const P = 4.2, ph = ((t + 20 - r.ph) % P + P) % P;
+        r.st = ph < 0.9 ? 1 : ph < 2.3 ? 2 : 0;
+        // angle de la volta (per dibuixar-la): puja fins a 180° i torna
+        const up = clamp((ph - 0.9) / 0.3, 0, 1), down = clamp((ph - 2.0) / 0.3, 0, 1);
+        r.flipA = Math.PI * (ph < 0.9 ? 0 : ph < 2.0 ? up * up * (3 - 2 * up) : 1 - down * down * (3 - 2 * down));
+      };
+    });
+    a.addRect({ x0: -8, x1: 8, z0: -270, z1: -256.5, tex: 'rajola', solid: true });
+    // ---------- 6 · cinta del pa amb tomàquet: t'empeny cap al costat!
+    a.addRect({ x0: -6, x1: 6, z0: -305, z1: -270, tex: 'cinta', solid: true, conv: { x: 3.4, z: 0 } });
+    [-276, -284.5, -293, -301].forEach((z, i) => {
+      const tm = a.addCircle({ r: 1.45, base: -1, top: 2.7, bumper: 12, look: 'tomaquet', z, ph: i * 1.9 });
+      tm.update = (t) => { const cyc = 4.3, u = ((t + tm.ph) % cyc) / cyc; tm.x = -8.5 + u * 17; tm.fade = u < 0.06 ? u / 0.06 : u > 0.9 ? (1 - u) / 0.1 : 1; tm.roll = tm.x / 1.45; };
+    });
+    // ---------- 7 · el pont dels porrons
+    a.addRect({ x0: -5, x1: 5, z0: -340, z1: -305, tex: 'fusta', solid: true });
+    [-313, -323, -333].forEach((z, i) => {
+      const p = a.addCircle({ r: 1.5, base: -0.5, top: 3.2, bumper: 18, look: 'porro', z, h: 0, ph: i * 2.2 });
+      p.update = (t, ar) => { p.x = Math.sin(t * (ar.finaleAt >= 0 && t > ar.finaleAt ? 2.5 : 2.0) + p.ph) * 4.6; };
+    });
+    a.addRect({ x0: -7, x1: 7, z0: -352, z1: -340, tex: 'rajola', solid: true });
+    // ---------- 8 · rampa amunt amb les pilotes de l'escudella
+    a.addRamp({ x0: -6, x1: 6, z0: -392, z1: -352, ramp: { axis: 'z', a0: -352, a1: -392, h0: 0, h1: 6 }, tex: 'fusta' });
+    const rampY = (z) => clamp((z + 352) / -40, 0, 1) * 6;
+    for (let i = 0; i < 3; i++) {
+      const ball = a.addCircle({ r: 1.6, base: 0, top: 3, bumper: 17, look: 'pilota', ph: i * 6.1, lane: [-3.6, 0, 3.6][i] });
+      ball.update = (t) => { const cyc = 18, u = ((t * 9.5 + ball.ph * 9.5) % (cyc * 9.5)) / (cyc * 9.5); ball.z = -393 + u * 44; ball.x = ball.lane + Math.sin(t * 1.3 + i * 2) * 1.2; const gy = rampY(ball.z); ball.base = gy - 0.5; ball.top = gy + 2.9; ball.h = gy; ball.fade = u < 0.05 ? u / 0.05 : u > 0.93 ? (1 - u) / 0.07 : 1; };
+    }
+    a.addRect({ x0: -8, x1: 8, z0: -406, z1: -392, h: 6, tex: 'taulell', solid: true });
+    // ---------- 9 · calçotada: els calçots surten de la graella i et fan volar
+    a.addRect({ x0: -9, x1: 9, z0: -446, z1: -406, h: 6, tex: 'graella', solid: true });
+    let ci = 0;
+    for (const z of [-412, -420, -428, -436, -442]) for (const x of [-6, -2, 2, 6]) {
+      if (z === -442 && (x === -2 || x === 2)) continue;
+      const k = ci++;
+      const c = a.addCircle({ x: x + ((k * 37) % 5 - 2) * 0.25, z, r: 0.8, base: -9, top: -8, bumper: 0, look: 'calcot', h: 6, ph: (k * 0.73) % 3.4 });
+      const pad = { x: c.x, z, r: 0, power: 15, h: 6, calcot: true };
+      a.pads.push(pad);
+      c.update = (t) => {
+        const P = 3.4, ph = ((t + c.ph) % P + P) % P;
+        c.warn = ph < 0.75; const up = ph >= 0.75 && ph < 1.85;
+        c.rise = up ? Math.min(1, (ph - 0.75) / 0.12) : ph < 2.1 && ph >= 1.85 ? 1 - (ph - 1.85) / 0.25 : 0;
+        if (up) { c.base = 5.5; c.top = 6 + 2.6 * c.rise; c.bumper = 17; } else { c.base = -9; c.top = -8; c.bumper = 0; }
+        pad.r = ph >= 0.75 && ph < 0.95 ? 1.25 : 0;   // en sortir, et llança enlaire
+      };
+    }
+    // ---------- 10 · rampa de crema cremada (rellisca!) amb corrons de cuina
+    a.addRamp({ x0: -7, x1: 7, z0: -486, z1: -446, ramp: { axis: 'z', a0: -446, a1: -486, h0: 6, h1: 2 }, tex: 'crema', ice: true });
+    for (const sx of [-1, 1]) a.addRamp({ x0: sx < 0 ? -7.8 : 7, x1: sx < 0 ? -7 : 7.8, z0: -486, z1: -446, ramp: { axis: 'z', a0: -446, a1: -486, h0: 7.3, h1: 3.3 }, tex: 'fusta' });
+    const rY = (z) => 6 - clamp((z + 446) / -40, 0, 1) * 4;
+    [[-458, 0], [-474, 2.2]].forEach(([z, ph]) => {
+      const rp = a.addBox({ z0: z - 0.9, z1: z + 0.9, x0: 0, x1: 0, base: rY(z) - 0.5, top: rY(z) + 1.6, bumper: 11, look: 'corro', ph });
+      rp.update = (t) => { const c = Math.sin(t * 1.35 + rp.ph) * 4.2; rp.x0 = c - 3.4; rp.x1 = c + 3.4; rp.roll = c / 0.8; };
+    });
+    // ---------- meta: la taula parada!
+    a.addRect({ x0: -12, x1: 12, z0: -530, z1: -486, h: 2, tex: 'tovalles', solid: true });
+    a.decor.push({ type: 'arch', z: 6.5, h: 0, w: 24, label: 'A CUINAR!', col: 0xffb000 },
+      { type: 'arch', z: -73, h: 0, w: 12, label: 'TAST 1', col: 0xa3ff00 },
+      { type: 'arch', z: -116, h: 0, w: 10, label: 'TAST 2', col: 0xa3ff00 },
+      { type: 'arch', z: -199, h: 0, w: 20, label: 'TAST 3', col: 0xa3ff00 },
+      { type: 'arch', z: -259, h: 0, w: 16, label: 'TAST 4', col: 0xa3ff00 },
+      { type: 'arch', z: -343, h: 0, w: 14, label: 'TAST 5', col: 0xa3ff00 },
+      { type: 'arch', z: -395, h: 6, w: 16, label: 'TAST 6', col: 0xa3ff00 },
+      { type: 'arch', z: FIN, h: 2, w: 24, label: 'A TAULA!', col: 0xffe600, finish: true },
+      { type: 'kitchen' });
+    a.race = {
+      finishZ: FIN, startZ: 8,
+      cps: [
+        { trig: 99, x: 8, z0: 0, z1: 6, h: 0 },
+        { trig: -72, x: 4, z0: -82, z1: -76, h: 0 },
+        { trig: -116, x: 3.5, z0: -126, z1: -120, h: 0 },
+        { trig: -198, x: 8, z0: -208, z1: -202, h: 0 },
+        { trig: -259, x: 6, z0: -268, z1: -262, h: 0 },
+        { trig: -343, x: 5, z0: -350, z1: -345, h: 0 },
+        { trig: -395, x: 6, z0: -404, z1: -398, h: 6 }
+      ],
+      wps: [
+        { x: 0, z: -14, j: 6 }, { x: 0, z: -30, j: 6 }, { x: 0, z: -45, j: 6 }, { x: 0, z: -60, j: 6 }, { x: 0, z: -77, j: 3 },
+        { x: 0, z: -88, j: 8 }, { x: 0, z: -99, j: 9 }, { x: 0, z: -110, j: 6 }, { x: 0, z: -122, j: 2 },
+        { x: 0, z: -130.7, j: 3 }, { x: 3.5, z: -138.3, j: 1.2 }, { x: 0, z: -145.9, j: 0, mover: 0 }, { x: 5, z: -153.5, j: 1.2 }, { x: 0, z: -161.1, j: 1.2 },
+        { x: 0, z: -175, j: 4 }, { x: 0, z: -182, j: 0, pad: true }, { x: 0, z: -204, j: 6 }, { x: -1.5, z: -214, j: 1 },
+        { x: -3, z: -221, j: 1.5 }, { x: 3, z: -231.6, j: 1.5 }, { x: -3, z: -242.2, j: 1.5 }, { x: 3, z: -252.8, j: 1.5 }, { x: 0, z: -263, j: 4 },
+        { x: -3, z: -278, j: 1.5 }, { x: -3, z: -290, j: 1.5 }, { x: -3, z: -302, j: 1.5 },
+        { x: 0, z: -314, j: 1.5 }, { x: 0, z: -324, j: 1.5 }, { x: 0, z: -334, j: 1.5 }, { x: 0, z: -346, j: 3 },
+        { x: 0, z: -360, j: 4 }, { x: 0, z: -372, j: 4 }, { x: 0, z: -384, j: 4 }, { x: 0, z: -398, j: 4 },
+        { x: 0, z: -410, j: 6 }, { x: 0, z: -422, j: 6 }, { x: 0, z: -434, j: 6 }, { x: 0, z: -446, j: 4 },
+        { x: 0, z: -458, j: 3 }, { x: 0, z: -470, j: 3 }, { x: 0, z: -482, j: 3 }, { x: 0, z: -505, j: 6 }
+      ]
+    };
+    a.itemSpots = [{ x: -7, z: -12 }, { x: 0, z: -77 }, { x: 0, z: -120 }, { x: 0, z: -176 }, { x: 0, z: -205 }, { x: 0, z: -263 }, { x: 0, z: -346 }, { x: 0, z: -399 }, { x: 0, z: -444 }];
+    a.crown = { x: 0, z: -515, y: 2 };
+    a.spotFn = (rng) => { const cp = a.race.cps[0]; return { x: (rng() * 2 - 1) * cp.x, z: lerp(cp.z0, cp.z1, rng()), y: cp.h }; };
   }
 };
 
@@ -3828,6 +4053,76 @@ function arenaTexture(kind) {
     g.fillStyle = '#ffe600';
     for (let y = 20; y < 256; y += 64) { g.beginPath(); g.moveTo(64, y); g.lineTo(104, y + 34); g.lineTo(84, y + 34); g.lineTo(64, y + 16); g.lineTo(44, y + 34); g.lineTo(24, y + 34); g.closePath(); g.fill(); }
   });
+  // ---------- La Cuina de l'Àvia ----------
+  if (kind === 'taulell') return canvasTex('t-taulell', 512, 512, (g) => {
+    g.fillStyle = '#ece6da'; g.fillRect(0, 0, 512, 512);
+    const rnd = mulberry(41);
+    for (let i = 0; i < 260; i++) { g.fillStyle = 'rgba(120,110,100,' + (0.05 + rnd() * 0.12) + ')'; g.beginPath(); g.arc(rnd() * 512, rnd() * 512, 1 + rnd() * 5, 0, TAU); g.fill(); }
+    g.strokeStyle = 'rgba(110,100,120,.35)'; g.lineWidth = 2;
+    for (let i = 0; i < 9; i++) { g.beginPath(); let x = rnd() * 512, y = 0; g.moveTo(x, y); while (y < 512) { x += (rnd() - 0.5) * 60; y += 15 + rnd() * 30; g.lineTo(x, y); } g.stroke(); }
+  });
+  if (kind === 'fusta') return canvasTex('t-fusta', 256, 512, (g) => {
+    g.fillStyle = '#c98b4e'; g.fillRect(0, 0, 256, 512);
+    const rnd = mulberry(5);
+    for (let i = 0; i < 70; i++) { g.strokeStyle = 'rgba(' + (90 + rnd() * 40 | 0) + ',50,20,' + (0.15 + rnd() * 0.25) + ')'; g.lineWidth = 1 + rnd() * 3; g.beginPath(); const x = rnd() * 256; g.moveTo(x, 0); for (let y = 0; y <= 512; y += 32) g.lineTo(x + Math.sin(y * 0.02 + i) * 6, y); g.stroke(); }
+    for (let i = 0; i < 4; i++) { g.strokeStyle = 'rgba(70,35,10,.35)'; g.lineWidth = 2; const cx = rnd() * 256, cy = rnd() * 512; for (let k = 1; k < 5; k++) { g.beginPath(); g.ellipse(cx, cy, k * 5, k * 12, 0, 0, TAU); g.stroke(); } }
+    g.fillStyle = 'rgba(255,255,255,.08)'; for (let i = 0; i < 12; i++) g.fillRect(rnd() * 256, rnd() * 512, 80, 2);
+  });
+  if (kind === 'rajola') return canvasTex('t-rajola', 256, 256, (g) => {
+    for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
+      g.fillStyle = (x + y) % 2 ? '#f4f1ea' : '#2f6fd1'; g.fillRect(x * 64, y * 64, 64, 64);
+      if ((x + y) % 2 === 0) { g.fillStyle = '#f4f1ea'; g.beginPath(); g.moveTo(x * 64 + 32, y * 64 + 10); g.lineTo(x * 64 + 54, y * 64 + 32); g.lineTo(x * 64 + 32, y * 64 + 54); g.lineTo(x * 64 + 10, y * 64 + 32); g.fill(); g.fillStyle = '#ffb000'; g.beginPath(); g.arc(x * 64 + 32, y * 64 + 32, 7, 0, TAU); g.fill(); }
+    }
+    g.strokeStyle = '#d8d2c4'; g.lineWidth = 3; for (let i = 0; i <= 256; i += 64) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 256); g.moveTo(0, i); g.lineTo(256, i); g.stroke(); }
+  });
+  if (kind === 'crema') return canvasTex('t-crema', 512, 512, (g) => {
+    const rg = g.createRadialGradient(256, 256, 20, 256, 256, 360); rg.addColorStop(0, '#f6c35a'); rg.addColorStop(0.6, '#e9a43a'); rg.addColorStop(1, '#b8691f');
+    g.fillStyle = rg; g.fillRect(0, 0, 512, 512);
+    const rnd = mulberry(9);
+    for (let i = 0; i < 60; i++) { g.fillStyle = 'rgba(' + (70 + rnd() * 50 | 0) + ',30,5,' + (0.25 + rnd() * 0.45) + ')'; g.beginPath(); g.ellipse(rnd() * 512, rnd() * 512, 6 + rnd() * 26, 4 + rnd() * 14, rnd() * 3, 0, TAU); g.fill(); }
+    g.strokeStyle = 'rgba(255,240,200,.45)'; g.lineWidth = 3; for (let i = 0; i < 14; i++) { g.beginPath(); g.arc(rnd() * 512, rnd() * 512, 20 + rnd() * 60, rnd() * 6, rnd() * 6 + 1.2); g.stroke(); }
+  });
+  if (kind === 'paella') return canvasTex('t-paella', 512, 512, (g) => {
+    g.fillStyle = '#e8a91c'; g.fillRect(0, 0, 512, 512);
+    const rnd = mulberry(13);
+    for (let i = 0; i < 2600; i++) { g.fillStyle = rnd() < 0.5 ? '#f7c948' : '#d38a10'; g.beginPath(); g.ellipse(rnd() * 512, rnd() * 512, 3.2, 1.6, rnd() * 3, 0, TAU); g.fill(); }
+    for (let i = 0; i < 9; i++) { const a = (i / 9) * TAU, x = 256 + Math.cos(a) * 170, y = 256 + Math.sin(a) * 170; g.fillStyle = '#ff6a3d'; g.beginPath(); g.ellipse(x, y, 28, 13, a, 0, TAU); g.fill(); g.strokeStyle = '#ffd0b0'; g.lineWidth = 3; g.beginPath(); g.arc(x, y, 14, a, a + 2.5); g.stroke(); }
+    for (let i = 0; i < 6; i++) { const a = (i / 6) * TAU + 0.3, x = 256 + Math.cos(a) * 90, y = 256 + Math.sin(a) * 90; g.fillStyle = '#1a1424'; g.beginPath(); g.ellipse(x, y, 26, 13, a, 0, TAU); g.fill(); g.fillStyle = '#ff9e6b'; g.beginPath(); g.ellipse(x, y, 15, 6, a, 0, TAU); g.fill(); }
+    for (let i = 0; i < 40; i++) { g.fillStyle = '#4cbf3a'; g.beginPath(); g.arc(rnd() * 512, rnd() * 512, 6, 0, TAU); g.fill(); }
+    for (let i = 0; i < 10; i++) { g.save(); g.translate(rnd() * 512, rnd() * 512); g.rotate(rnd() * 3); g.fillStyle = '#d4141e'; g.fillRect(-26, -5, 52, 10); g.restore(); }
+    for (let i = 0; i < 4; i++) { g.fillStyle = '#ffe04a'; g.beginPath(); const x = 256 + (rnd() - 0.5) * 300, y = 256 + (rnd() - 0.5) * 300; g.moveTo(x - 30, y); g.arc(x, y, 30, Math.PI, 0); g.fill(); }
+  });
+  if (kind === 'cinta') return canvasTex('t-cinta', 256, 256, (g) => {
+    g.fillStyle = '#26232e'; g.fillRect(0, 0, 256, 256);
+    for (let x = 0; x < 256; x += 32) { g.fillStyle = '#34303f'; g.fillRect(x, 0, 4, 256); }
+    for (let k = 0; k < 2; k++) {
+      const x = 30 + k * 128, y = 40 + k * 110;
+      g.fillStyle = '#e1b36a'; g.beginPath(); g.ellipse(x + 30, y + 30, 46, 34, 0.2, 0, TAU); g.fill();
+      g.fillStyle = '#d64431'; g.beginPath(); g.ellipse(x + 30, y + 30, 36, 25, 0.2, 0, TAU); g.fill();
+      g.fillStyle = 'rgba(255,255,255,.35)'; g.beginPath(); g.ellipse(x + 18, y + 22, 9, 4, 0.2, 0, TAU); g.fill();
+      g.fillStyle = '#ffe9a8'; for (let i = 0; i < 6; i++) { g.beginPath(); g.arc(x + 10 + i * 9, y + 36 + (i % 2) * 6, 2.5, 0, TAU); g.fill(); }
+    }
+    g.fillStyle = '#ffe600'; for (let y = 0; y < 256; y += 64) { g.beginPath(); g.moveTo(232, y + 20); g.lineTo(252, y + 32); g.lineTo(232, y + 44); g.fill(); }
+  });
+  if (kind === 'graella') return canvasTex('t-graella', 256, 256, (g) => {
+    const rg = g.createLinearGradient(0, 0, 256, 256); rg.addColorStop(0, '#ff5a00'); rg.addColorStop(0.5, '#ff9a1a'); rg.addColorStop(1, '#c42a00');
+    g.fillStyle = rg; g.fillRect(0, 0, 256, 256);
+    const rnd = mulberry(21); for (let i = 0; i < 60; i++) { g.fillStyle = 'rgba(40,10,0,' + (0.2 + rnd() * 0.5) + ')'; g.beginPath(); g.arc(rnd() * 256, rnd() * 256, 4 + rnd() * 14, 0, TAU); g.fill(); }
+    g.fillStyle = '#1b1b20'; for (let x = 0; x < 256; x += 32) g.fillRect(x, 0, 14, 256);
+    g.fillStyle = '#3a3a44'; for (let x = 0; x < 256; x += 32) g.fillRect(x + 2, 0, 3, 256);
+  });
+  if (kind === 'tovalles') return canvasTex('t-tovalles', 256, 256, (g) => {
+    g.fillStyle = '#fbf6ee'; g.fillRect(0, 0, 256, 256);
+    g.fillStyle = 'rgba(210,20,40,.55)'; for (let i = 0; i < 8; i++) { g.fillRect(i * 32, 0, 16, 256); g.fillRect(0, i * 32, 256, 16); }
+  });
+  if (kind === 'terraCuina') return canvasTex('t-terraCuina', 256, 256, (g) => {
+    for (let y = 0; y < 2; y++) for (let x = 0; x < 2; x++) { g.fillStyle = (x + y) % 2 ? '#1c1430' : '#e9e2d4'; g.fillRect(x * 128, y * 128, 128, 128); }
+  });
+  if (kind === 'enrajolat') return canvasTex('t-enrajolat', 256, 256, (g) => {
+    g.fillStyle = '#d9e6ee'; g.fillRect(0, 0, 256, 256);
+    g.strokeStyle = '#9fb3c2'; g.lineWidth = 4; for (let i = 0; i <= 256; i += 32) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 256); g.moveTo(0, i); g.lineTo(256, i); g.stroke(); }
+    g.fillStyle = '#2f6fd1'; for (let y = 16; y < 256; y += 64) for (let x = 16; x < 256; x += 64) { g.beginPath(); g.arc(x, y, 6, 0, TAU); g.fill(); }
+  });
   if (kind === 'meta') return canvasTex('t-meta', 256, 64, (g) => {
     for (let y = 0; y < 2; y++) for (let x = 0; x < 16; x++) { g.fillStyle = (x + y) % 2 ? '#000' : '#fff'; g.fillRect(x * 16, y * 32, 16, 32); }
   });
@@ -3870,6 +4165,7 @@ class ArenaView {
     const a = this.a, g = this.group;
     for (const r of a.regions) {
       const holder = new THREE.Group(); g.add(holder);
+      if (r.pan) { this.buildPan(r, holder); continue; }
       let tex = r.tex ? arenaTexture(r.tex) : null;
       let mesh, rim = null;
       if (r.type === 'disk' && r.rIn > 0) {
@@ -3904,22 +4200,31 @@ class ArenaView {
         let geo;
         if (r.ramp) geo = rampGeometry(w - 0.1, d, r.ramp.h0, r.ramp.h1, Math.min(r.ramp.h0, r.ramp.h1) - 6);
         else { const hgt = r.solid ? r.h + 10 : r.thick; geo = new THREE.BoxGeometry(w - 0.18, hgt, d - 0.18); geo.translate(0, r.h - hgt / 2, 0); }
-        if (tex && (r.tex === 'pista' || r.tex === 'rampa' || r.tex === 'escalaR' || r.tex === 'escala' || r.tex === 'pis2')) {
+        const KIT = { taulell: 12, fusta: 0, rajola: 6, crema: 10, cinta: 6, graella: 6, tovalles: 8 };
+        if (tex && (r.tex === 'pista' || r.tex === 'rampa' || r.tex === 'escalaR' || r.tex === 'escala' || r.tex === 'pis2' || r.tex in KIT)) {
           tex = tex.clone(); tex.needsUpdate = true; tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-          const rep = r.tex === 'pista' ? [w / 8, d / 8] : r.tex === 'pis2' ? [w / 9, d / 4.5] : [1, d / 6];
+          const rep = r.tex === 'pista' ? [w / 8, d / 8] : r.tex === 'pis2' ? [w / 9, d / 4.5] : r.tex === 'fusta' ? [w / 9, d / 18] : r.tex in KIT ? [w / KIT[r.tex], d / KIT[r.tex]] : [1, d / 6];
           tex.repeat.set(rep[0], rep[1]); this.ownTex.push(tex); r._tex = tex;
         }
         const isPixel = r.tex === 'pixel', isHex = r.tex === 'hex';
-        const m = this.mat({ map: tex, roughness: isPixel || isHex ? 0.45 : 0.32, metalness: isPixel ? 0.4 : 0.12, emissive: isPixel ? 0x0a0a40 : isHex ? 0x062040 : 0x000000 });
+        let m;
+        if (r.jelly) {
+          // gelatina: cub arrodonit, translúcid i brillant
+          geo.dispose(); geo = roundedBoxGeo(w - 0.25, r.thick, d - 0.25, 0.45, 3); geo.translate(0, r.h - r.thick / 2, 0);
+          const jc = hexToInt(r.jelly);
+          m = this.mat({ color: jc, roughness: 0.12, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.1, transparent: true, opacity: 0.84, emissive: new THREE.Color(jc).multiplyScalar(0.28) }, true);
+        } else if (r.tex === 'crema') m = this.mat({ map: tex, roughness: 0.12, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.08 }, true);
+        else if (r.tex === 'graella') m = this.mat({ map: tex, roughness: 0.55, metalness: 0.3, emissive: 0x3a0e00 });
+        else m = this.mat({ map: tex, roughness: isPixel || isHex ? 0.45 : r.tex === 'taulell' ? 0.22 : 0.32, metalness: isPixel ? 0.4 : 0.12, emissive: isPixel ? 0x0a0a40 : isHex ? 0x062040 : 0x000000 });
         mesh = new THREE.Mesh(geo, m);
         mesh.position.set((X0 + X1) / 2, 0, (r.z0 + r.z1) / 2);
-        if (!r.ramp && (isPixel || isHex || r.conv || r.tex === 'pista' || r.solid)) {
-          const lc = r.conv ? 0xffe600 : isHex ? 0x00f0ff : r.tex === 'pista' ? 0xff007f : (r.gi + r.gj) % 3 === 0 ? 0xa3ff00 : 0x00f0ff;
+        if (!r.ramp && !r.jelly && (isPixel || isHex || r.conv || r.tex === 'pista' || r.solid)) {
+          const lc = r.conv ? 0xffe600 : isHex ? 0x00f0ff : r.tex === 'pista' ? 0xff007f : r.tex === 'taulell' ? 0xff7a2f : r.tex === 'rajola' ? 0x2f6fd1 : r.tex === 'tovalles' ? 0xd4141e : r.tex === 'graella' ? 0xffb000 : r.tex === 'fusta' ? 0x7a3d12 : (r.gi + r.gj) % 3 === 0 ? 0xa3ff00 : 0x00f0ff;
           rim = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w - 0.2, 0.05, d - 0.2)), new THREE.LineBasicMaterial({ color: lc }));
           rim.position.set((X0 + X1) / 2, r.h + 0.03, (r.z0 + r.z1) / 2);
         }
         if (r.ramp) {
-          const side = new THREE.MeshBasicMaterial({ color: r.conv ? 0xffe600 : 0xff007f });
+          const side = new THREE.MeshBasicMaterial({ color: r.conv ? 0xffe600 : r.tex === 'crema' ? 0x7a3d12 : r.tex === 'fusta' ? 0xff7a2f : 0xff007f });
           for (const sx of [r.x0 + 0.1, r.x1 - 0.1]) {
             const len = Math.hypot(d, r.ramp.h1 - r.ramp.h0);
             const rail = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.5, len), side);
@@ -3941,6 +4246,7 @@ class ArenaView {
       holder.add(mesh); if (rim) holder.add(rim);
       this.regionMeshes.push({ r, holder, mesh, rim, y: 0, baseEm: mesh.material.emissive ? mesh.material.emissive.getHex() : 0 });
     }
+    if (a.decor.some((d) => d.type === 'kitchen')) this.buildKitchen();
     if (a.id === 'illa') {
       const cr = new THREE.Mesh(new THREE.RingGeometry(2.4, 3.0, 40).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xa3ff00, side: THREE.DoubleSide }));
       cr.position.y = 0.03; g.add(cr);
@@ -4049,14 +4355,84 @@ class ArenaView {
         const scr = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 1.4), new THREE.MeshBasicMaterial({ map: canvasTex('crt', 128, 96, (gg) => { gg.fillStyle = '#0018a8'; gg.fillRect(0, 0, 128, 96); gg.fillStyle = '#fff'; gg.font = 'bold 13px monospace'; gg.fillText(':( ERROR 2000', 10, 30); gg.fillText('XOC FATAL', 10, 52); gg.fillStyle = '#a3ff00'; gg.fillText('C:\\>_', 10, 80); }) }));
         scr.position.set(0, 1.45, 1.11); m.add(scr);
       }
+      else if (c.look === 'botifarra') {
+        m = new THREE.Group();
+        const L = c.len || 14;
+        const sk = canvasTex('botiTex', 128, 64, (gg) => { gg.fillStyle = '#7a3121'; gg.fillRect(0, 0, 128, 64); const rnd = mulberry(3); for (let i = 0; i < 90; i++) { gg.fillStyle = rnd() < 0.6 ? 'rgba(255,220,200,.55)' : 'rgba(40,10,5,.5)'; gg.beginPath(); gg.arc(rnd() * 128, rnd() * 64, 1 + rnd() * 2.2, 0, TAU); gg.fill(); } });
+        const body = new THREE.Mesh(new THREE.CapsuleGeometry(c.r, Math.max(0.5, L - c.r * 2), 8, 18).rotateZ(Math.PI / 2), this.mat({ map: sk, roughness: 0.35, metalness: 0.05, emissive: 0x200805 }));
+        body.castShadow = true; m.add(body); m.userData.body = body;
+        for (const sx of [-1, 1]) { const tie = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.08, 6, 12), this.mat({ color: 0xf2e6c8 })); tie.rotation.y = Math.PI / 2; tie.position.x = sx * (L / 2 + 0.05); body.add(tie); }
+        for (let k = 0; k < 3; k++) { const lab = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.4), new THREE.MeshBasicMaterial({ color: 0xffe600 })); lab.position.x = (k - 1) * L * 0.28; body.add(lab); }
+      } else if (c.look === 'whisk') {
+        m = new THREE.Group();
+        const L = c.len || 27, wm = this.mat({ color: 0xdfe4ee, metalness: 0.95, roughness: 0.15 });
+        const spin = new THREE.Group(); m.add(spin); m.userData.spin = spin;
+        for (let k = 0; k < 5; k++) { const wire = new THREE.Mesh(new THREE.TorusGeometry(1, 0.06, 6, 48), wm); wire.scale.set(L / 2, c.r * 1.25, 1); wire.rotation.x = (k / 5) * Math.PI; spin.add(wire); }
+        const core = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, L, 8), wm); core.rotation.z = Math.PI / 2; spin.add(core);
+        m.position.y = 0.9;
+      } else if (c.look === 'whiskhub') {
+        m = new THREE.Group();
+        const col = new THREE.Mesh(new THREE.CylinderGeometry(c.r, c.r * 1.2, 4.2, 24), this.mat({ color: 0xdfe4ee, metalness: 0.9, roughness: 0.2 })); col.position.y = 1.1; col.castShadow = true; m.add(col);
+        const sw = new THREE.Mesh(new THREE.ConeGeometry(c.r * 1.1, 1.6, 24), this.mat({ color: 0xfff1c8, roughness: 0.35 })); sw.position.y = 3.9; m.add(sw);
+        const ch = new THREE.Mesh(new THREE.SphereGeometry(0.45, 12, 10), new THREE.MeshBasicMaterial({ color: 0xff2a3d })); ch.position.y = 4.8; m.add(ch);
+      } else if (c.look === 'tomaquet') {
+        m = new THREE.Group();
+        const tom = new THREE.Mesh(new THREE.SphereGeometry(c.r, 22, 16).scale(1, 0.86, 1), this.mat({ color: 0xe1261c, roughness: 0.22, metalness: 0.05, emissive: 0x2a0000 }));
+        tom.position.y = c.r * 0.86; tom.castShadow = true; m.add(tom); m.userData.ball = tom;
+        for (let k = 0; k < 5; k++) { const a = (k / 5) * TAU, lf = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.8, 5), this.mat({ color: 0x2f9a2a })); lf.position.set(Math.cos(a) * 0.35, c.r * 0.86, Math.sin(a) * 0.35); lf.rotation.set(Math.sin(a) * 1.3, 0, -Math.cos(a) * 1.3); tom.add(lf); }
+        const st = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.45, 6), this.mat({ color: 0x2f9a2a })); st.position.y = c.r * 0.86 + 0.15; tom.add(st);
+      } else if (c.look === 'pilota') {
+        m = new THREE.Group();
+        const geo = new THREE.IcosahedronGeometry(c.r, 3); const pa = geo.attributes.position; const rnd = mulberry(17);
+        for (let i = 0; i < pa.count; i++) { const k = 1 + (rnd() - 0.5) * 0.12; pa.setXYZ(i, pa.getX(i) * k, pa.getY(i) * k, pa.getZ(i) * k); } geo.computeVertexNormals();
+        const ball = new THREE.Mesh(geo, this.mat({ color: 0x7a4a2a, roughness: 0.75, map: canvasTex('pilotaTex', 128, 64, (gg) => { gg.fillStyle = '#7a4a2a'; gg.fillRect(0, 0, 128, 64); const r2 = mulberry(8); for (let i = 0; i < 120; i++) { gg.fillStyle = r2() < 0.25 ? '#3f8f2a' : r2() < 0.5 ? '#5a3418' : '#9a6a44'; gg.fillRect(r2() * 128, r2() * 64, 2 + r2() * 3, 2 + r2() * 3); } }) }));
+        ball.position.y = c.r; ball.castShadow = true; m.add(ball); m.userData.ball = ball;
+      } else if (c.look === 'porro') {
+        m = new THREE.Group();
+        const glass = this.mat({ color: 0xd8f2ff, roughness: 0.05, metalness: 0, transparent: true, opacity: 0.45, clearcoat: 1 }, true);
+        const ball = new THREE.Group(); m.add(ball); m.userData.ball = ball;
+        const body = new THREE.Mesh(new THREE.SphereGeometry(c.r, 20, 16), glass); ball.add(body);
+        const wine = new THREE.Mesh(new THREE.SphereGeometry(c.r * 0.86, 18, 14, 0, TAU, Math.PI * 0.45, Math.PI * 0.55), this.mat({ color: 0x8a0f2a, roughness: 0.15, emissive: 0x2a0008 })); ball.add(wine);
+        const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, 1.8, 14), glass); neck.position.y = c.r + 0.7; ball.add(neck);
+        const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.3, 2.6, 10), glass); spout.position.set(c.r * 0.7, 0.4, 0); spout.rotation.z = -0.9; ball.add(spout);
+        const chain = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 1, 6), this.mat({ color: 0xc98b4e, roughness: 0.8 })); m.add(chain); m.userData.chain = chain;
+        const gm = this.mat({ color: 0x7a3d12, roughness: 0.7 });
+        const gantry = new THREE.Group();
+        for (const sx of [-8.5, 8.5]) { const po = new THREE.Mesh(new THREE.BoxGeometry(0.7, 10, 0.7), gm); po.position.set(sx, c.h + 5, c.z); gantry.add(po); }
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(17.8, 0.7, 0.7), gm); bar.position.set(0, c.h + 10, c.z); gantry.add(bar);
+        g.add(gantry);
+      } else if (c.look === 'calcot') {
+        m = new THREE.Group();
+        const stalk = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.55, 2.2, 12), this.mat({ color: 0xf2f0e2, roughness: 0.5 })); stalk.position.y = 1.1; m.add(stalk);
+        const burnt = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.6, 0.8, 12), this.mat({ color: 0x1a1410, roughness: 0.9 })); burnt.position.y = 0.4; m.add(burnt);
+        for (let k = 0; k < 4; k++) { const lf = new THREE.Mesh(new THREE.ConeGeometry(0.22, 2.2, 6), this.mat({ color: k % 2 ? 0x3fa83a : 0x5fc84a, roughness: 0.6 })); lf.position.set(Math.cos(k * 1.7) * 0.2, 3.2, Math.sin(k * 1.7) * 0.2); lf.rotation.set(Math.sin(k * 1.7) * 0.35, 0, -Math.cos(k * 1.7) * 0.35); m.add(lf); }
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.9, 1.35, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xff6a00, transparent: true, opacity: 0.0, side: THREE.DoubleSide, depthWrite: false }));
+        ring.position.set(c.x, c.h + 0.05, c.z); g.add(ring); m.userData.ring = ring;
+        const hole = new THREE.Mesh(new THREE.CircleGeometry(0.85, 20).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x120804 }));
+        hole.position.set(c.x, c.h + 0.03, c.z); g.add(hole);
+      } else if (c.look === 'corro') {
+        m = new THREE.Group();
+        const wood = this.mat({ color: 0xd9a066, roughness: 0.55 });
+        const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 6.8, 22), wood); pin.rotation.z = Math.PI / 2; pin.castShadow = true; m.add(pin); m.userData.pin = pin;
+        for (const sx of [-1, 1]) { const hd = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 1.6, 10), this.mat({ color: 0xc8102e, roughness: 0.4 })); hd.rotation.z = Math.PI / 2; hd.position.x = sx * 4.2; m.add(hd); }
+        for (let k = -2; k <= 2; k++) { const fl = new THREE.Mesh(new THREE.TorusGeometry(0.81, 0.04, 4, 20), new THREE.MeshBasicMaterial({ color: 0xffffff })); fl.rotation.y = Math.PI / 2; fl.position.x = k * 1.3; pin.add(fl); }
+      }
       if (m) { g.add(m); this.colMeshes.push({ c, m, base }); }
     }
     for (const p of a.pads) {
+      if (p.calcot) continue;
       const grp = new THREE.Group();
       if (p.look === 'font') {
         const basin = new THREE.Mesh(new THREE.CylinderGeometry(p.r + 1, p.r + 1.3, 0.8, 28, 1, true), this.mat({ color: 0xc8d0e0, metalness: 0.7, roughness: 0.2, side: THREE.DoubleSide })); basin.position.y = 0.4; grp.add(basin);
         const water = new THREE.Mesh(new THREE.CylinderGeometry(p.r + 0.95, p.r + 0.95, 0.5, 28), new THREE.MeshBasicMaterial({ color: 0x2fb8ff, transparent: true, opacity: 0.8 })); water.position.y = 0.3; grp.add(water);
         const jet = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.6, 3, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xbfefff, transparent: true, opacity: 0.55, depthWrite: false })); jet.position.y = 1.8; grp.add(jet); grp.userData.jet = jet;
+      } else if (p.look === 'torradora') {
+        const chrome = this.mat({ color: 0xdfe4ee, metalness: 0.95, roughness: 0.12 });
+        const body = new THREE.Mesh(roundedBoxGeo(3.4, 0.5, 2.6, 0.2, 2), chrome); body.position.y = 0.1; grp.add(body);
+        const slot = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.06, 0.5), new THREE.MeshBasicMaterial({ color: 0x111111 })); slot.position.y = 0.36; grp.add(slot);
+        const toast = new THREE.Mesh(roundedBoxGeo(2.0, 1.9, 0.32, 0.18, 2), this.mat({ color: 0xe3a857, roughness: 0.8, map: canvasTex('torrada', 64, 64, (gg) => { gg.fillStyle = '#c8873a'; gg.fillRect(0, 0, 64, 64); gg.fillStyle = '#efc27a'; gg.fillRect(6, 6, 52, 52); gg.fillStyle = 'rgba(120,60,10,.35)'; for (let i = 0; i < 18; i++) gg.fillRect(Math.random() * 60, Math.random() * 60, 4, 3); }) }));
+        toast.position.y = -0.4; grp.add(toast); grp.userData.toast = toast;
+        const glow = new THREE.Mesh(new THREE.RingGeometry(p.r * 0.9, p.r * 1.1, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xff6a00 })); glow.position.y = 0.38; grp.add(glow);
       } else {
         const ring = new THREE.Mesh(new THREE.CylinderGeometry(p.r, p.r * 1.15, 0.25, 24), new THREE.MeshBasicMaterial({ color: 0xa3ff00 }));
         const core = new THREE.Mesh(new THREE.CylinderGeometry(p.r * 0.62, p.r * 0.62, 0.3, 20), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
@@ -4069,16 +4445,83 @@ class ArenaView {
     applyEnv(g, false);
   }
 
+  /* Paella que volta: gira sobre el mànec quan la regió desapareix */
+  buildPan(r, holder) {
+    const pivot = new THREE.Group(); pivot.position.set(r.cx, r.h, r.cz); holder.add(pivot);
+    const metal = this.mat({ color: 0x2b2a33, metalness: 0.75, roughness: 0.35 });
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(r.r, r.r * 0.94, 0.55, 48), metal); body.position.y = -0.3; body.castShadow = true; body.receiveShadow = true; pivot.add(body);
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(r.r - 0.05, 0.16, 8, 48), metal); rim.rotation.x = Math.PI / 2; rim.position.y = 0.02; pivot.add(rim);
+    const rice = new THREE.Mesh(new THREE.CircleGeometry(r.r - 0.2, 48).rotateX(-Math.PI / 2), this.mat({ map: arenaTexture('paella'), roughness: 0.6, emissive: 0x000000 }));
+    rice.position.y = 0.03; rice.receiveShadow = true; pivot.add(rice);
+    const red = this.mat({ color: 0xc8102e, roughness: 0.35, metalness: 0.2 });
+    for (const sx of [-1, 1]) {
+      const hdl = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.16, 8, 18, Math.PI), red); hdl.rotation.set(Math.PI / 2, 0, sx > 0 ? -Math.PI / 2 : Math.PI / 2); hdl.position.set(sx * (r.r + 0.1), -0.05, 0); pivot.add(hdl);
+    }
+    const lemon = new THREE.Mesh(new THREE.SphereGeometry(0.5, 14, 10, 0, TAU, 0, Math.PI / 2), this.mat({ color: 0xfff04a, roughness: 0.5 })); lemon.position.set(r.r * 0.35, 0.03, -r.r * 0.3); pivot.add(lemon);
+    this.regionMeshes.push({ r, holder, mesh: rice, rim: null, y: 0, baseEm: 0, pivot });
+  }
+
+  /* Decorat de la cuina gegant: terra, paret de rajoles i objectes enormes */
+  buildKitchen() {
+    const g = this.group, FY = -40;
+    const ft = arenaTexture('terraCuina').clone(); ft.needsUpdate = true; ft.wrapS = ft.wrapT = THREE.RepeatWrapping; ft.repeat.set(30, 30); this.ownTex.push(ft);
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200).rotateX(-Math.PI / 2), this.mat({ map: ft, roughness: 0.45, metalness: 0.05 }));
+    floor.position.set(0, FY, -250); floor.receiveShadow = true; g.add(floor);
+    const wt = arenaTexture('enrajolat').clone(); wt.needsUpdate = true; wt.wrapS = wt.wrapT = THREE.RepeatWrapping; wt.repeat.set(40, 8); this.ownTex.push(wt);
+    const wall = new THREE.Mesh(new THREE.PlaneGeometry(900, 160), this.mat({ map: wt, roughness: 0.3 }));
+    wall.rotation.y = Math.PI / 2; wall.position.set(-95, FY + 80, -260); g.add(wall);
+    const add = (geo, color, x, y, z, o = {}) => { const m = new THREE.Mesh(geo, o.phys ? this.mat(Object.assign({ color }, o.phys), true) : this.mat({ color, roughness: o.r != null ? o.r : 0.45, metalness: o.m || 0, emissive: o.e || 0x000000 })); m.position.set(x, y, z); if (o.rot) m.rotation.set(...o.rot); m.castShadow = !!o.shadow; g.add(m); return m; };
+    // olla de l'escudella (vermella amb pics blancs) i el seu vapor
+    const pot = add(new THREE.CylinderGeometry(14, 13, 34, 40, 1, true), 0xc8102e, -42, FY + 17, -110, { r: 0.25, m: 0.2 }); pot.material.side = THREE.DoubleSide;
+    add(new THREE.TorusGeometry(14, 0.9, 10, 40), 0xe8e8f0, -42, FY + 34, -110, { rot: [Math.PI / 2, 0, 0], m: 0.6, r: 0.2 });
+    add(new THREE.CircleGeometry(13.6, 40).rotateX(-Math.PI / 2), 0xd9a066, -42, FY + 30, -110, { e: 0x3a2000 });
+    for (const sx of [-1, 1]) add(new THREE.TorusGeometry(3, 0.8, 8, 16, Math.PI), 0x1c1c22, -42 + sx * 14.5, FY + 30, -110, { rot: [0, Math.PI / 2, sx * Math.PI / 2] });
+    this.steam = [];
+    for (let i = 0; i < 6; i++) { const st = add(new THREE.SphereGeometry(4 + i, 12, 10), 0xffffff, -42, FY + 36 + i * 6, -110, {}); st.material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.18, depthWrite: false }); this.steam.push({ m: st, k: i }); }
+    // ampolla d'oli d'oliva
+    add(new THREE.CylinderGeometry(6, 6, 46, 24), 0x6b8f1a, 44, FY + 23, -60, { phys: { transparent: true, opacity: 0.75, roughness: 0.05, clearcoat: 1 } });
+    add(new THREE.CylinderGeometry(2.4, 6, 10, 24), 0x6b8f1a, 44, FY + 51, -60, { phys: { transparent: true, opacity: 0.75, roughness: 0.05, clearcoat: 1 } });
+    add(new THREE.CylinderGeometry(2.6, 2.6, 4, 16), 0xffd400, 44, FY + 58, -60, { m: 0.6 });
+    add(new THREE.CylinderGeometry(6.05, 6.05, 12, 24, 1, true), 0xfff3d0, 44, FY + 24, -60, {});
+    // salers de sal i pebre
+    for (const [x, c] of [[34, 0xffffff], [48, 0x2a2a2a]]) { add(new THREE.CylinderGeometry(3.2, 3.6, 13, 18), c, x, FY + 6.5, -228, { phys: { transparent: true, opacity: 0.55, roughness: 0.05 } }); add(new THREE.SphereGeometry(3.2, 18, 12, 0, TAU, 0, Math.PI / 2), 0xc8ccd8, x, FY + 13, -228, { m: 0.9, r: 0.2 }); }
+    // tomàquet i alls gegants
+    add(new THREE.SphereGeometry(11, 28, 20).scale(1, 0.85, 1), 0xe1261c, -40, FY + 9, -300, { r: 0.25 });
+    for (let i = 0; i < 5; i++) { const a = (i / 5) * TAU; add(new THREE.ConeGeometry(1.4, 5, 6), 0x2f9a2a, -40 + Math.cos(a) * 2.2, FY + 18.6, -300 + Math.sin(a) * 2.2, { rot: [Math.sin(a) * 1.2, 0, -Math.cos(a) * 1.2] }); }
+    add(new THREE.SphereGeometry(6, 18, 14).scale(1, 1.15, 1), 0xf4ecdc, -28, FY + 6, -318, { r: 0.6 });
+    // pa de pagès
+    add(new THREE.SphereGeometry(16, 24, 18).scale(1.4, 0.7, 1), 0xb06a2a, 46, FY + 10, -330, { r: 0.85 });
+    for (let i = -2; i <= 2; i++) add(new THREE.BoxGeometry(1.2, 1, 12), 0xe6c08a, 46 + i * 6, FY + 21, -330, { rot: [0, 0.4, 0] });
+    // ganivet clavat al taulell (de lluny)
+    add(new THREE.BoxGeometry(2, 60, 14), 0xd8dde8, 40, FY + 34, -460, { m: 0.95, r: 0.15, rot: [0, 0, 0.18] });
+    add(new THREE.BoxGeometry(4, 22, 6), 0x2a1a10, 34.5, FY + 72, -460, { rot: [0, 0, 0.18] });
+    // cullera de fusta i got de llet amb galetes
+    add(new THREE.CylinderGeometry(1.4, 1.4, 70, 12), 0xc98b4e, -36, FY + 30, -420, { rot: [0, 0, -0.5] });
+    add(new THREE.SphereGeometry(6, 18, 12).scale(1, 0.4, 1.4), 0xc98b4e, -19.5, FY + 59, -420, {});
+    add(new THREE.CylinderGeometry(9, 8, 30, 28), 0xffffff, -40, FY + 15, -520, { phys: { transparent: true, opacity: 0.8, roughness: 0.1 } });
+    // làmpada penjant
+    const lamp = add(new THREE.SphereGeometry(10, 24, 16, 0, TAU, 0, Math.PI / 2), 0xffb000, 0, 70, -250, { e: 0x553300, rot: [Math.PI, 0, 0] });
+    lamp.material.side = THREE.DoubleSide;
+    add(new THREE.SphereGeometry(4, 16, 12), 0xfff6d0, 0, 66, -250, {}).material = new THREE.MeshBasicMaterial({ color: 0xfff6d0 });
+    add(new THREE.CylinderGeometry(0.4, 0.4, 60, 6), 0x222222, 0, 100, -250, {});
+  }
+
   update(dt, t) {
     const a = this.a;
     for (const rm of this.regionMeshes) {
       const r = rm.r;
       if (r.rot) { rm.mesh.rotation.y = r.angle || 0; }
       if (r.type === 'disk' && r.r0) { const k = r.r / r.r0; rm.mesh.scale.set(k, 1, k); if (rm.rim) rm.rim.scale.set(k, k, 1); }
-      if (r._tex && r.conv) r._tex.offset.y += (r.conv.z > 0 ? 1 : -1) * dt * 0.75 * (r.ramp ? -1 : 1);
-      const target = r.st === 2 ? -32 : 0;
-      if (rm.y !== target) rm.y = r.st === 2 ? Math.max(target, rm.y - (8 + Math.abs(rm.y) * 1.2) * dt) : Math.min(0, rm.y + 30 * dt);
-      rm.holder.position.y = rm.y;
+      if (r._tex && r.conv) { if (r.conv.x) r._tex.offset.x -= Math.sign(r.conv.x) * dt * 0.75; else r._tex.offset.y += (r.conv.z > 0 ? 1 : -1) * dt * 0.75 * (r.ramp ? -1 : 1); }
+      const target = r.st === 2 && !r.noDrop ? -32 : 0;
+      if (rm.y !== target) rm.y = target < 0 ? Math.max(target, rm.y - (8 + Math.abs(rm.y) * 1.2) * dt) : Math.min(0, rm.y + 30 * dt);
+      rm.holder.position.y = rm.y + (r.h0 != null ? r.h - r.h0 : 0);
+      if (rm.pivot) rm.pivot.rotation.z = r.flipA || 0;
+      if (r.jelly) {
+        const e = r.boing != null ? a.t - r.boing : 9, k = e < 0.8 ? Math.exp(-e * 6) * Math.sin(e * 34) * 0.16 : 0;
+        const idle = Math.sin(t * 3 + (r.ph || 0)) * 0.025;
+        rm.mesh.scale.set(1 + k * 0.6 + idle, 1 - k - idle, 1 + k * 0.6 + idle);
+      }
       if (r.mover) rm.holder.position.x = r.off || 0;
       rm.holder.visible = rm.y > -31;
       const m = rm.mesh.material;
@@ -4117,12 +4560,12 @@ class ArenaView {
       }
     });
     for (const { c, m, base } of this.colMeshes) {
-      if (c.type === 'circle') m.position.set(c.x, c.look === 'pendulum' ? 0 : c.look === 'ball' ? c.h - c.r * 0.15 : base, c.z);
-      if (c.look === 'ball') m.userData.ball.rotation.x = c.z / c.r;
+      if (c.type === 'circle') m.position.set(c.x, c.look === 'pendulum' || c.look === 'porro' ? 0 : c.look === 'ball' || c.look === 'pilota' ? c.h - c.r * 0.15 : base, c.z);
+      if (c.look === 'ball' || c.look === 'pilota') m.userData.ball.rotation.x = c.z / c.r;
       if (c.look === 'arm') { m.position.set(c.px, 0, c.pz); m.userData.arm.rotation.y = -c.ang; }
       if (c.look === 'beam') { m.position.set((c.ax + c.bx) / 2, base, (c.az + c.bz) / 2); m.rotation.y = -Math.atan2(c.bz - c.az, c.bx - c.ax); }
       if (c.look === 'pusher') m.position.set((c.x0 + c.x1) / 2, c.base + 1.7, (c.z0 + c.z1) / 2);
-      if (c.look === 'pendulum') {
+      if (c.look === 'pendulum' || c.look === 'porro') {
         const ball = m.userData.ball, chain = m.userData.chain;
         ball.position.set(0, c.h + 1.6, 0);
         const px = 0, py = c.h + 10, dx = c.x - px, dy = (c.h + 1.6) - py;
@@ -4130,15 +4573,24 @@ class ArenaView {
         chain.scale.y = Math.hypot(dx, dy); chain.rotation.z = Math.atan2(dx, -dy);
         ball.rotation.z = -c.x * 0.08;
       }
+      if (c.look === 'botifarra') { m.position.set((c.ax + c.bx) / 2, (c.h || 0) + c.r, (c.az + c.bz) / 2); m.userData.body.rotation.x = c.roll || 0; m.scale.setScalar(Math.max(0.01, c.fade != null ? c.fade : 1)); }
+      if (c.look === 'whisk') { m.position.set((c.ax + c.bx) / 2, 0.9, (c.az + c.bz) / 2); m.rotation.y = -Math.atan2(c.bz - c.az, c.bx - c.ax); m.userData.spin.rotation.x += dt * 7; }
+      if (c.look === 'whiskhub') m.position.set(c.x, 0, c.z);
+      if (c.look === 'tomaquet') { m.position.set(c.x, 0, c.z); m.userData.ball.rotation.z = -(c.roll || 0); m.scale.setScalar(Math.max(0.01, c.fade != null ? c.fade : 1)); }
+      if (c.look === 'pilota') m.scale.setScalar(Math.max(0.01, c.fade != null ? c.fade : 1));
+      if (c.look === 'calcot') { m.position.set(c.x, c.h - 3.3 + 3.3 * (c.rise || 0), c.z); m.visible = (c.rise || 0) > 0.01; const rg = m.userData.ring; rg.material.opacity = c.warn ? 0.45 + 0.45 * Math.sin(t * 20) : (c.rise || 0) > 0 ? 0.9 : 0; }
+      if (c.look === 'corro') { m.position.set((c.x0 + c.x1) / 2, c.base + 0.5 + 0.8, (c.z0 + c.z1) / 2); m.userData.pin.rotation.x = c.roll || 0; }
       if (c.look === 'cart') m.rotation.y = c.dir > 0 ? Math.PI / 2 : -Math.PI / 2;
       if (c.look === 'snowman') m.rotation.y = Math.atan2(-c.x, -c.z) + Math.PI;
       if (c.look === 'crt') m.rotation.y = t * 0.8;
       if (c.flash > 0) { c.flash -= dt; m.scale.setScalar(1 + c.flash * 0.6); } else if (m.scale.x !== 1) m.scale.setScalar(1);
     }
+    if (this.steam) for (const st of this.steam) { const k = ((t * 0.25 + st.k / 6) % 1); st.m.position.y = -40 + 36 + k * 40; st.m.scale.setScalar(0.6 + k * 1.6); st.m.material.opacity = 0.22 * (1 - k); }
     for (const { p, grp } of this.padMeshes) {
       grp.position.set(p.x, (p.h || 0) + 0.06, p.z);
       grp.userData.arrow.position.y = (p.look === 'font' ? 3.8 : 1.0) + Math.sin(t * 5 + p.x) * 0.3;
       grp.userData.arrow.rotation.y += dt * 2;
+      if (grp.userData.toast) { const ph = (t * 0.9 + p.x * 0.13) % 1; grp.userData.toast.position.y = ph < 0.15 ? -0.4 + ph / 0.15 * 1.9 : ph < 0.5 ? 1.5 - (ph - 0.15) * 1.2 : -0.4; }
       if (grp.userData.jet) {
         grp.userData.jet.scale.y = 1 + Math.sin(t * 9) * 0.15;
         if (Math.random() < 0.6) FX.spawn(p.x + rand(-0.4, 0.4), 3.2, p.z + rand(-0.4, 0.4), rand(-2.5, 2.5), rand(4, 8), rand(-2.5, 2.5), pick([0xbfefff, 0x6ac8ff, 0xffffff]), 0.45, 0.9, 1, 16, 0.5);
@@ -4218,6 +4670,8 @@ const SIM_DT = 1 / 60;
 const PHYS = {
   r: 1, rGiant: 1.7, grav: 30, jump: 11.5, accel: 46, accelIce: 16, accelAir: 22,
   damp: 0.035, dampIce: 0.6, dampAir: 0.4, maxV: 44, killY: -14,
+  // turbo amb càrrega: com més estona el mantens, més lluny arribes (sense cooldown)
+  chargeMax: 0.7, chargeSlow: 0.4, dashMin: 15, dashMax: 44, dashTMin: 0.16, dashTMax: 0.42,
   turbo: 24, turboCd: 1.5, turboCdFast: 0.55, turboCdOC: 0.4, dashT: 0.38, waveCd: 2.6, waveCdOC: 0.75, waveR: 4.8, waveF: 21,
   respawn: 1.6, inv: 1.6
 };
@@ -4232,7 +4686,7 @@ function newPlayer(id, profile, isBot = false) {
   return {
     id, profile, name: profile.name, isBot, slot: 0,
     x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, rotY: 0, grounded: true,
-    dash: 0, tcd: 0, wcd: 0, tcdMax: PHYS.turboCd, waveAnim: 0, pu: 0, puT: 0,
+    dash: 0, tcd: 0, wcd: 0, tcdMax: PHYS.turboCd, waveAnim: 0, pu: 0, puT: 0, charging: false, charge: 0, dashK: 0, airDash: false, prot: 0,
     score: 0, lives: 3, out: false, dead: false, respT: 0, inv: 0, lastHit: null, lastHitT: -99, elimAt: -1,
     cp: 0, fin: 0, finT: 0,
     emote: -1, emoteT: 0, emoteN: 0, turboN: 0, waveN: 0,
@@ -4250,8 +4704,11 @@ function createWorld(opts) {
     items: [], itemSeq: 1, crown: { holder: null, x: 0, z: 0, y: 1.4 }, bomb: { holder: null, timer: 0, imm: 0 },
     events: [], eventSeq: 1, secAcc: 0, puAcc: 0, contacts: new Map(), results: null, rosterV: 1, lastSaleK: -1
   };
-  if (w.mode === 'race') w.mapId = 'cursa';
-  if (MAP_BY_ID[w.mapId] && MAP_BY_ID[w.mapId].race && w.mode !== 'race') w.mapId = 'illa';
+  // circuit triat per a la Gran Cursa (o sorpresa)
+  w.raceMap = isRaceMap(opts.raceMap) ? opts.raceMap : isRaceMap(opts.mapId) ? opts.mapId : 'cursa';
+  w.raceRandom = !!opts.raceRandom;
+  if (w.mode === 'race') w.mapId = w.raceMap;
+  if (isRaceMap(w.mapId) && w.mode !== 'race') w.mapId = 'illa';
   w.arena = new Arena(w.mapId);
   return w;
 }
@@ -4282,10 +4739,15 @@ function stepPlayer(p, mx, mz, dt, arena, fx) {
   const grounded = !!surf && p.y <= gy0 + 0.02 && p.vy <= 0.001;
   const wasGrounded = p.grounded;
   p.grounded = grounded;
+  // temps de "coyote": pots saltar fins a 0,1 s després de deixar el terra
+  if (grounded) { p.coyote = 0.1; p.airDash = false; } else if (p.coyote > 0) p.coyote = Math.max(0, p.coyote - dt);
+  if (p.jumpAnim > 0) p.jumpAnim = Math.max(0, p.jumpAnim - dt);
   const m = Math.hypot(mx, mz);
   if (m > 1) { mx /= m; mz /= m; }
   let acc = grounded ? (surf.ice ? PHYS.accelIce : PHYS.accel) : PHYS.accelAir;
   if (p.pu === PU.speed) acc *= 1.38;
+  if (p.charging && grounded) acc *= PHYS.chargeSlow;
+  if (p.dash > 0) acc *= 0.15;   // durant l'embranzida el moviment ja està compromès
   if (p.hot) acc *= 1.12;
   p.vx += mx * acc * dt; p.vz += mz * acc * dt;
   if (m > 0.12) { const target = Math.atan2(mx, mz); p.rotY += angDiff(p.rotY, target) * (1 - Math.exp(-dt * 16)); }
@@ -4329,6 +4791,11 @@ function stepPlayer(p, mx, mz, dt, arena, fx) {
   } else {
     p.vy -= PHYS.grav * 1.1 * dt; p.y += p.vy * dt;
   }
+  // gelatina: en caure-hi, et torna a llançar enlaire
+  if (under && under.bouncy && p.y <= gy + 0.001 && p.vy <= 0) {
+    p.vy = under.bouncy; p.y = gy + 0.02; under.boing = arena.t;
+    if (fx) fx('jelly', p, under);
+  }
 
   // obstacles
   const pr = p.pu === PU.giant ? PHYS.rGiant : PHYS.r;
@@ -4362,15 +4829,34 @@ function stepPlayer(p, mx, mz, dt, arena, fx) {
   }
 }
 
-function doTurbo(p, w) {
-  if (p.tcd > 0 || p.dead || p.out) return false;
-  p.tcd = p.pu === PU.overclock ? PHYS.turboCdOC : p.pu === PU.speed ? PHYS.turboCdFast : PHYS.turboCd;
-  p.tcdMax = p.tcd;
-  p.dash = PHYS.dashT;
-  const b = p.pu === PU.giant ? PHYS.turbo * 1.12 : PHYS.turbo;
-  p.vx += Math.sin(p.rotY) * b; p.vz += Math.cos(p.rotY) * b;
+/* fracció de càrrega (0..1) a partir dels segons que s'ha mantingut el botó */
+const chargeK = (sec) => clamp(((sec || 0) - 0.04) / (PHYS.chargeMax - 0.04), 0, 1);
+
+/* TURBO: llança el bòs endavant. k = càrrega (0 = toc ràpid, 1 = càrrega plena).
+ * Sense cooldown: només cal que s'hagi acabat l'embranzida anterior i, a l'aire, un sol cop per salt.
+ * Els bots no carreguen: fan servir una càrrega mitjana i un temps d'espera intern. */
+function doTurbo(p, w, k) {
+  if (p.dead || p.out) return false;
+  if (p.isBot && p.tcd > 0) return false;
+  if (p.dash > 0.06) return false;
+  if (!p.grounded && p.coyote <= 0) { if (p.airDash) return false; p.airDash = true; }
+  if (k == null) k = p.isBot ? rand(0.35, 0.75) : chargeK(p.charge);
+  k = clamp(k, 0, 1);
+  if (p.isBot) { p.tcd = PHYS.turboCd; p.tcdMax = p.tcd; }
+  const ke = Math.pow(k, 0.85);
+  let b = lerp(PHYS.dashMin, PHYS.dashMax, ke);
+  if (p.pu === PU.giant) b *= 1.12;
+  if (p.pu === PU.overclock || p.pu === PU.speed) b *= 1.15;
+  p.dash = lerp(PHYS.dashTMin, PHYS.dashTMax, k); p.dashK = k;
+  // l'embranzida fixa la velocitat (no la suma): encadenar tocs no et fa anar infinitament ràpid,
+  // i la càrrega plena és la que arriba més lluny
+  const fx = Math.sin(p.rotY), fz = Math.cos(p.rotY), along = Math.max(0, p.vx * fx + p.vz * fz);
+  const v = Math.max(along, b);
+  p.vx = fx * v; p.vz = fz * v;
+  if (k > 0.55 && p.grounded) { p.vy = Math.max(p.vy, 3 + k * 3); p.y += 0.02; p.grounded = false; }
+  p.charging = false; p.charge = 0;
   p.stats.dashes++;
-  if (w) pushEvent(w, 'dash', { a: p.id, x: p.x, z: p.z });
+  if (w) pushEvent(w, 'dash', { a: p.id, x: p.x, z: p.z, v: Math.round(k * 100) });
   return true;
 }
 
@@ -4379,7 +4865,8 @@ const waveCdFor = (p) => (p.pu === PU.overclock ? PHYS.waveCdOC : PHYS.waveCd);
 function doWave(p, w) {
   if (p.wcd > 0 || p.dead || p.out) return false;
   p.wcd = waveCdFor(p); p.waveAnim = 0.6;
-  if (p.grounded || p.vy <= 0.5) { p.vy = Math.max(p.vy, PHYS.jump); p.y += 0.02; }
+  // a terra: salt + ona. A l'aire: segon salt (tombarella) + ona
+  p.vy = Math.max(p.vy, PHYS.jump); p.y += 0.02; p.grounded = false;
   if (w) {
     for (const o of w.players.values()) {
       if (o === p || o.dead || o.out || o.inv > 0) continue;
@@ -4395,6 +4882,18 @@ function doWave(p, w) {
     pushEvent(w, 'wave', { a: p.id, x: p.x, y: p.y, z: p.z });
   }
   return true;
+}
+
+/* Botó d'espai: el primer cop és un salt net; el segon (a l'aire) és la tombarella amb ona expansiva.
+ * Retorna 1 si ha saltat, 2 si ha fet l'ona, 0 si no ha passat res. */
+function doJump(p, w) {
+  if (p.dead || p.out) return 0;
+  if (p.grounded || p.coyote > 0) {
+    p.vy = PHYS.jump; p.y += 0.02; p.grounded = false; p.coyote = 0; p.jumpAnim = 0.35;
+    if (w) pushEvent(w, 'jump', { a: p.id, x: p.x, y: p.y, z: p.z });
+    return 1;
+  }
+  return doWave(p, w) ? 2 : 0;
 }
 
 function doEmote(p, idx, w) {
@@ -4416,11 +4915,13 @@ function placePlayers(w) {
   arr.forEach((p, i) => {
     Object.assign(p, { x: sp[i].x, z: sp[i].z, y: sp[i].y || 0, vx: 0, vy: 0, vz: 0, rotY: sp[i].rotY, dash: 0, tcd: 0, wcd: 0, pu: 0, puT: 0, dead: false, respT: 0, inv: 0, lastHit: null, emoteT: 0, cp: 0, fin: 0, grounded: true });
     p.ai.wp = 0;
-    p.px = p.x; p.pz = p.z; p.py = p.y;
+    p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY;
   });
 }
 
 function setMap(w, mapId) {
+  if (isRaceMap(mapId)) { w.raceMap = mapId; w.raceRandom = false; if (w.mode !== 'race') return; }
+  else if (w.mode === 'race') return;
   w.mapId = MAP_BY_ID[mapId] ? mapId : 'illa';
   w.arena = new Arena(w.mapId);
   w.items = [];
@@ -4432,15 +4933,18 @@ function setMode(w, mode) {
   w.show = null;
   const wasRace = w.mode === 'race';
   w.mode = MODES[mode] ? mode : 'crown';
-  if (w.mode === 'race' && !wasRace) { w.prevMap = w.mapId; w.prevDur = w.duration; w.duration = Math.max(w.duration, 180); w.mapId = 'cursa'; }
-  else if (w.mode !== 'race' && wasRace) { w.mapId = w.prevMap && w.prevMap !== 'cursa' ? w.prevMap : 'illa'; if (w.prevDur) w.duration = w.prevDur; }
+  if (w.mode === 'race' && !wasRace) { w.prevMap = w.mapId; w.prevDur = w.duration; w.duration = Math.max(w.duration, 180); w.mapId = w.raceMap || 'cursa'; }
+  else if (w.mode !== 'race' && wasRace) { w.mapId = w.prevMap && !isRaceMap(w.prevMap) ? w.prevMap : 'illa'; if (w.prevDur) w.duration = w.prevDur; }
   if (w.arena.id !== w.mapId) { w.arena = new Arena(w.mapId); bus.emit('arena', w.arena); }
 }
 
 function startMatch(w) {
   // el Xou arrenca el seu torneig (o en torna a començar un si l'anterior ja s'ha acabat)
   if (w.mode === 'xou' || (w.show && w.show.stage === 'done')) { w.mode = 'xou'; w.show = null; showStart(w); return; }
-  if (w.mode === 'race') { w.mapId = 'cursa'; if (w.duration < 150) w.duration = 180; }
+  if (w.mode === 'race') {
+    w.mapId = w.raceRandom ? pick(RACE_MAPS).id : (w.raceMap || 'cursa');
+    if (w.duration < 150) w.duration = 180;
+  }
   else if (w.randomMap) { const opts = ARENA_MAPS.filter((m) => m.id !== w.mapId); w.mapId = pick(opts).id; }
   if (w.arena.id !== w.mapId || w.arena.t > 0 || w.arena.finaleAt >= 0) { w.arena = new Arena(w.mapId); bus.emit('arena', w.arena); }
   w.phase = 'count'; w.countT = 3.2; w.t = 0; w.timeLeft = w.duration; w.endT = 0;
@@ -4458,7 +4962,7 @@ function startMatch(w) {
 }
 
 function backToLobby(w) {
-  if (w.show) { w.show = null; w.mode = 'xou'; if (w.mapId === 'cursa') w.mapId = 'illa'; }
+  if (w.show) { w.show = null; w.mode = 'xou'; if (isRaceMap(w.mapId)) w.mapId = 'illa'; }
   for (const p of w.players.values()) { p.elim = false; p.dead = false; }
   w.phase = 'lobby'; w.items = []; w.results = null; w.t = 0;
   if (w.matchDuration) w.duration = w.matchDuration;
@@ -4470,7 +4974,7 @@ function backToLobby(w) {
 function addJoiner(w, p) {
   const sp = w.arena.randomSpot();
   Object.assign(p, { x: sp.x, z: sp.z, y: (sp.y || 0) + 6, vy: 0, inv: PHYS.inv, lives: 3 });
-  p.px = p.x; p.pz = p.z; p.py = p.y;
+  p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY;
   if ((w.phase === 'play' || w.phase === 'count') && w.mode === 'last') { p.out = true; p.lives = 0; }
   if (w.show && w.phase !== 'lobby') showBench(p, true);
   w.players.set(p.id, p);
@@ -4545,7 +5049,7 @@ function respawn(w, p) {
     s = { x: rand(-cp.x, cp.x), z: rand(cp.z0, cp.z1), y: cp.h };
   } else s = w.arena.randomSpot(Math.random, 2.5);
   Object.assign(p, { x: s.x, z: s.z, y: (s.y || 0) + (w.arena.race ? 3 : 7), vx: 0, vy: 0, vz: 0, dead: false, inv: w.arena.race ? 1.0 : PHYS.inv, dash: 0, rotY: w.arena.race ? Math.PI : p.rotY });
-  p.px = p.x; p.pz = p.z; p.py = p.y; p.ai.wp = 0;
+  p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY; p.ai.wp = 0;
   if (w.bomb.holder === p.id) p.hot = true;
 }
 
@@ -4554,7 +5058,7 @@ function simStep(w, dt) {
   w.tick++;
   const play = w.phase === 'play';
   if (w.phase === 'lobby') {
-    for (const p of w.players.values()) { if (p.emoteT > 0) p.emoteT = Math.max(0, p.emoteT - dt); p.px = p.x; p.pz = p.z; p.py = p.y; }
+    for (const p of w.players.values()) { if (p.emoteT > 0) p.emoteT = Math.max(0, p.emoteT - dt); p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY; }
     return;
   }
   if (w.phase === 'count') {
@@ -4567,11 +5071,11 @@ function simStep(w, dt) {
       if (w.mode === 'cds') for (let i = 0; i < 10; i++) spawnItem(w, Math.random() < 0.2 ? ITEM.gold : ITEM.cd);
       if (w.mode === 'race' && w.arena.itemSpots) w.arena.itemSpots.forEach((s, i) => spawnItem(w, PU_ITEMS[i % PU_ITEMS.length], s.x, s.z));
     }
-    for (const p of w.players.values()) { p.px = p.x; p.pz = p.z; p.py = p.y; if (p.emoteT > 0) p.emoteT -= dt; }
+    for (const p of w.players.values()) { p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY; if (p.emoteT > 0) p.emoteT -= dt; }
     return;
   }
   if (w.phase === 'end') {
-    for (const p of w.players.values()) { p.px = p.x; p.pz = p.z; p.py = p.y; if (p.emoteT > 0) p.emoteT -= dt; }
+    for (const p of w.players.values()) { p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY; if (p.emoteT > 0) p.emoteT -= dt; }
     if (w.show) showTick(w, dt);
     return;
   }
@@ -4584,11 +5088,15 @@ function simStep(w, dt) {
   w.arena.tick(w.t);
 
   const list = [...w.players.values()];
-  for (const p of list) { p.px = p.x; p.pz = p.z; p.py = p.y; }
+  for (const p of list) {
+    p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY;
+    if (p.charging && play && !p.dead && !p.out) p.charge = Math.min(PHYS.chargeMax + 0.3, p.charge + dt); else if (!p.charging) p.charge = 0;
+  }
   const fx = (kind, p, o) => {
     if (kind === 'pad') pushEvent(w, 'pad', { a: p.id, x: o.x, z: o.z, y: o.h || 0 });
     else if (kind === 'bump') pushEvent(w, 'bump', { a: p.id, x: p.x, z: p.z, y: p.y });
     else if (kind === 'land' && o > 9) pushEvent(w, 'land', { a: p.id, x: p.x, z: p.z, y: p.y });
+    else if (kind === 'jelly') pushEvent(w, 'jelly', { a: p.id, x: p.x, z: p.z, y: p.y, v: o.idx });
   };
   for (const p of list) {
     if (p.out) continue;
@@ -4804,14 +5312,13 @@ function endMatch(w) {
   w.items = []; w.crown.holder = null; w.bomb.holder = null;
   w.endT = w.t; w.t = 0;
   if (w.matchDuration) w.duration = w.matchDuration;
-  if (w.mode === 'race') w.mapId = 'cursa';
   w.arena = new Arena(w.mode === 'race' ? 'illa' : w.mapId); bus.emit('arena', w.arena);
   for (const p of arr) p.hot = false;
   const spots = [{ x: 0, z: 2, y: 2.4 }, { x: -3.4, z: 1.2, y: 1.6 }, { x: 3.4, z: 1.2, y: 0.9 }];
   arr.forEach((p, i) => {
     const s = spots[i] || { x: (i - 3) * 2.4 - 3.6, z: -3.2, y: 0 };
     Object.assign(p, { x: s.x, z: s.z, y: s.y, vx: 0, vy: 0, vz: 0, rotY: 0, dead: false, dash: 0, waveAnim: 0, pu: 0, inv: 0 });
-    p.px = p.x; p.pz = p.z; p.py = p.y;
+    p.px = p.x; p.pz = p.z; p.py = p.y; p.prot = p.rotY;
   });
   for (const p of benched) showBench(p, true);
   pushEvent(w, 'end');
@@ -5000,7 +5507,7 @@ function showStart(w) {
   w.show = {
     round: 0, stage: 'play', nextIn: 0,
     modes: ['race', pick(SHOW_MID), 'last'],
-    maps: ['cursa', pick(arenas), pick(arenas)],
+    maps: [pick(RACE_MAPS).id, pick(arenas), pick(arenas)],
     alive: [...w.players.keys()], roundAlive: [], elim: [], champion: null
   };
   showRound(w);
@@ -5204,11 +5711,11 @@ function encodeState(w, hostId) {
   const P = [];
   for (const p of w.players.values()) {
     const fl = (p.grounded ? 1 : 0) | (p.dead ? 2 : 0) | (p.out ? 4 : 0) | (p.hot ? 8 : 0) | (p.elim ? 16 : 0);
-    P.push([p.slot, q100(p.x), q100(p.y), q100(p.z), q100(p.rotY), q10(p.vx), q10(p.vy), q10(p.vz), fl, p.score, p.pu, q10(p.puT), q100(p.tcd), q100(p.wcd), q100(p.dash), q100(p.waveAnim), p.lives, p.ack | 0, p.emote, q10(p.emoteT), q10(p.inv), q100(p.tcdMax || 1.5), p.cp | 0, p.fin | 0]);
+    P.push([p.slot, q100(p.x), q100(p.y), q100(p.z), q100(p.rotY), q10(p.vx), q10(p.vy), q10(p.vz), fl, p.score, p.pu, q10(p.puT), q100(p.charging ? chargeK(p.charge) : 0), q100(p.wcd), q100(p.dash), q100(p.waveAnim), p.lives, p.ack | 0, p.emote, q10(p.emoteT), q10(p.inv), q100(p.dashK || 0), p.cp | 0, p.fin | 0]);
   }
   const s = {
     T: w.tick, t: q100(w.t), ph: w.phase[0].toUpperCase(), ct: q10(w.countT), tl: q10(w.timeLeft),
-    m: w.mode, mp: w.mapId, ar: w.arena.id, pub: w.isPublic ? 1 : 0, rm: w.randomMap ? 1 : 0, du: w.duration, df: w.diff, fa: w.arena.finaleAt >= 0 ? q100(w.arena.finaleAt) : -1,
+    m: w.mode, mp: w.mapId, ar: w.arena.id, pub: w.isPublic ? 1 : 0, rm: (w.mode === 'race' ? w.raceRandom : w.randomMap) ? 1 : 0, du: w.duration, df: w.diff, fa: w.arena.finaleAt >= 0 ? q100(w.arena.finaleAt) : -1,
     P, I: w.items.map((it) => [it.id, it.type, q10(it.x), q10(it.y), q10(it.z)]),
     cw: [w.crown.holder && w.players.has(w.crown.holder) ? w.players.get(w.crown.holder).slot : -1, q10(w.crown.x), q10(w.crown.z)],
     bm: [w.bomb.holder && w.players.has(w.bomb.holder) ? w.players.get(w.bomb.holder).slot : -1, q10(w.bomb.timer)],
@@ -5357,7 +5864,7 @@ const G = {
   role: 'none', code: '', meId: store.get('pid', null) || uid('p'), profile: null,
   world: null, mirror: null, arena: null, arenaView: null, views: new Map(), preview: null,
   transports: [], conn: new Map(), acc: 0, sendTick: 0, lastRosterSend: 0,
-  input: { mx: 0, mz: 0, seq: 0, turboN: 0, waveN: 0, emoteN: 0, emoteIdx: 0, qTurbo: false, qWave: false, qEmote: -1 },
+  input: { mx: 0, mz: 0, seq: 0, turboN: 0, waveN: 0, emoteN: 0, emoteIdx: 0, qTurbo: false, qWave: false, qEmote: -1, charging: false, turboK: 0 },
   pred: null, hist: [], off: { x: 0, y: 0, z: 0 }, lastEv: 0, screen: 'menu', shake: 0, spectate: null,
   podium: null, t: 0, cam: { x: 0, y: 14, z: 24, lx: 0, ly: 1, lz: 0, ang: 0, dragYaw: 0 }, joinTimer: 0, everInRoster: false, notInRosterSince: 0,
   hostLastHeard: 0, phase: 'lobby'
@@ -5373,6 +5880,8 @@ function showArena(arena) {
   G.arenaView.group.visible = G.screen !== 'lobby';
   setSkyPalette(arena.def.sky);
   setExposure(arena.def.exposure || 1);
+  // la cuina té el seu propi decorat: amaga la graella i les formes Y2K que suren
+  const y2k = !arena.def.noY2K; R.grid.visible = y2k; for (const d of R.decor) d.o.visible = y2k;
   const sz = arena.race ? 34 : arena.radius + 6;
   const dl = R.dirLight; dl.shadow.camera.left = -sz; dl.shadow.camera.right = sz; dl.shadow.camera.top = sz; dl.shadow.camera.bottom = -sz; dl.shadow.camera.updateProjectionMatrix();
 }
@@ -5409,7 +5918,7 @@ function resetSession() {
 function startSolo() {
   resetSession();
   G.role = 'solo'; G.code = '';
-  const w = createWorld({ mode: store.get('last.mode', 'crown'), mapId: store.get('last.map', 'illa'), duration: store.get('last.dur', 90), diff: store.get('last.diff', 1), randomMap: store.get('last.random', false) });
+  const w = createWorld({ mode: store.get('last.mode', 'crown'), mapId: store.get('last.map', 'illa'), duration: store.get('last.dur', 90), diff: store.get('last.diff', 1), randomMap: store.get('last.random', false), raceMap: store.get('last.race', 'cursa'), raceRandom: store.get('last.raceRandom', false) });
   G.world = w;
   w.players.set(G.meId, Object.assign(newPlayer(G.meId, G.profile), { lv: Progress.level() }));
   for (let i = 0; i < 4; i++) addBot(w, true);
@@ -5436,7 +5945,7 @@ function removeBot(w) {
 function createRoom() {
   resetSession();
   G.role = 'host'; G.code = genCode();
-  const w = createWorld({ mode: store.get('last.mode', 'crown'), mapId: store.get('last.map', 'illa'), duration: store.get('last.dur', 90), diff: store.get('last.diff', 1), randomMap: store.get('last.random', false), isPublic: store.get('last.public', true) });
+  const w = createWorld({ mode: store.get('last.mode', 'crown'), mapId: store.get('last.map', 'illa'), duration: store.get('last.dur', 90), diff: store.get('last.diff', 1), randomMap: store.get('last.random', false), raceMap: store.get('last.race', 'cursa'), raceRandom: store.get('last.raceRandom', false), isPublic: store.get('last.public', true) });
   G.world = w;
   w.players.set(G.meId, Object.assign(newPlayer(G.meId, G.profile), { lv: Progress.level() }));
   addBot(w, true); addBot(w, true);
@@ -5521,8 +6030,9 @@ function hostOnPacket(pkt, key) {
   p.in.mx = clamp((i[1] | 0) / 100, -1, 1); p.in.mz = clamp((i[2] | 0) / 100, -1, 1);
   const ph = w.phase;
   const canAct = ph === 'play';
-  if ((i[3] | 0) > p.turboN) { p.turboN = i[3] | 0; if (canAct) doTurbo(p, w); }
-  if ((i[4] | 0) > p.waveN) { p.waveN = i[4] | 0; if (canAct) doWave(p, w); }
+  p.charging = canAct && !!(i[7] | 0);
+  if ((i[3] | 0) > p.turboN) { p.turboN = i[3] | 0; if (canAct) doTurbo(p, w, clamp((i[8] | 0) / 100, 0, 1)); }
+  if ((i[4] | 0) > p.waveN) { const n = Math.min(2, (i[4] | 0) - p.waveN); p.waveN = i[4] | 0; if (canAct) for (let k = 0; k < n; k++) doJump(p, w); }
   if ((i[5] | 0) > p.emoteN) { p.emoteN = i[5] | 0; doEmote(p, p.profile.emotes[clamp(i[6] | 0, 0, 3)], w); }
 }
 function hostOnLeave(key) {
@@ -5620,7 +6130,7 @@ function applyState(s) {
     seen.add(id);
     const smp = { tm: tnow, x: e[1] / 100, y: e[2] / 100, z: e[3] / 100, rotY: e[4] / 100, vx: e[5] / 10, vy: e[6] / 10, vz: e[7] / 10 };
     mp.buf.push(smp); if (mp.buf.length > 14) mp.buf.shift();
-    Object.assign(mp, { flags: e[8], score: e[9], pu: e[10], puT: e[11] / 10, tcd: e[12] / 100, wcd: e[13] / 100, dash: e[14] / 100, waveAnim: e[15] / 100, lives: e[16], ack: e[17], emote: e[18], emoteT: e[19] / 10, inv: e[20] / 10, tcdMax: e[21] / 100, cp: e[22] | 0, fin: e[23] | 0 });
+    Object.assign(mp, { flags: e[8], score: e[9], pu: e[10], puT: e[11] / 10, charge: e[12] / 100, wcd: e[13] / 100, dash: e[14] / 100, waveAnim: e[15] / 100, lives: e[16], ack: e[17], emote: e[18], emoteT: e[19] / 10, inv: e[20] / 10, dashK: e[21] / 100, cp: e[22] | 0, fin: e[23] | 0 });
     mp.grounded = !!(e[8] & 1); mp.dead = !!(e[8] & 2); mp.out = !!(e[8] & 4); mp.hot = !!(e[8] & 8); mp.elim = !!(e[8] & 16);
     if (id === G.meId) reconcile(mp, smp);
   }
@@ -5647,17 +6157,20 @@ function reconcile(mp, smp) {
   if (!G.pred) { G.pred = newPlayer(G.meId, G.profile); G.pred.rotY = smp.rotY; }
   const p = G.pred;
   const keepRot = p.rotY;
-  Object.assign(p, { x: smp.x, y: smp.y, z: smp.z, vx: smp.vx, vy: smp.vy, vz: smp.vz, tcd: mp.tcd, wcd: mp.wcd, dash: mp.dash, waveAnim: Math.max(p.waveAnim, mp.waveAnim), pu: mp.pu, puT: mp.puT, inv: mp.inv, dead: mp.dead, out: mp.out, hot: mp.hot, tcdMax: mp.tcdMax });
+  Object.assign(p, { x: smp.x, y: smp.y, z: smp.z, vx: smp.vx, vy: smp.vy, vz: smp.vz, wcd: mp.wcd, dash: mp.dash, waveAnim: Math.max(p.waveAnim, mp.waveAnim), pu: mp.pu, puT: mp.puT, inv: mp.inv, dead: mp.dead, out: mp.out, hot: mp.hot });
   if (!play || mp.dead || mp.out) { G.hist = []; p.rotY = smp.rotY; G.off.x = G.off.y = G.off.z = 0; return; }
   p.rotY = keepRot;
   const ack = mp.ack;
   while (G.hist.length && G.hist[0].seq <= ack) G.hist.shift();
   if (G.hist.length > 90) G.hist = G.hist.slice(-90);
+  const charge = p.charge, charging = p.charging;
   for (const h of G.hist) {
-    if (h.turbo) doTurbo(p, null);
-    if (h.wave) doWave(p, null);
+    p.charging = h.charging;
+    if (h.turbo) doTurbo(p, null, h.k);
+    if (h.wave) doJump(p, null);
     stepPlayer(p, h.mx, h.mz, SIM_DT, G.arena, null);
   }
+  p.charge = charge; p.charging = charging;
   if (old) {
     const dx = old.x - p.x, dy = old.y - p.y, dz = old.z - p.z;
     if (Math.hypot(dx, dz) > 6) { G.off.x = G.off.y = G.off.z = 0; }
@@ -5673,15 +6186,18 @@ function guestTick(dt) {
   const inp = G.input;
   inp.seq++;
   const act = m.phase === 'play';
-  const h = { seq: inp.seq, mx: act ? inp.mx : 0, mz: act ? inp.mz : 0, turbo: false, wave: false };
-  if (inp.qTurbo) { inp.qTurbo = false; if (act) { inp.turboN++; h.turbo = true; } }
+  const h = { seq: inp.seq, mx: act ? inp.mx : 0, mz: act ? inp.mz : 0, turbo: false, wave: false, charging: act && inp.charging, k: 0 };
+  if (inp.qTurbo) { inp.qTurbo = false; if (act) { inp.turboN++; h.turbo = true; h.k = inp.turboK; } }
   if (inp.qWave) { inp.qWave = false; if (act) { inp.waveN++; h.wave = true; } }
   if (inp.qEmote >= 0) { inp.emoteN++; inp.emoteIdx = inp.qEmote; inp.qEmote = -1; }
   if (G.pred && G.pred.emoteT > 0) G.pred.emoteT = Math.max(0, G.pred.emoteT - dt);
   const p = G.pred;
+  if (p) { G.predPrev = { x: p.x, y: p.y, z: p.z, rotY: p.rotY }; }
   if (p && act && !p.dead && !p.out) {
-    if (h.turbo && doTurbo(p, null)) localDashFx(p);
-    if (h.wave && doWave(p, null)) localWaveFx(p);
+    p.charging = h.charging;
+    if (p.charging) p.charge = Math.min(PHYS.chargeMax + 0.3, p.charge + dt); else if (!h.turbo) p.charge = 0;
+    if (h.turbo && doTurbo(p, null, h.k)) localDashFx(p, h.k);
+    if (h.wave) { const r = doJump(p, null); if (r === 2) localWaveFx(p); else if (r === 1) localJumpFx(p); }
     stepPlayer(p, h.mx, h.mz, dt, G.arena, null);
     G.hist.push(h);
   }
@@ -5690,7 +6206,7 @@ function guestTick(dt) {
   G.off.x *= k; G.off.y *= k; G.off.z *= k;
   G.sendTick++;
   if (G.sendTick % 2 === 0) {
-    const pkt = { k: 'g', c: G.code, v: PROTO, id: G.meId, n: G.profile.name, pc: encodeProfile(G.profile, false), lv: Progress.level(), i: [inp.seq, Math.round(h.mx * 100), Math.round(h.mz * 100), inp.turboN, inp.waveN, inp.emoteN, inp.emoteIdx] };
+    const pkt = { k: 'g', c: G.code, v: PROTO, id: G.meId, n: G.profile.name, pc: encodeProfile(G.profile, false), lv: Progress.level(), i: [inp.seq, Math.round(h.mx * 100), Math.round(h.mz * 100), inp.turboN, inp.waveN, inp.emoteN, inp.emoteIdx, inp.charging ? 1 : 0, Math.round(inp.turboK * 100)] };
     for (const t of G.transports) t.send(pkt);
   }
   // control de connexió
@@ -5700,10 +6216,14 @@ function guestTick(dt) {
 }
 
 /* ---------------- accions locals ---------------- */
-function localDashFx(p) {
-  sound.dash();
-  spawnComic(p.x, p.y + 2.3, p.z, '⚡ TURBO!', '#a3ff00');
-  FX.burst(p.x, p.y + 0.8, p.z, { count: 10, color: 0xa3ff00, speed: 6, frame: 7 });
+function localDashFx(p, k = 0.5) {
+  sound.dash(k);
+  if (k > 0.85) spawnComic(p.x, p.y + 2.3, p.z, pick(['⚡ TURBO MÀXIM!', '💥 SUPERTURBO!', '🚀 FIIIUM!']), '#a3ff00');
+  addShake(0.08 + k * 0.22);
+}
+function localJumpFx(p) {
+  sound.jump();
+  FX.burst(p.x, p.y + 0.1, p.z, { count: 6, color: 0xffffff, speed: 3, up: 1, frame: 7, size: 0.35 });
 }
 function localWaveFx(p) {
   sound.boing(1.3, VOICES[G.profile.voice]);
@@ -5713,8 +6233,27 @@ function localWaveFx(p) {
 
 function action(kind, arg) {
   const inp = G.input;
+  // turbo amb càrrega: 'chargeOn' en prémer, 'chargeOff' en deixar anar (dispara l'embranzida)
+  if (kind === 'chargeOn' || kind === 'chargeOff') {
+    const on = kind === 'chargeOn';
+    if (G.role === 'guest') {
+      const p = G.pred;
+      if (on) { inp.charging = true; }
+      else if (inp.charging) { inp.charging = false; inp.turboK = chargeK(p ? p.charge : 0); inp.qTurbo = true; }
+      return;
+    }
+    const w = G.world; if (!w) return;
+    const me = w.players.get(G.meId); if (!me) return;
+    if (on) { if (w.phase === 'play') me.charging = true; return; }
+    if (!me.charging) return;
+    const k = chargeK(me.charge);
+    me.charging = false;
+    if (w.phase === 'play' && doTurbo(me, w, k)) localDashFx(me, k);
+    me.charge = 0;
+    return;
+  }
   if (G.role === 'guest') {
-    if (kind === 'turbo') inp.qTurbo = true;
+    if (kind === 'turbo') { inp.turboK = 0.5; inp.qTurbo = true; }
     else if (kind === 'wave') inp.qWave = true;
     else if (kind === 'emote') { inp.qEmote = arg; showLocalEmote(arg); }
     return;
@@ -5722,8 +6261,8 @@ function action(kind, arg) {
   const w = G.world; if (!w) return;
   const me = w.players.get(G.meId); if (!me) return;
   const canAct = w.phase === 'play';
-  if (kind === 'turbo' && canAct) { if (doTurbo(me, w)) localDashFx(me); }
-  else if (kind === 'wave' && canAct) { if (doWave(me, w)) localWaveFx(me); }
+  if (kind === 'turbo' && canAct) { if (doTurbo(me, w, 0.5)) localDashFx(me, 0.5); }
+  else if (kind === 'wave' && canAct) { const r = doJump(me, w); if (r === 2) localWaveFx(me); else if (r === 1) localJumpFx(me); }
   else if (kind === 'emote') doEmote(me, G.profile.emotes[arg], w);
 }
 function showLocalEmote(slot) {
@@ -5767,21 +6306,27 @@ function handleEvent(e) {
       if (!me && !meB) sound.hit(s * 0.5);
       break;
     }
-    case 'dash': if (!me) { FX.burst(e.x, e.y + 0.8, e.z, { count: 6, color: 0xa3ff00, speed: 5, frame: 7 }); } break;
+    case 'dash': if (!me) sound.dash((e.v || 50) / 100, 0.35); break;
     case 'wave': if (!me || G.role !== 'guest') { if (!me) { Shock.spawn(e.x, e.y, e.z, 0xff007f, 16); FX.burst(e.x, e.y + 0.4, e.z, { count: 10, color: 0xff007f, speed: 8, up: 3 }); const pf = profOf(e.a); sound.boing(1.25, VOICES[pf ? pf.voice : 0], 0.12); } } break;
     case 'ko': {
       const word = pick(COMIC_KO);
       const ky = G.arena && G.arena.race ? Math.max(-4, e.y) : 0;
-      spawnComic(e.x, ky, e.z, G.arena && G.arena.race ? pick(['AL BUIT!', 'CAP AL CHECKPOINT!', 'QUIN MÒS!']) : word, '#ff007f');
+      const kit = G.arena && G.arena.id === 'cuina';
+      spawnComic(e.x, ky, e.z, kit ? pick(['A LA PICA!', 'CREMAT!', 'QUIN MÒS!', 'AL TERRA, NO!', 'L\'ÀVIA HO HA VIST!']) : G.arena && G.arena.race ? pick(['AL BUIT!', 'CAP AL CHECKPOINT!', 'QUIN MÒS!']) : word, '#ff007f');
       FX.burst(e.x, ky - 2, e.z, { count: 26, colors: [0x00f0ff, 0xffffff, 0x6ac8ff], speed: 6, up: 12, frame: 1, grav: 18 });
       Shock.spawn(e.x, ky - 1.5, e.z, 0x00f0ff, 18, 2);
       sound.ko();
       if (me) { addShake(0.5); sound.explosion(); kickAberration(0.03); }
       if (G.phase === 'play' || G.phase === 'count') {
         if (e.b) UI.feed([['b', nameOf(e.b)], ' ha enviat ', ['b', nameOf(e.a)], ' fora!']);
-        else UI.feed([['b', nameOf(e.a)], ' ha caigut al ciberespai']);
+        else UI.feed([['b', nameOf(e.a)], kit ? pick([' ha caigut de la taula', ' ha acabat a terra de la cuina', ' ha caigut a la pica']) : ' ha caigut al ciberespai']);
       }
       break;
+    }
+    case 'jelly': {
+      const r = G.arena && G.arena.regions[e.v]; if (r) r.boing = G.arena.t;
+      const col = r && r.jelly ? parseInt(r.jelly, 16) : 0xff3b6b;
+      FX.burst(e.x, e.y + 0.1, e.z, { count: 8, color: col, speed: 5, up: 4, frame: 3, size: 0.45 }); sound.boing(0.7 + Math.random() * 0.3, VOICES[0], 0.1); break;
     }
     case 'pad': FX.burst(e.x, e.y + 0.3, e.z, { count: 10, color: 0x00f0ff, speed: 4, up: 9, frame: 3 }); Shock.spawn(e.x, e.y + 0.2, e.z, 0x00f0ff, 10); sound.jumpPad(); break;
     case 'bump': spawnComic(e.x, e.y + 3, e.z, 'BOING!', '#00f0ff'); FX.burst(e.x, e.y + 1.2, e.z, { count: 8, color: 0xffe600, speed: 6 }); sound.bumper(); if (me) addShake(0.2); break;
@@ -5845,8 +6390,8 @@ function renderPlayers(alpha) {
   if (G.world) {
     for (const p of G.world.players.values()) {
       out.push({ id: p.id, profile: p.profile, name: p.name, isBot: p.isBot, lv: p.lv | 0,
-        x: lerp(p.px, p.x, alpha), y: lerp(p.py, p.y, alpha), z: lerp(p.pz, p.z, alpha), rotY: p.rotY, vx: p.vx, vy: p.vy, vz: p.vz,
-        grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, elim: !!p.elim, giant: p.pu === PU.giant, shield: p.pu === PU.shield, pu: p.pu, puT: p.puT,
+        x: lerp(p.px, p.x, alpha), y: lerp(p.py, p.y, alpha), z: lerp(p.pz, p.z, alpha), rotY: (p.prot != null ? p.prot + angDiff(p.prot, p.rotY) * alpha : p.rotY), vx: p.vx, vy: p.vy, vz: p.vz,
+        charge: p.charging ? chargeK(p.charge) : 0, dashK: p.dashK || 0, grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, elim: !!p.elim, giant: p.pu === PU.giant, shield: p.pu === PU.shield, pu: p.pu, puT: p.puT,
         dead: p.dead, out: p.out, inv: p.inv, emote: p.emote, emoteT: p.emoteT, score: p.score, lives: p.lives, hot: p.hot, tcd: p.tcd, tcdMax: p.tcdMax || 1.5, wcd: p.wcd, cp: p.cp, fin: p.fin, slot: p.slot });
     }
   } else if (G.mirror) {
@@ -5854,14 +6399,14 @@ function renderPlayers(alpha) {
     for (const mp of G.mirror.players.values()) {
       let st;
       if (mp.id === G.meId && G.pred && (G.mirror.phase === 'play' || G.mirror.phase === 'lobby') && !mp.dead && !mp.out) {
-        const p = G.pred;
-        st = { x: p.x + G.off.x, y: p.y + G.off.y, z: p.z + G.off.z, rotY: p.rotY, vx: p.vx, vy: p.vy, vz: p.vz, grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, tcd: p.tcd, wcd: p.wcd, emote: p.emoteT > mp.emoteT ? p.emote : mp.emote, emoteT: Math.max(p.emoteT, mp.emoteT) };
+        const p = G.pred, q = G.predPrev || p, ga = clamp(G.acc / SIM_DT, 0, 1);
+        st = { x: lerp(q.x, p.x, ga) + G.off.x, y: lerp(q.y, p.y, ga) + G.off.y, z: lerp(q.z, p.z, ga) + G.off.z, rotY: q.rotY + angDiff(q.rotY, p.rotY) * ga, charge: p.charging ? chargeK(p.charge) : 0, dashK: p.dashK || 0, vx: p.vx, vy: p.vy, vz: p.vz, grounded: p.grounded, dashing: p.dash, waveAnim: p.waveAnim, tcd: p.tcd, wcd: p.wcd, emote: p.emoteT > mp.emoteT ? p.emote : mp.emote, emoteT: Math.max(p.emoteT, mp.emoteT) };
       } else {
         const b = mp.buf; if (!b.length) continue;
         let s0 = b[0], s1 = b[b.length - 1];
         for (let i = b.length - 1; i > 0; i--) if (b[i - 1].tm <= rt) { s0 = b[i - 1]; s1 = b[i]; break; }
         const k = s1.tm > s0.tm ? clamp((rt - s0.tm) / (s1.tm - s0.tm), 0, 1) : 1;
-        st = { x: lerp(s0.x, s1.x, k), y: lerp(s0.y, s1.y, k), z: lerp(s0.z, s1.z, k), rotY: s0.rotY + angDiff(s0.rotY, s1.rotY) * k, vx: s1.vx, vy: s1.vy, vz: s1.vz, grounded: mp.grounded, dashing: mp.dash, waveAnim: mp.waveAnim, tcd: mp.tcd, wcd: mp.wcd, emote: mp.emote, emoteT: mp.emoteT };
+        st = { x: lerp(s0.x, s1.x, k), y: lerp(s0.y, s1.y, k), z: lerp(s0.z, s1.z, k), rotY: s0.rotY + angDiff(s0.rotY, s1.rotY) * k, vx: s1.vx, vy: s1.vy, vz: s1.vz, charge: mp.charge || 0, dashK: mp.dashK || 0, grounded: mp.grounded, dashing: mp.dash, waveAnim: mp.waveAnim, tcd: mp.tcd, wcd: mp.wcd, emote: mp.emote, emoteT: mp.emoteT };
         if (Math.hypot(s1.x - s0.x, s1.z - s0.z) > 8) { st.x = s1.x; st.y = s1.y; st.z = s1.z; }
       }
       out.push(Object.assign(st, { id: mp.id, profile: mp.profile, name: mp.name, isBot: mp.isBot, lv: mp.id === G.meId ? Progress.level() : mp.lv | 0, giant: mp.pu === PU.giant, shield: mp.pu === PU.shield, pu: mp.pu, puT: mp.puT,
@@ -5874,7 +6419,7 @@ function renderPlayers(alpha) {
 function currentState() {
   if (G.world) {
     const w = G.world;
-    return { randomMap: w.randomMap, isPublic: w.isPublic, phase: w.phase, mode: w.mode, mapId: w.mapId, duration: w.duration, diff: w.diff, timeLeft: w.timeLeft, countT: w.countT,
+    return { randomMap: w.mode === 'race' ? !!w.raceRandom : w.randomMap, isPublic: w.isPublic, phase: w.phase, mode: w.mode, mapId: w.mapId, duration: w.duration, diff: w.diff, timeLeft: w.timeLeft, countT: w.countT,
       crownHolder: w.crown.holder, crown: { x: w.crown.x, z: w.crown.z }, bombHolder: w.bomb.holder, bombT: w.bomb.timer, items: w.items, results: w.results, host: true, finaleLeft: w.finaleLeft, show: w.show ? Object.assign({}, w.show) : null };
   }
   const m = G.mirror;
@@ -6053,7 +6598,8 @@ function updateCamera(dt, players, st) {
       tx = fx * 0.6; ty = view * 0.6 * pull + Math.max(0, fy) * 0.3; tz = fz * 0.62 + view * 0.74 * pull;
       lx = fx * 0.55; ly = fy * 0.35 + 0.6; lz = fz * 0.55;
     }
-    if (me && me.dashing > 0) fov += 9;
+    if (me && me.dashing > 0) fov += 5 + 11 * (me.dashK || 0) * Math.min(1, me.dashing / 0.12);
+    if (me && me.charge > 0) fov -= 4 * me.charge;
   }
   if (c.direct) c.direct = false;
   else {
@@ -6141,7 +6687,7 @@ function renderUpdate(dt) {
     ids.add(p.id);
     const v = viewFor(p.id, p.profile);
     const dance = st && st.phase === 'end' ? DANCES[p.profile.dance].id : null;
-    v.update(dt, { x: p.x, y: p.y, z: p.z, rotY: p.rotY, vx: p.vx, vy: p.vy, vz: p.vz, grounded: p.grounded, dashing: p.dashing, waveAnim: p.waveAnim, giant: p.giant, shield: p.shield,
+    v.update(dt, { x: p.x, y: p.y, z: p.z, rotY: p.rotY, vx: p.vx, vy: p.vy, vz: p.vz, grounded: p.grounded, dashing: p.dashing, waveAnim: p.waveAnim, giant: p.giant, shield: p.shield, charge: p.charge || 0, dashK: p.dashK,
       dead: p.dead || (p.out && st && st.phase !== 'end' && G.screen !== 'lobby'), inv: G.screen === 'lobby' ? 0 : p.inv, hot: p.hot ? (st && st.bombT < 3 ? 1 : 0.3) : 0, oc: p.pu === PU.overclock,
       emoteAnim: p.emoteT > 0 && p.emote >= 0 ? EMOTES[p.emote].anim : null, emoteT: p.emoteT, dance: dance || p.idle || null });
   }
@@ -6661,21 +7207,32 @@ const UI = {
     for (const b of $('seg-vis').children) b.disabled = !host;
     this.syncSegment($('seg-vis'), pub ? 1 : 0);
     $('vis-hint').textContent = pub ? 'Surt a la llista de SALES OBERTES del menú. Qualsevol pot entrar.' : 'No surt a la llista. Només hi entra qui té el codi.';
-    const race = !!(st && (st.mode === 'race' || st.mode === 'xou'));
-    $('lobby-maps').hidden = race; $('maps-label').hidden = race; $('race-note').hidden = !race;
-    $('race-note').textContent = st && st.mode === 'xou' ? '🎪 El Xou tria les arenes sol: 🏁 Cursa → 🎲 arena sorpresa → ❤️ Gran Final. Passa el 60% a cada ronda!' : '🏁 La Gran Cursa Turbo es juga sempre al seu circuit propi.';
+    const xou = !!(st && st.mode === 'xou'), raceMode = !!(st && st.mode === 'race');
+    $('lobby-maps').hidden = xou; $('maps-label').hidden = xou; $('race-note').hidden = !xou;
+    $('maps-label').textContent = raceMode ? 'CIRCUIT' : 'ARENA';
+    $('race-note').textContent = '🎪 El Xou tria les arenes sol: 🏁 Cursa (circuit a l\'atzar) → 🎲 arena sorpresa → ❤️ Gran Final. Passa el 60% a cada ronda!';
     $('seg-dur').parentElement.hidden = !!(st && st.mode === 'xou');
     // arenes
     const maps = $('lobby-maps'); maps.textContent = '';
-    for (const m of ARENA_MAPS) {
+    for (const m of raceMode ? RACE_MAPS : ARENA_MAPS) {
       const b = h('button', { class: 'card', type: 'button', 'aria-pressed': String(!!st && !st.randomMap && st.mapId === m.id) }, h('div', { class: 'sw', style: { background: m.swatch } }), h('span', { class: 't', text: m.icon + ' ' + m.name }), h('span', { class: 'd', text: m.desc }));
       if (!host) b.disabled = true;
-      b.addEventListener('click', () => { if (!host) return; G.world.randomMap = false; store.set('last.random', false); setMap(G.world, m.id); store.set('last.map', m.id); sound.pickup(); this.renderLobby(true); });
+      if (m.id === 'cuina') { b.classList.add('epic'); b.children[1].dataset.tag = 'NOU!'; }
+      b.addEventListener('click', () => {
+        if (!host) return;
+        if (raceMode) { G.world.raceRandom = false; store.set('last.raceRandom', false); store.set('last.race', m.id); }
+        else { G.world.randomMap = false; store.set('last.random', false); store.set('last.map', m.id); }
+        setMap(G.world, m.id); sound.pickup(); this.renderLobby(true);
+      });
       maps.appendChild(b);
     }
-    const rb = h('button', { class: 'card', type: 'button', 'aria-pressed': String(!!st && !!st.randomMap) }, h('div', { class: 'sw', style: { background: 'repeating-linear-gradient(45deg,#ff007f 0 12px,#00f0ff 12px 24px,#ffe600 24px 36px,#a3ff00 36px 48px)' } }), h('span', { class: 't', text: '🎲 Arena Sorpresa' }), h('span', { class: 'd', text: 'Cada ronda, una arena diferent triada a l\'atzar.' }));
+    const rb = h('button', { class: 'card', type: 'button', 'aria-pressed': String(!!st && !!st.randomMap) }, h('div', { class: 'sw', style: { background: 'repeating-linear-gradient(45deg,#ff007f 0 12px,#00f0ff 12px 24px,#ffe600 24px 36px,#a3ff00 36px 48px)' } }), h('span', { class: 't', text: raceMode ? '🎲 Circuit Sorpresa' : '🎲 Arena Sorpresa' }), h('span', { class: 'd', text: raceMode ? 'Cada cursa, un circuit diferent triat a l\'atzar.' : 'Cada ronda, una arena diferent triada a l\'atzar.' }));
     if (!host) rb.disabled = true;
-    rb.addEventListener('click', () => { if (!host) return; G.world.randomMap = true; store.set('last.random', true); sound.pickup(); this.renderLobby(true); });
+    rb.addEventListener('click', () => {
+      if (!host) return;
+      if (raceMode) { G.world.raceRandom = true; store.set('last.raceRandom', true); } else { G.world.randomMap = true; store.set('last.random', true); }
+      sound.pickup(); this.renderLobby(true);
+    });
     maps.appendChild(rb);
     const modes = $('lobby-modes'); modes.textContent = '';
     for (const id of MODE_ORDER) {
@@ -6693,10 +7250,10 @@ const UI = {
   prepareHud(st) {
     if (!st) return;
     const m = MODES[st.mode];
-    $('hud-mode').textContent = (st.show ? '🎪 XOU · ' + SHOW_ROUND_NAMES[st.show.round] + ' · ' : '') + m.icon + ' ' + m.name.toUpperCase() + (st.show ? '' : ' · ' + MAP_BY_ID[st.mode === 'race' ? 'cursa' : st.mapId].name.toUpperCase());
+    $('hud-mode').textContent = (st.show ? '🎪 XOU · ' + SHOW_ROUND_NAMES[st.show.round] + ' · ' : '') + m.icon + ' ' + m.name.toUpperCase() + (st.show ? '' : ' · ' + MAP_BY_ID[st.mapId].name.toUpperCase());
     $('hud-mode-short').textContent = m.short;
     $('hud-feed').textContent = '';
-    const hint = { crown: '👑 AGAFA LA CORONA I EMPENY ELS RIVALS FORA!', cds: '💿 CAÇA CDs I FES-LOS SALTAR DELS RIVALS AMB TURBO!', bomb: '💣 PASSA LA BOMBA XOCANT ABANS QUE ESCLATI!', last: '❤️ TRES VIDES. QUEDA\'T DRET FINS AL FINAL!', race: '🏁 CORRE FINS A LA META! ESPAI PER SALTAR, SHIFT PER ESBOTZAR!' }[st.mode];
+    const hint = { crown: '👑 AGAFA LA CORONA I EMPENY ELS RIVALS FORA!', cds: '💿 CAÇA CDs I FES-LOS SALTAR DELS RIVALS AMB TURBO!', bomb: '💣 PASSA LA BOMBA XOCANT ABANS QUE ESCLATI!', last: '❤️ TRES VIDES. QUEDA\'T DRET FINS AL FINAL!', race: '🏁 CORRE FINS A LA META! ESPAI PER SALTAR (×2 TOMBARELLA), SHIFT PER ESBOTZAR!' }[st.mode];
     if (st.show) { const n = st.show.roundAlive.length, final = st.show.round >= 2; this.announce('🎪 ' + SHOW_ROUND_NAMES[st.show.round] + ' · ' + (final ? 'L\'ÚLTIM DRET ÉS EL CAMPIÓ!' : 'PASSEN ' + showQualify(n, false) + ' DE ' + n + '!') + ' ' + hint, 5200); }
     else this.announce(hint, 4200);
     const race = st.mode === 'race';
@@ -6749,17 +7306,21 @@ const UI = {
     // barres
     const me = players.find((p) => p.id === G.meId);
     if (me) {
-      const tmax = me.tcdMax || 1.5;
-      $('hud-turbo').style.transform = 'scaleX(' + clamp(1 - me.tcd / tmax, 0, 1) + ')';
-      $('hud-turbo-t').textContent = me.tcd <= 0 ? 'LLEST' : me.tcd.toFixed(1) + 's';
+      // turbo amb càrrega: la barra s'omple mentre mantens el botó
+      const ch = me.charge || 0, tb = $('hud-turbo');
+      tb.style.transform = 'scaleX(' + (ch > 0 ? Math.max(0.04, ch) : me.dashing > 0 ? clamp(me.dashing / 0.42, 0, 1) : 1).toFixed(3) + ')';
+      tb.parentElement.classList.toggle('charging', ch > 0); tb.parentElement.classList.toggle('full', ch >= 1);
+      const tt = ch >= 1 ? '💥 MÀXIM!' : ch > 0 ? Math.round(ch * 100) + '%' : me.dashing > 0 ? 'FIIIUM!' : 'MANTÉN';
+      if ($('hud-turbo-t').textContent !== tt) $('hud-turbo-t').textContent = tt;
+      if (ch > 0) { this.chT = (this.chT || 0) - dt; if (this.chT <= 0) { sound.chargeTick(ch); this.chT = ch >= 1 ? 0.07 : 0.16 - ch * 0.08; } } else this.chT = 0;
       $('hud-wave').style.transform = 'scaleX(' + clamp(1 - me.wcd / (me.pu === PU.overclock ? PHYS.waveCdOC : PHYS.waveCd), 0, 1) + ')';
       $('hud-wave-t').textContent = me.wcd <= 0 ? 'LLEST' : me.wcd.toFixed(1) + 's';
       if (Input.touchOn) {
         // recàrrega dibuixada directament sobre els botons tàctils
-        const ft = clamp(1 - me.tcd / tmax, 0, 1), fw = clamp(1 - me.wcd / (me.pu === PU.overclock ? PHYS.waveCdOC : PHYS.waveCd), 0, 1);
+        const ft = ch > 0 ? ch : 1, fw = clamp(1 - me.wcd / (me.pu === PU.overclock ? PHYS.waveCdOC : PHYS.waveCd), 0, 1);
         const bt = $('tb-turbo'), bw = $('tb-wave');
         bt.style.setProperty('--cd', ft.toFixed(3)); bw.style.setProperty('--cd', fw.toFixed(3));
-        bt.classList.toggle('cooling', ft < 1); bw.classList.toggle('cooling', fw < 1);
+        bt.classList.toggle('cooling', false); bt.classList.toggle('charging', ch > 0); bw.classList.toggle('cooling', fw < 1);
       }
       const pu = $('hud-pu');
       if (me.pu) { pu.hidden = false; pu.textContent = PU_NAME[me.pu] + ' ' + Math.ceil(me.puT) + 's'; } else pu.hidden = true;
@@ -6891,7 +7452,7 @@ const UI = {
     if (st.show && st.show.stage === 'inter') { this.showInter(st, byId); ProgressUI.showAward(Progress.onMatchEnd(st, players), true); return; }
     $('pod-title').textContent = st.show ? (byId.get(st.show.champion) ? '🎪 CAMPIÓ DEL XOU: ' + byId.get(st.show.champion).name.toUpperCase() + '!' : '🎪 FINAL DEL XOU!') : win ? '🏆 GUANYA ' + win.name.toUpperCase() + '!' : '🏆 FINAL!';
     if (st.show) this.renderShowTrack(st);
-    $('pod-sub').textContent = MODES[st.mode].icon + ' ' + MODES[st.mode].name.toUpperCase() + ' · ' + MAP_BY_ID[st.mode === 'race' ? 'cursa' : st.mapId].name.toUpperCase();
+    $('pod-sub').textContent = MODES[st.mode].icon + ' ' + MODES[st.mode].name.toUpperCase() + ' · ' + MAP_BY_ID[st.mapId].name.toUpperCase();
     $('btn-nextmap').hidden = st.mode === 'race' || !!st.show;
     const list = $('pod-list'); list.textContent = '';
     const medals = ['🥇', '🥈', '🥉'];
@@ -6979,15 +7540,17 @@ const EmoteWheel = {
  * =================================================================== */
 
 const SPLIT_NAMES = ['CP1', 'CP2', 'CP3', 'CP4', 'CP5', 'CP6', 'META'];
-/* Medalles per temps de la Gran Cursa */
-const RACE_MEDALS = [
-  // temps calibrats amb partides reals (rècords humans de ~21 s amb turbo encadenat)
-  { id: 'diamant', icon: '💎', name: 'Diamant', t: 22, xp: 160 },
-  { id: 'or', icon: '🥇', name: "d'Or", t: 26, xp: 110 },
-  { id: 'plata', icon: '🥈', name: 'de Plata', t: 33, xp: 70 },
-  { id: 'bronze', icon: '🥉', name: 'de Bronze', t: 45, xp: 35 }
+/* Medalles per temps: cada circuit té els seus temps (MAPS[].medals) */
+const MEDAL_KINDS = [
+  { id: 'diamant', icon: '💎', name: 'Diamant', xp: 160 },
+  { id: 'or', icon: '🥇', name: "d'Or", xp: 110 },
+  { id: 'plata', icon: '🥈', name: 'de Plata', xp: 70 },
+  { id: 'bronze', icon: '🥉', name: 'de Bronze', xp: 35 }
 ];
-const raceMedal = (t) => RACE_MEDALS.find((m) => t <= m.t) || null;
+const courseOf = (c) => (isRaceMap(c) ? c : 'cursa');
+const medalsFor = (c) => { const ts = MAP_BY_ID[courseOf(c)].medals || [22, 26, 33, 45]; return MEDAL_KINDS.map((m, i) => Object.assign({ t: ts[i] }, m)); };
+const RACE_MEDALS = medalsFor('cursa');
+const raceMedal = (t, c) => medalsFor(c).find((m) => t <= m.t) || null;
 
 function fmtRace(t) {
   if (!(t >= 0)) return '-:--.--';
@@ -6997,27 +7560,29 @@ function fmtRace(t) {
 function fmtDelta(d) { return (d < 0 ? '−' : '+') + Math.abs(d).toFixed(2); }
 
 const Records = {
-  KEY: 'race.v1',
   run: null,
   splitTimer: 0,
+  view: 'cursa',      // circuit que es mostra al panell
 
-  load() {
-    const d = store.get(this.KEY, null);
+  key(c) { c = courseOf(c); return c === 'cursa' ? 'race.v1' : 'race.' + c + '.v1'; },
+  load(c = this.view) {
+    const d = store.get(this.key(c), null);
     if (!d || !Array.isArray(d.runs)) return { runs: [], bestSegs: [] };
     d.runs = d.runs.filter((r) => r && typeof r.t === 'number' && isFinite(r.t) && r.t > 5 && Array.isArray(r.splits));
     if (!Array.isArray(d.bestSegs)) d.bestSegs = [];
     return d;
   },
-  save(d) { store.set(this.KEY, d); if (typeof Cloud !== 'undefined') Cloud.queuePush(); },
-  pb() { const d = this.load(); return d.runs.length ? d.runs[0] : null; },
+  save(d, c = this.view) { store.set(this.key(c), d); if (typeof Cloud !== 'undefined') Cloud.queuePush(); },
+  pb(c = this.view) { const d = this.load(c); return d.runs.length ? d.runs[0] : null; },
+  courses() { return RACE_MAPS.map((m) => m.id); },
 
   /* es crida cada fotograma des del HUD quan el mode és la cursa */
   frame(dt, st, me) {
     const box = $('race-timer');
     if (st.phase === 'count') {
-      this.run = { splits: [], cp: 0, done: false, solo: G.role === 'solo', tt: !!G.timeTrial, n: G.world ? G.world.players.size : (G.mirror ? G.mirror.players.size : 1) };
+      this.run = { course: courseOf(st.mapId), splits: [], cp: 0, done: false, solo: G.role === 'solo', tt: !!G.timeTrial, n: G.world ? G.world.players.size : (G.mirror ? G.mirror.players.size : 1) };
     }
-    const pb = this.pb();
+    const pb = this.pb(this.run ? this.run.course : courseOf(st.mapId));
     const el = st.phase === 'play' || st.phase === 'end' ? Math.max(0, st.duration - st.timeLeft) : 0;
     const r = this.run;
     // cronòmetre en viu
@@ -7038,7 +7603,7 @@ const Records = {
     const r = this.run; if (!r || r.done || v > 6) return;
     const el = this.elapsed();
     for (let k = r.cp + 1; k <= v; k++) r.splits[k - 1] = el;
-    r.cp = Math.max(r.cp, v); this.showSplit(v - 1, el, this.pb());
+    r.cp = Math.max(r.cp, v); this.showSplit(v - 1, el, this.pb(r.course));
   },
   onFinish() {
     const r = this.run; if (!r || r.done) return;
@@ -7047,7 +7612,7 @@ const Records = {
     if (wp && wp.finT > 0) r.final = wp.finT; // temps exacte de la simulació (sol o amfitrió)
     for (let k = 0; k < 6; k++) if (r.splits[k] == null) r.splits[k] = null;
     r.splits[6] = r.final;
-    this.finish(r, this.pb());
+    this.finish(r, this.pb(r.course));
   },
 
   showSplit(i, el, pb) {
@@ -7063,18 +7628,19 @@ const Records = {
   },
 
   finish(r, pb) {
-    const d = this.load();
+    const c = courseOf(r.course), d = this.load(c);
+    this.view = c;
     const run = { t: r.final, splits: r.splits.slice(0, 7), d: Date.now(), n: G.profile.name, kind: r.tt ? 'tt' : r.solo ? 'solo' : 'online', p: r.n };
     // millors segments (per a la "suma dels millors")
     const segs = run.splits.map((s, i) => (s == null || (i > 0 && run.splits[i - 1] == null) ? null : s - (i ? run.splits[i - 1] : 0)));
     segs.forEach((s, i) => { if (s != null && s > 0 && (d.bestSegs[i] == null || s < d.bestSegs[i])) d.bestSegs[i] = s; });
     d.runs.push(run); d.runs.sort((a, b) => a.t - b.t); d.runs = d.runs.slice(0, 10);
-    this.save(d);
+    this.save(d, c);
     const isPB = !pb || run.t < pb.t;
     r.pb = isPB; r.prevPB = pb ? pb.t : 0;
-    const md = raceMedal(run.t);
+    const md = raceMedal(run.t, c);
     if (isPB) {
-      Cloud.submitBest();
+      Cloud.submitBest(c);
       const msg = '🏆 NOU RÈCORD! ' + fmtRace(run.t) + (pb ? ' (' + fmtDelta(run.t - pb.t) + ')' : '') + (md ? ' · ' + md.icon + ' ' + md.name.toUpperCase() : '');
       UI.announce(msg, 4200); toast(msg);
       sound.pickup(true); setTimeout(() => sound.pickup(true), 160);
@@ -7087,10 +7653,10 @@ const Records = {
   },
 
   /* ---------- contrarellotge ---------- */
-  startTimeTrial() {
+  startTimeTrial(c = this.view) {
     resetSession();
     G.role = 'solo'; G.code = ''; G.timeTrial = true;
-    const w = createWorld({ mode: 'race', mapId: 'cursa', duration: 180, diff: 1 });
+    const w = createWorld({ mode: 'race', raceMap: courseOf(c), duration: 180, diff: 1 });
     G.world = w;
     w.players.set(G.meId, Object.assign(newPlayer(G.meId, G.profile), { lv: Progress.level() }));
     showArena(w.arena);
@@ -7103,19 +7669,29 @@ const Records = {
   restart() { const w = G.world; placePlayers(w); startMatch(w); $('race-split').hidden = true; sound.boing(1.2); },
 
   /* ---------- panell ---------- */
-  open() { this.render(); $('ov-records').hidden = false; $('btn-tt').focus(); },
+  open(c) { if (c) this.view = courseOf(c); this.render(); $('ov-records').hidden = false; $('btn-tt').focus(); },
   close() { $('ov-records').hidden = true; this.confirmReset = false; $('btn-rec-reset').textContent = '🗑️ ESBORRA'; },
   render() {
+    // pestanyes de circuit
+    let tabs = $('rec-tabs');
+    if (!tabs) { tabs = h('div', { class: 'rec-tabs', id: 'rec-tabs' }); $('rec-pb').parentNode.insertBefore(tabs, $('rec-pb')); }
+    tabs.textContent = '';
+    for (const m of RACE_MAPS) {
+      const b = h('button', { class: 'rec-tab' + (m.id === this.view ? ' on' : ''), type: 'button' }, h('span', { text: m.icon }), h('b', { text: m.name }));
+      b.addEventListener('click', () => { if (this.view === m.id) return; this.view = m.id; sound.click(); this.render(); });
+      tabs.appendChild(b);
+    }
+    $('rec-title').textContent = '⏱️ RÈCORDS · ' + MAP_BY_ID[this.view].name.toUpperCase();
     const d = this.load(), pb = d.runs[0];
     const head = $('rec-pb'); head.textContent = '';
     if (pb) {
-      const md = raceMedal(pb.t);
+      const md = raceMedal(pb.t, this.view);
       head.appendChild(h('div', { class: 'big', text: (md ? md.icon + ' ' : '') + fmtRace(pb.t) }));
       const sob = d.bestSegs.length === 7 && d.bestSegs.every((x) => x != null) ? d.bestSegs.reduce((a, b) => a + b, 0) : null;
       head.appendChild(h('div', { class: 'sub', text: 'MILLOR TEMPS · ' + pb.n + ' · ' + new Date(pb.d).toLocaleDateString('ca') + (sob ? ' · SUMA DELS MILLORS ' + fmtRace(sob) : '') }));
-    } else head.appendChild(h('div', { class: 'sub', text: 'Encara no tens cap temps. Acaba una Gran Cursa Turbo per estrenar el rècord!' }));
+    } else head.appendChild(h('div', { class: 'sub', text: 'Encara no tens cap temps en aquest circuit. Fes una contrarellotge per estrenar el rècord!' }));
     const meds = h('div', { class: 'rec-medals' });
-    for (const m of RACE_MEDALS.slice().reverse()) meds.appendChild(h('span', { class: 'rm' + (pb && pb.t <= m.t ? ' got' : '') }, h('b', { text: m.icon + ' ' + fmtRace(m.t).replace(/\.00$/, '') }), h('small', { text: '+' + m.xp + ' XP' })));
+    for (const m of medalsFor(this.view).slice().reverse()) meds.appendChild(h('span', { class: 'rm' + (pb && pb.t <= m.t ? ' got' : '') }, h('b', { text: m.icon + ' ' + fmtRace(m.t).replace(/\.00$/, '') }), h('small', { text: '+' + m.xp + ' XP' })));
     head.appendChild(meds);
     const ol = $('rec-list'); ol.textContent = '';
     const kinds = { tt: '⏱️', solo: '🤖', online: '🌐' };
@@ -7136,7 +7712,9 @@ const Records = {
     const wrap = $('rec-world-wrap'), ol = $('rec-world');
     if (Cloud.state !== 'ready') { wrap.hidden = !Cloud.supported(); ol.textContent = ''; ol.appendChild(h('li', { class: 'empty', text: Cloud.state === 'error' ? 'Sense connexió amb el servidor' : 'Carregant…' })); return; }
     wrap.hidden = false; ol.textContent = ''; ol.appendChild(h('li', { class: 'empty', text: 'Carregant…' }));
-    let rows = null; try { rows = await Cloud.topRace(10); } catch (e) { console.warn(e); }
+    const c = this.view;
+    let rows = null; try { rows = await Cloud.topRace(10, c); } catch (e) { console.warn(e); }
+    if (c !== this.view) return;   // ha canviat de pestanya mentrestant
     ol.textContent = '';
     if (!rows) { ol.appendChild(h('li', { class: 'empty', text: 'No s\'ha pogut carregar el rànquing' })); return; }
     if (!rows.length) ol.appendChild(h('li', { class: 'empty', text: 'Encara no hi ha ningú. Sigues el primer!' }));
@@ -7147,7 +7725,8 @@ const Records = {
   },
   async copy() {
     const pb = this.pb(); if (!pb) return;
-    const txt = '🏁 **Turbo Xoc 2000 · Gran Cursa Turbo**\nEl meu rècord: **' + fmtRace(pb.t) + '** ⏱️\n' +
+    const md = raceMedal(pb.t, this.view), mp = MAP_BY_ID[this.view];
+    const txt = mp.icon + ' **Turbo Xoc 2000 · ' + mp.name + '**\nEl meu rècord: **' + fmtRace(pb.t) + '** ⏱️' + (md ? ' ' + md.icon : '') + '\n' +
       pb.splits.map((s, i) => SPLIT_NAMES[i] + ' ' + fmtRace(s)).join(' · ') + '\nQui em supera? 👉 https://miniserra.github.io/Turbo-Xoc-2000/';
     const ok = await copyText(txt); toast(ok ? '📋 Rècord copiat! Enganxa\'l al Discord' : 'No s\'ha pogut copiar');
   },
@@ -7233,7 +7812,7 @@ const Cloud = {
   },
 
   async onUser(u) {
-    this.user = u || null; this.raceSig = null; this.raceDenied = false;
+    this.user = u || null; this.raceSigs = {}; this.raceDenied = false;
     this.renderBadge(); this.renderPanel();
     if (!$('ov-records').hidden) Records.renderWorld();
     if (!u) return;
@@ -7245,24 +7824,34 @@ const Cloud = {
   userRef() { return this.db.collection('users').doc(this.user.uid); },
   async pull() {
     const snap = await this.userRef().get();
-    const local = { profile: store.get('profile', null), race: Records.load() };
+    const local = { profile: store.get('profile', null), race: Records.load('cursa') };
     if (snap.exists) {
       const d = snap.data() || {};
       this.applying = true;
       const p = d.profile && decodeProfile(d.profile);
       if (p) { G.profile = p; saveProfile(); if (UI.refreshMenu) UI.refreshMenu(); if (G.screen === 'taller') UI.renderTaller(); }
       const merged = mergeRace(local.race, d.race);
-      Records.save(merged);
+      Records.save(merged, 'cursa');
+      // la resta de circuits viatgen dins de race.c
+      let otherChanged = false;
+      for (const c of Records.courses()) {
+        if (c === 'cursa') continue;
+        const remote = d.race && d.race.c && d.race.c[c];
+        const mc = mergeRace(Records.load(c), remote);
+        Records.save(mc, c);
+        if (mc.runs.length && JSON.stringify(mc) !== JSON.stringify(remote || null)) otherChanged = true;
+      }
       const progChanged = Progress.merge(d.prog);
       UI.refreshMenu();
       this.applying = false;
       toast('☁️ Hola, ' + this.displayName() + '! Dades del compte carregades');
-      if (JSON.stringify(merged) !== JSON.stringify(d.race || null) || progChanged || !d.prog || Progress.load().xp !== d.prog.xp) this.queuePush(true);
+      const cursaRemote = d.race ? { runs: d.race.runs, bestSegs: d.race.bestSegs } : null;
+      if (otherChanged || JSON.stringify(merged) !== JSON.stringify(cursaRemote) || progChanged || !d.prog || Progress.load().xp !== d.prog.xp) this.queuePush(true);
     } else {
       await this.push();
       toast('☁️ Compte creat! El teu bòs i els rècords ja es guarden al núvol');
     }
-    this.submitBest();
+    for (const c of Records.courses()) this.submitBest(c);
   },
   queuePush(now) {
     if (!this.user || this.applying) return;
@@ -7271,10 +7860,13 @@ const Cloud = {
   },
   async push() {
     if (!this.user) return;
-    const race = Records.load();
-    const doc = { profile: encodeProfile(G.profile), race: { runs: race.runs.slice(0, 10), bestSegs: race.bestSegs.slice(0, 7) }, name: cleanName(G.profile.name), updated: this.fb.firestore.FieldValue.serverTimestamp() };
+    const pack = (r) => ({ runs: r.runs.slice(0, 10), bestSegs: r.bestSegs.slice(0, 7) });
+    const race = pack(Records.load('cursa'));
+    race.c = {};
+    for (const c of Records.courses()) if (c !== 'cursa') { const r = Records.load(c); if (r.runs.length) race.c[c] = pack(r); }
+    const doc = { profile: encodeProfile(G.profile), race, name: cleanName(G.profile.name), updated: this.fb.firestore.FieldValue.serverTimestamp() };
     if (!this.noProg) doc.prog = Progress.forCloud();
-    try { await this.userRef().set(doc); this.submitBest(); }
+    try { await this.userRef().set(doc); for (const c of Records.courses()) this.submitBest(c); }
     catch (e) {
       // regles antigues sense el camp "prog": continua guardant la resta
       if (e && e.code === 'permission-denied' && doc.prog) { this.noProg = true; delete doc.prog; console.warn('Firestore: actualitza les regles per guardar el nivell'); await this.userRef().set(doc); }
@@ -7285,14 +7877,17 @@ const Cloud = {
   /* ---------- rànquing mundial ---------- */
   // Puja el rècord al rànquing mundial. Si ja hi tens un temps millor però has canviat de nom o d'aspecte,
   // actualitza només el nom i el bòs perquè el top et mostri tal com ets ara.
-  async submitBest() {
+  // La Gran Cursa original viu a /race/{uid}; la resta de circuits a /rank/{circuit}/runs/{uid}
+  raceCol(c) { return c === 'cursa' ? this.db.collection('race') : this.db.collection('rank').doc(c).collection('runs'); },
+  async submitBest(c = 'cursa') {
     if (!this.user || this.state !== 'ready') return;
-    const pb = Records.pb(); if (!pb) return;
-    const ref = this.db.collection('race').doc(this.user.uid);
+    const pb = Records.pb(c); if (!pb) return;
+    const ref = this.raceCol(c).doc(this.user.uid);
+    this.raceSigs = this.raceSigs || {};
     const name = cleanName(G.profile.name), profile = encodeProfile(G.profile, false);
     const t = Math.round(pb.t * 100) / 100;
     const sig = t + '|' + name + '|' + profile;
-    if (sig === this.raceSig) return;
+    if (sig === this.raceSigs[c]) return;
     try {
       const cur = await ref.get();
       const c = cur.exists ? cur.data() : null;
@@ -7301,16 +7896,16 @@ const Cloud = {
       } else {
         await ref.set({ t, name, profile, splits: pb.splits.map((s) => (s == null ? null : Math.round(s * 100) / 100)), d: Date.now() });
       }
-      this.raceSig = sig; this.raceDenied = false;
+      this.raceSigs[c] = sig; this.raceDenied = false;
       if (!$('ov-records').hidden) Records.renderWorld();
     } catch (e) {
       console.warn('submitBest', e);
       if (e && e.code === 'permission-denied') { this.raceDenied = true; if (!$('ov-records').hidden) Records.renderWorld(); }
     }
   },
-  async topRace(n = 10) {
+  async topRace(n = 10, c = 'cursa') {
     if (this.state !== 'ready') return null;
-    const qs = await this.db.collection('race').orderBy('t').limit(n).get();
+    const qs = await this.raceCol(c).orderBy('t').limit(n).get();
     return qs.docs.map((d) => Object.assign({ uid: d.id }, d.data()));
   },
 
@@ -7500,7 +8095,7 @@ const Progress = {
     // temps de la cursa: medalla + millora del rècord
     const timeLines = () => {
       if (!rec || !rec.done || !(rec.final > 0)) return;
-      const md = raceMedal(rec.final);
+      const md = raceMedal(rec.final, rec.course);
       if (md) add(md.icon + ' Medalla ' + md.name + ' (' + fmtRace(rec.final) + ')', md.xp, md.id === 'diamant' || md.id === 'or' ? 'gold' : '');
       if (rec.pb && rec.prevPB > 0) { const gain = rec.prevPB - rec.final; add('🏆 Rècord personal (−' + gain.toFixed(2) + ' s)', 60 + Math.min(120, Math.round(gain * 15)), 'gold'); }
       else if (rec.pb) add('🏆 Primer rècord personal!', 60, 'gold');
@@ -7781,11 +8376,12 @@ const Input = {
       if (G.screen !== 'hud') return;
       if (Spectate.active() && ['arrowleft', 'arrowright', 'a', 'd'].includes(k) && !e.repeat) { Spectate.cycle(k === 'arrowleft' || k === 'a' ? -1 : 1); return; }
       if (e.code === 'Space' || k === 'e') { e.preventDefault(); if (!e.repeat) action('wave'); }
-      else if (e.key === 'Shift' && !e.repeat) { e.preventDefault(); action('turbo'); }
+      else if (e.key === 'Shift' && !e.repeat) { e.preventDefault(); action('chargeOn'); }
       else if (['1', '2', '3', '4'].includes(e.key) && !e.repeat) action('emote', +e.key - 1);
       if (e.key.startsWith('Arrow')) e.preventDefault();
     });
-    window.addEventListener('keyup', (e) => { const k = e.key.toLowerCase(); this.keys.delete(k === ' ' ? 'space' : k); });
+    window.addEventListener('keyup', (e) => { const k = e.key.toLowerCase(); this.keys.delete(k === ' ' ? 'space' : k); if (e.key === 'Shift') action('chargeOff'); });
+    window.addEventListener('blur', () => { this.keys.clear(); action('chargeOff'); });
     window.addEventListener('blur', () => { this.keys.clear(); this.resetJoy(); });
     window.addEventListener('pointerdown', () => sound.init(), { passive: true });
     // Android: Chrome no amaga la barra de l'URL tot sol; demanem pantalla completa i horitzontal en tocar
@@ -7839,7 +8435,12 @@ const Input = {
       b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up); b.addEventListener('pointerleave', up);
       b.addEventListener('contextmenu', (e) => e.preventDefault());
     };
-    hold('tb-turbo', () => action('turbo'));
+    // turbo tàctil: mantén premut per carregar, deixa anar per sortir disparat
+    const tb = $('tb-turbo');
+    tb.addEventListener('pointerdown', (e) => { e.preventDefault(); tb.classList.add('pressed'); action('chargeOn'); });
+    const tup = () => { if (tb.classList.contains('pressed')) { tb.classList.remove('pressed'); action('chargeOff'); } };
+    tb.addEventListener('pointerup', tup); tb.addEventListener('pointercancel', tup); tb.addEventListener('pointerleave', tup);
+    tb.addEventListener('contextmenu', (e) => e.preventDefault());
     hold('tb-wave', () => action('wave'));
   },
 
@@ -7864,7 +8465,8 @@ const Input = {
         const btn = (i) => !!(gp.buttons[i] && gp.buttons[i].pressed);
         const prev = this.padPrev[gp.index] || [];
         const edge = (i) => btn(i) && !prev[i];
-        if (edge(0) || edge(7)) action('turbo');
+        const held = btn(0) || btn(7), wasHeld = !!(prev[0] || prev[7]);
+        if (held && !wasHeld) action('chargeOn'); else if (!held && wasHeld) action('chargeOff');
         if (edge(1) || edge(2) || edge(6)) action('wave');
         if (edge(12)) action('emote', 0); if (edge(15)) action('emote', 1); if (edge(13)) action('emote', 2); if (edge(14)) action('emote', 3);
         if (edge(9)) UI.openSettings();
@@ -7912,7 +8514,7 @@ function boot() {
   ClaudeRoom.get().then((room) => { if (room) UI.renderOpenRooms(); });
   requestAnimationFrame(frame);
   Ticker.start();
-  window.__txoc = { G, R, sound, simStep, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records, Cloud, mergeRace, Progress, ProgressUI };
+  window.__txoc = { G, R, sound, simStep, doTurbo, doJump, chargeK, PHYS, startMatch, setMap, setMode, backToLobby, endMatch, encodeState, encodeRoster, MAPS, Arena, action, setQuality, Directory, LobbyStage, EmoteWheel, UI, Records, Cloud, mergeRace, Progress, ProgressUI };
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

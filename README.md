@@ -24,8 +24,8 @@ Juga amb amics, amb desconeguts a les sales obertes o contra bots.
 | Tecla | Acció |
 |---|---|
 | **W A S D** / fletxes | Moure't |
-| **SHIFT** | ⚡ **Turbo**: embestida ràpida per enviar algú a volar |
-| **ESPAI** | 💥 **Ona**: minisalt i ona expansiva que aparta tothom |
+| **SHIFT** (mantén i deixa anar) | ⚡ **Turbo amb càrrega**: com més estona el mantens, més lluny surts disparat. Sense espera! |
+| **ESPAI** | 🦘 **Salt**. Prem-lo un altre cop a l'aire per fer el **doble salt**: una tombarella amb 💥 ona expansiva que aparta tothom |
 | **Rodeta del ratolí** / **1-4** | 😎 Roda d'emotes |
 | **Ratolí** | 🎥 Clica per girar la càmera lliurament (a tots els modes) · **ESC** per alliberar-la |
 | **ESC** | Configuració |
@@ -37,7 +37,7 @@ També es pot jugar amb **comandament** (l'stick dret gira la càmera).
 | | Mode | Com es guanya |
 |---|---|---|
 | 🎪 | **Xou Turbo** | Un torneig de 3 rondes amb eliminació: primer la Gran Cursa, després una arena sorpresa (corona, CDs o bomba) i, per acabar, la gran final a l'Últim Bòs Dret. Els eliminats miren la resta des de la grada. Només n'hi pot haver un **campió del Xou**. |
-| 🏁 | **Gran Cursa Turbo** | Un circuit d'obstacles estil Fall Guys amb punts de control: escombres giratòries, rajoles que cauen, pèndols, boles rodolant, plataformes mòbils i un pont de ventiladors. Qui arriba primer, guanya. Hi ha podi i, quan acabes, passes a mode espectador. |
+| 🏁 | **Gran Cursa Turbo** | Curses d'obstacles estil Fall Guys amb punts de control. Hi ha dos circuits (o el **circuit sorpresa**): el **🏁 Gran Circuit Turbo** (escombres, rajoles que cauen, pèndols, boles i ventiladors) i **🍳 La Cuina de l'Àvia**, on ets petitó dins una cuina gegant: botifarres que rodolen, un bol de crema catalana que rellisca, gelatina que rebota, una torradora que et llença, paelles que volten, la cinta del pa amb tomàquet, porrons, pilotes d'escudella i una calçotada que et fa volar. Cada circuit té els seus rècords i el seu rànquing mundial. |
 | 👑 | **Rei de la Pista** | Agafa la corona i aguanta-la. Pots robar-la als altres amb el turbo. |
 | 💿 | **Febre de CDs** | Plouen CDs (i alguns de daurats). Si xoques amb algú, se li escampen els seus. |
 | 💣 | **Bomba Calenta** | Passa la bomba xocant abans que exploti… a les teves mans. |
@@ -62,7 +62,7 @@ També es pot jugar amb **comandament** (l'stick dret gira la càmera).
 ## ⭐ Nivells i XP
 
 Cada partida et dona experiència segons la participació, la posició, el rendiment i els rècords. La **primera partida del dia val ×2** i jugar amb amics suma un 25 % més.
-A la Gran Cursa (i a la contrarellotge) el **temps també dona XP**: medalles 💎 Diamant (≤ 22 s), 🥇 Or (≤ 26 s), 🥈 Plata (≤ 33 s) i 🥉 Bronze (≤ 45 s), i un extra cada cop que bats el teu rècord personal (com més segons retalles, més XP).
+A la Gran Cursa (i a la contrarellotge) el **temps també dona XP**: medalles 💎 Diamant, 🥇 Or, 🥈 Plata i 🥉 Bronze (cada circuit té els seus temps), i un extra cada cop que bats el teu rècord personal (com més segons retalles, més XP).
 Hi ha **50 nivells** amb més de 100 cosmètics per desbloquejar (consulta el **Camí del Bòs** des del menú) i títols que van de *Novell* fins a **TURBO DÉU**. Al taller pots provar-te les peces bloquejades abans d'aconseguir-les.
 
 Amb un compte (Google o correu) el nivell, el bòs i els rècords es guarden al núvol, i surts al **rànquing mundial** de la Gran Cursa.
